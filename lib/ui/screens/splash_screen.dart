@@ -1,11 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import '../../utils/lang/app_localization_keys.dart';
+import '../../utils/lang/app_localization.dart';
 
 import 'home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
-  
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
@@ -21,9 +22,10 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final appLocal = AppLocalizations.of(context);
     return Container(
       child: Center(
-        child: Text("Splash"),
+        child: Text(appLocal.translate(LocalKeys.WELCOME_MESSAGE)),
       ),
     );
   }

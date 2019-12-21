@@ -1,0 +1,16 @@
+{
+    "app_name": "Visit Fayoum",
+    "welcome_message": "Welcome to the home screen",
+    "sign_in": "SIGN IN",
+    "sign_up": "SIGN UP",
+    "log_in": "LOGIN",
+    "email": "Email",
+    "error_email": "Invalid email!",
+    "error_type": "Required",
+    "password": "Password",
+    "confirm_password": "Confirm Password",
+    "error_password": "Password is too short!",
+    "forget_password": "Forget Password ?",
+    "sign_in_fb": "Sign in with Facebook",
+    "sign_in_google": "Sign in with Google"
+}

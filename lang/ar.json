@@ -1,0 +1,16 @@
+{
+    "app_name": "زيارة الفيوم",
+    "welcome_message": "اهلا بك في الصفحة الرئيسية",
+    "sign_in": "دخول",
+    "sign_up": "تسجيل",
+    "log_in": "دخول",
+    "email": "البريد الالكتروني",
+    "error_email": "خطأ في بريد إلكتروني!",
+    "error_type": "مطلوب *",
+    "password": "كلمة المرور",
+    "confirm_password": "تاكيد كلمة المرور",
+    "error_password": "كلمة المرور قصيرة جدا!",
+    "forget_password": "هل نسيت كلمة المرور ؟",
+    "sign_in_fb": "عبر الفيسبوك",
+    "sign_in_google": "عبر جوجل"
+}
