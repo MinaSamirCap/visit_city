@@ -1,16 +1,10 @@
-# visit_city
+# Visit City
 
-A new Flutter project.
+Visit City it is an application developed by flutter technology.
+The application enables and facilitates tourists that came to visit Fayoum City all the services available in the places.
+Also, the app provides a tour guide for specific places that are fully customized for the user
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## For more info ..
+- [Team Leader](https://github.com/YoussefDeabes)
+- [Trello Board](https://trello.com/b/zxnMsjgo/visit-fayoum-app)
