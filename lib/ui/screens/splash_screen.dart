@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:visit_city/ui/screens/signIn_screen.dart';
+import 'package:visit_city/ui/screens/sign_in_screen.dart';
 import '../../utils/lang/app_localization_keys.dart';
 import '../../utils/lang/app_localization.dart';
 import '../../res/coolor.dart';

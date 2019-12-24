@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:visit_city/ui/screens/signIn_screen.dart';
+import 'package:visit_city/ui/screens/sign_in_screen.dart';
 
 import './ui/screens/home_screen.dart';
 import './ui/screens/splash_screen.dart';

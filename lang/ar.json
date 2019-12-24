@@ -16,5 +16,6 @@
     "error_password": "كلمة المرور قصيرة جدا!",
     "forget_password": "هل نسيت كلمة المرور ؟",
     "sign_in_fb": "عبر الفيسبوك",
-    "sign_in_google": "عبر جوجل"
+    "sign_in_google": "عبر جوجل",
+    "have_account" : "هل لديك حساب؟"
 }
