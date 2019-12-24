@@ -19,6 +19,9 @@ class Coolor {
     1100: Color(0xFF434343)
   };
 
+  static const NAV_SEL_COL = Colors.blue;
+  static const NAV_NOT_SEL_COL = Colors.grey;
+  
   static const PICK_COL = Color(0xff443a49);
   static const CUR_PICK = Color(0xff443a49);
 

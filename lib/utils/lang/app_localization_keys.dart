@@ -1,6 +1,10 @@
 class LocalKeys {
   static const APP_NAME = 'app_name';
   static const WELCOME_MESSAGE = 'welcome_message';
+  static const ITINERARIES = "itineraries";
+  static const MAP = "map";
+  static const MY_PLAN = "my_plan";
+  static const EXPLORE = "explore";
   static const AUTH_EMAIL = "email";
   static const AUTH_PASSWORD = 'password';
   static const AUTH_USER_NAME = "username";
