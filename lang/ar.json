@@ -1,6 +1,10 @@
 {
     "app_name": "زيارة الفيوم",
     "welcome_message": "اهلا بك في الصفحة الرئيسية",
+    "itineraries": "المسارات",
+    "map": "الخريطة",
+    "my_plan": "خطتي",
+    "explore": "تصفح",
     "sign_in": "دخول",
     "sign_up": "تسجيل",
     "log_in": "دخول",

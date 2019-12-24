@@ -1,6 +1,10 @@
 {
     "app_name": "Visit Fayoum",
     "welcome_message": "Welcome to the home screen",
+    "itineraries": "Itineraries",
+    "map": "Map",
+    "my_plan": "My Plan",
+    "explore": "Explore",
     "sign_in": "SIGN IN",
     "sign_up": "SIGN UP",
     "log_in": "LOGIN",
