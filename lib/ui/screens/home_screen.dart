@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:visit_city/ui/widget/mian_drawer_widget.dart';
 import '../../res/coolor.dart';
 import '../../utils/lang/app_localization_keys.dart';
 import '../../utils/lang/app_localization.dart';
@@ -26,6 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
         appBar: AppBar(
           title: Text(appLocal.translate(LocalKeys.APP_NAME)),
         ),
+        drawer: Drawer(child: MainDrawerWidget()),
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           selectedItemColor: selectedColor(),

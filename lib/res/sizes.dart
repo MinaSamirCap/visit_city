@@ -12,6 +12,13 @@ class Sizes {
     height: 15,
   );
 
+  static const DIVIDER_HEIGHT_30 = SizedBox(
+    height: 30,
+  );
+  static const DIVIDER_HEIGHT_60 = SizedBox(
+    height: 60,
+  );
+
   static final BOR_RAD_25 = BorderRadius.circular(25);
   static final BOR_RAD_17 = BorderRadius.circular(17);
   static final BOR_RAD_12 = BorderRadius.circular(12);

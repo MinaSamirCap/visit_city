@@ -27,6 +27,7 @@ class Coolor {
 
   static const WHITE = Colors.white;
   static const BLACK = Colors.black;
+  static const GREY = Colors.grey;
   static const BLUE_FB = Color(0xff4267b2);
   
 }
