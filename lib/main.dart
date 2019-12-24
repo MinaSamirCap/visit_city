@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:visit_city/ui/screens/signIn_screen.dart';
 
 import './ui/screens/home_screen.dart';
 import './ui/screens/splash_screen.dart';
@@ -50,6 +51,7 @@ class MyApp extends StatelessWidget {
       home: SplashScreen(),
       routes: {
         HomeScreen.ROUTE_NAME: (ctx) => HomeScreen(),
+        SignInScreen.ROUTE_NAME: (ctx) => SignInScreen(),
       },
     );
   }

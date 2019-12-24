@@ -5,15 +5,17 @@ class LocalKeys {
   static const AUTH_PASSWORD = 'password';
   static const AUTH_USER_NAME = "username";
   static const SIGN_IN = 'sign_in';
-  static const SIGN_UP = 'sign_up';
-  static const LOG_IN = "log_in";
-  static const EMAIL = "email";
+  static const SIGN_UP = 'Register';
+  static const LOG_IN = "Login";
+  static const EMAIL = "Email address";
   static const ERROR_EMAIL = "error_email";
   static const ERROR_TYPE = "error_type";
-  static const PASSWORD = 'password';
+  static const PASSWORD = 'Password';
   static const CONFIRM_PASSWORD = 'confirm_password';
   static const ERROR_PASSWOED = "error_password";
-  static const FORGET_PASSWORD = "forget_password";
-  static const SIGN_IN_FB = "sign_in_fb";
+  static const FORGET_PASSWORD = "Forget password?";
+  static const SIGN_IN_FB = "FB";
   static const SIGN_IN_GOOGLE = "sign_in_google";
+  static const HAVE_ACCOUNT = "Dont have an account?";
+  static const Sign_In_Later = "Sign in later";
 }

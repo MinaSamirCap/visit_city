@@ -1,8 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:visit_city/ui/screens/signIn_screen.dart';
 import '../../utils/lang/app_localization_keys.dart';
 import '../../utils/lang/app_localization.dart';
+import '../../res/coolor.dart';
+import '../../res/assets_path.dart';
 
 import 'home_screen.dart';
 
@@ -24,9 +27,21 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     final appLocal = AppLocalizations.of(context);
     return Container(
-      child: Center(
-        child: Text(appLocal.translate(LocalKeys.WELCOME_MESSAGE)),
+      height: 300,
+      width: 150,
+      color: Coolor.PRIMARYSWATCH,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          SizedBox(
+            height: 75,
+            child: Image.asset(AssPath.LOGO_WHITE),
+          ),
+        
+        ],
       ),
+        
+      
     );
   }
 
@@ -37,7 +52,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   /// navigate with dummy screen
-  Future navigationPage() async {
-    Navigator.of(context).pushReplacementNamed(HomeScreen.ROUTE_NAME);
+  Future<void> navigationPage() async {
+    await Navigator.of(context).pushReplacementNamed(SignInScreen.ROUTE_NAME);
   }
 }

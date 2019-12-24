@@ -30,6 +30,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+    
 
 
 # For information on the generic Dart part of this file, see the
@@ -48,6 +49,11 @@ flutter:
    # language json files.
    - lang/en.json
    - lang/ar.json
+   - assets/images/logo.png
+   - assets/images/logoWhite.png
+   - assets/images/logoBlue.png
+   - assets/images/google.png
+   - assets/images/facebook.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
