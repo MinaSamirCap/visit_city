@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class Sizes {
   static const RADIUS_500 = Radius.circular(500);
   static const RADIUS_25 = Radius.circular(25);
+  static const RADIUS_50 = Radius.circular(50);
 
   static const DIVIDER_HEIGHT_10 = SizedBox(
     height: 10,
@@ -17,6 +18,10 @@ class Sizes {
   );
   static const DIVIDER_HEIGHT_60 = SizedBox(
     height: 60,
+  );
+
+  static const DIVIDER_WIDTH_15 = SizedBox(
+    width: 15,
   );
 
   static final BOR_RAD_25 = BorderRadius.circular(25);

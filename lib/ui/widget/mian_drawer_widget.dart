@@ -24,6 +24,7 @@ class _MainDrawerWidgetState extends State<MainDrawerWidget> {
             ),
             Sizes.DIVIDER_HEIGHT_60,
             lineDivider(),
+            Sizes.DIVIDER_HEIGHT_10,
             MediaQuery.removePadding(
               removeTop: true,
               child: feedbackLogoutListView(),
@@ -50,12 +51,7 @@ class _MainDrawerWidgetState extends State<MainDrawerWidget> {
       itemCount: 5,
       shrinkWrap: true,
       itemBuilder: (context, index) {
-        return ListTile(
-          leading: Icon(
-            Icons.favorite,
-            color: Colors.black,
-          ),
-        );
+        return menuListItem();
       },
     );
   }
@@ -66,13 +62,35 @@ class _MainDrawerWidgetState extends State<MainDrawerWidget> {
       itemCount: 2,
       shrinkWrap: true,
       itemBuilder: (context, index) {
-        return ListTile(
-          leading: Icon(
-            Icons.favorite,
-            color: Colors.black,
-          ),
-        );
+        return menuListItem();
       },
     );
+  }
+
+  Widget menuListItem() {
+    return LayoutBuilder(builder: (ctx, constrains) {
+      return Row(
+        children: <Widget>[
+          Container(
+            width: constrains.constrainWidth() - 50,
+            decoration: BoxDecoration(
+              color: Colors.blue.shade400,
+              borderRadius: BorderRadiusDirectional.only(
+                bottomEnd: Sizes.RADIUS_50,
+                topEnd: Sizes.RADIUS_50,
+              ),
+            ),
+            child: ListTile(
+              leading: Icon(
+                Icons.favorite,
+                color: Colors.black,
+              ),
+              title: Text("Mina1"),
+              onTap: () {},
+            ),
+          ),
+        ],
+      );
+    });
   }
 }
