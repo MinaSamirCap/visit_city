@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:visit_city/res/assets_path.dart';
 import 'package:visit_city/ui/widget/ui.dart';
 import '../../res/sizes.dart';
 
@@ -36,11 +37,11 @@ class _MainDrawerWidgetState extends State<MainDrawerWidget> {
 
   Widget mainImage() {
     return Container(
-      width: double.infinity,
+      width: 200,
       height: 150,
       child: Center(
-        child: Image.network(
-            "https://i.ebayimg.com/images/g/oVAAAOSwinVZtNGR/s-l300.jpg"),
+        child: Image.asset(
+            AssPath.LOGO_BLUE),
       ),
     );
   }
