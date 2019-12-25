@@ -1,13 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:visit_city/ui/screens/sign_in_screen.dart';
-import '../../utils/lang/app_localization_keys.dart';
+import '../../ui/screens/sign_in_screen.dart';
 import '../../utils/lang/app_localization.dart';
 import '../../res/coolor.dart';
 import '../../res/assets_path.dart';
 
-import 'home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   @override

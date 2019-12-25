@@ -6,7 +6,7 @@
     "my_plan": "My Plan",
     "explore": "Explore",
     "sign_in": "SIGN IN",
-    "sign_up": "SIGN UP",
+    "sign_up": "Register",
     "log_in": "LOGIN",
     "email": "Email",
     "error_email": "Invalid email!",
@@ -17,5 +17,7 @@
     "forget_password": "Forget Password ?",
     "sign_in_fb": "Sign in with Facebook",
     "sign_in_google": "Sign in with Google",
-    "have_account" : "Don't have an account?"
+    "have_account" : "Don't have an account?",
+    "sign_in_later" : "Sign in Later",
+    "dialog_error" : "An Error Occurred"
 }

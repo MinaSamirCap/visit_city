@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:visit_city/res/coolor.dart';
+import '../../res/coolor.dart';
 
 Widget lineDivider() {
   return Container(

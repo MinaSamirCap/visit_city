@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:visit_city/ui/widget/ui.dart';
+import '../../ui/widget/ui.dart';
 import '../../res/sizes.dart';
 
 class MainDrawerWidget extends StatefulWidget {

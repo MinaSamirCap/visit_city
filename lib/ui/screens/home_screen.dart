@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:visit_city/ui/widget/mian_drawer_widget.dart';
+import '../../ui/widget/mian_drawer_widget.dart';
 import '../../res/coolor.dart';
 import '../../utils/lang/app_localization_keys.dart';
 import '../../utils/lang/app_localization.dart';

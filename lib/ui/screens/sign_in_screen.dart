@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-// import 'package:email_validator/email_validator.dart';
+import 'package:email_validator/email_validator.dart';
+import 'package:provider/provider.dart';
 
 import '../../res/coolor.dart';
 import '../../utils/lang/app_localization.dart';
 import '../../utils/lang/app_localization_keys.dart';
 import '../../res/assets_path.dart';
-
+import '../../utils/lang/http_exception.dart';
 import '../../res/sizes.dart';
-import './home_screen.dart';
+import '../../apis/auth.dart';
 
 class SignInScreen extends StatefulWidget {
   static const ROUTE_NAME = '/signin-screen';
@@ -17,21 +18,28 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-  final _form = GlobalKey<FormState>();
-
-  
+  final _formKey = GlobalKey<FormState>();
+  var appLocal;
+  Map<String, String> _authData = {
+    'email': '',
+    'password': '',
+  };
+  var _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
-    final appLocal = AppLocalizations.of(context);
+    appLocal = AppLocalizations.of(context);
+
     return Scaffold(
       // backgroundColor: Coolor.WHITE,
       body: Container(
+        height: deviceSize.height,
+        width: deviceSize.width,
         margin: Sizes.EDEGINSETS_20,
         child: SingleChildScrollView(
           child: Form(
-            key: _form,
+            key: _formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -83,6 +91,7 @@ class _SignInScreenState extends State<SignInScreen> {
       ),
     );
   }
+
   Widget logoImage() {
     return Container(
       margin: Sizes.EDEGINSETS_30,
@@ -99,7 +108,6 @@ class _SignInScreenState extends State<SignInScreen> {
       padding: Sizes.EDEGINSETS_8,
       child: TextFormField(
         decoration: InputDecoration(
-          
           labelText: LocalKeys.EMAIL,
           contentPadding: Sizes.EDEGINSETS_20,
           border: OutlineInputBorder(
@@ -109,12 +117,12 @@ class _SignInScreenState extends State<SignInScreen> {
         ),
         keyboardType: TextInputType.emailAddress,
         validator: (value) {
-          if (value.isEmpty) {
-            return LocalKeys.ERROR_EMAIL;
-          } else {
-            //show something
-            return '';
+          if (value.isEmpty || !EmailValidator.validate(value)) {
+            return "${appLocal.translate(LocalKeys.ERROR_EMAIL)}";
           }
+        },
+        onSaved: (value) {
+          _authData['email'] = value;
         },
       ),
     );
@@ -125,7 +133,7 @@ class _SignInScreenState extends State<SignInScreen> {
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
         FlatButton(
-          child: Text(LocalKeys.FORGET_PASSWORD),
+          child: Text("${appLocal.translate(LocalKeys.FORGET_PASSWORD)}"),
           onPressed: () {},
         ),
       ],
@@ -146,34 +154,34 @@ class _SignInScreenState extends State<SignInScreen> {
           ),
         ),
         validator: (value) {
-          if (value.isEmpty) {
-            return LocalKeys.ERROR_PASSWOED;
-          } else {
-            //show something
-            return '';
+          if (value.isEmpty || value.length < 8) {
+            return "${appLocal.translate(LocalKeys.ERROR_PASSWORD)}";
           }
+        },
+        onSaved: (value) {
+          _authData['password'] = value; 
         },
       ),
     );
   }
 
   Widget loginButton() {
-    return Material(
-      elevation: 5.0,
-      borderRadius: Sizes.BOR_RAD_25,
+    return  RaisedButton(
       color: Coolor.PRIMARYSWATCH,
-      child: MaterialButton(
-        minWidth: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        // minWidth: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.symmetric(vertical: 17.0,horizontal: 70.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: Sizes.BOR_RAD_25,
+        ),
         onPressed: () {
-          Navigator.of(context).pushReplacementNamed(HomeScreen.ROUTE_NAME);
+          _submit();
+          // Navigator.of(context).pushReplacementNamed(HomeScreen.ROUTE_NAME);
         },
         child: Text(
-          LocalKeys.LOG_IN,
+          "${appLocal.translate(LocalKeys.LOG_IN)}",
           textAlign: TextAlign.center,
           style: TextStyle(color: Coolor.WHITE),
         ),
-      ),
     );
   }
 
@@ -208,7 +216,7 @@ class _SignInScreenState extends State<SignInScreen> {
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
         FlatButton(
-          child: Text(LocalKeys.SIGN_UP),
+          child: Text("${appLocal.translate(LocalKeys.SIGN_UP)}"),
           onPressed: () {},
         ),
       ],
@@ -218,9 +226,51 @@ class _SignInScreenState extends State<SignInScreen> {
   Widget signInLaterButton() {
     return Center(
       child: FlatButton(
-        child: Text(LocalKeys.Sign_In_Later),
+        child: Text("${appLocal.translate(LocalKeys.SIGN_IN_LATER)}"),
         onPressed: () {},
       ),
     );
+  }
+
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text("${appLocal.translate(LocalKeys.DIALOG_ERROR)}"),
+        
+        content: Text(message),
+        actions: <Widget>[
+          FlatButton(child: Text('OK'),onPressed: () {
+            Navigator.of(ctx).pop();
+          },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _submit() async {
+    if (!_formKey.currentState.validate()) {
+      // Invalid!
+      return;
+    }
+    _formKey.currentState.save();
+    setState(() {
+      print(_authData['email']);
+      print(_authData['password']);
+      _isLoading = true;
+    });
+    try {
+        await Provider.of<Auth>(context, listen: false).signIn(
+          _authData['email'],
+          _authData['password'],
+        );
+    } catch (error) {
+      _showErrorDialog(error.toString());
+    }
+
+    setState(() {
+      _isLoading = false;
+    });
   }
 }

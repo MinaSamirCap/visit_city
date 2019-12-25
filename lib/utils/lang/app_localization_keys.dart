@@ -16,10 +16,11 @@ class LocalKeys {
   static const ERROR_TYPE = "error_type";
   static const PASSWORD = 'password';
   static const CONFIRM_PASSWORD = 'confirm_password';
-  static const ERROR_PASSWOED = "error_password";
+  static const ERROR_PASSWORD = "error_password";
   static const FORGET_PASSWORD = "forget_password";
   static const SIGN_IN_FB = "sign_in_fb";
   static const SIGN_IN_GOOGLE = "sign_in_google";
   static const HAVE_ACCOUNT = "have_account";
-  static const Sign_In_Later = "sign_in";
+  static const SIGN_IN_LATER = "sign_in_later";
+  static const DIALOG_ERROR = "dialog_error";
 }
