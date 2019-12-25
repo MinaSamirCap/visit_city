@@ -19,6 +19,9 @@ class Sizes {
   static const DIVIDER_HEIGHT_60 = SizedBox(
     height: 60,
   );
+  static const DIVIDER_HEIGHT_100 = SizedBox(
+    height: 100,
+  );
 
   static const DIVIDER_WIDTH_15 = SizedBox(
     width: 15,

@@ -4,6 +4,11 @@ import 'package:visit_city/ui/widget/ui.dart';
 import '../../res/sizes.dart';
 
 class MainDrawerWidget extends StatefulWidget {
+  final Function callback;
+  final menuList = MenuModel.getMenuList();
+
+  MainDrawerWidget(this.callback);
+
   @override
   _MainDrawerWidgetState createState() => _MainDrawerWidgetState();
 }
@@ -23,7 +28,7 @@ class _MainDrawerWidgetState extends State<MainDrawerWidget> {
               child: listView(),
               context: context,
             ),
-            Sizes.DIVIDER_HEIGHT_60,
+            Sizes.DIVIDER_HEIGHT_100,
             lineDivider(),
             Sizes.DIVIDER_HEIGHT_10,
             MediaQuery.removePadding(
@@ -40,8 +45,7 @@ class _MainDrawerWidgetState extends State<MainDrawerWidget> {
       width: 200,
       height: 150,
       child: Center(
-        child: Image.asset(
-            AssPath.LOGO_BLUE),
+        child: Image.asset(AssPath.LOGO_BLUE),
       ),
     );
   }
@@ -49,10 +53,10 @@ class _MainDrawerWidgetState extends State<MainDrawerWidget> {
   Widget listView() {
     return ListView.builder(
       physics: NeverScrollableScrollPhysics(),
-      itemCount: 5,
+      itemCount: 2,
       shrinkWrap: true,
       itemBuilder: (context, index) {
-        return menuListItem();
+        return menuListItem(widget.menuList[index]);
       },
     );
   }
@@ -63,35 +67,61 @@ class _MainDrawerWidgetState extends State<MainDrawerWidget> {
       itemCount: 2,
       shrinkWrap: true,
       itemBuilder: (context, index) {
-        return menuListItem();
+        return menuListItem(widget.menuList[index + 2]);
       },
     );
   }
 
-  Widget menuListItem() {
+  Widget menuListItem(MenuModel model) {
     return LayoutBuilder(builder: (ctx, constrains) {
       return Row(
         children: <Widget>[
           Container(
             width: constrains.constrainWidth() - 50,
-            decoration: BoxDecoration(
-              color: Colors.blue.shade400,
-              borderRadius: BorderRadiusDirectional.only(
-                bottomEnd: Sizes.RADIUS_50,
-                topEnd: Sizes.RADIUS_50,
-              ),
-            ),
+            decoration: model.isSelected
+                ? BoxDecoration(
+                    color: Colors.blue.shade400,
+                    borderRadius: BorderRadiusDirectional.only(
+                      bottomEnd: Sizes.RADIUS_50,
+                      topEnd: Sizes.RADIUS_50,
+                    ),
+                  )
+                : null,
             child: ListTile(
               leading: Icon(
                 Icons.favorite,
                 color: Colors.black,
               ),
-              title: Text("Mina1"),
-              onTap: () {},
+              title: Text(model.title),
+              onTap: () {
+                widget.menuList.forEach((item) {
+                  item.isSelected = false;
+                });
+                model.isSelected = true;
+                widget.callback(model.title);
+                setState(() {});
+                Navigator.pop(ctx);
+              },
             ),
           ),
         ],
       );
     });
+  }
+}
+
+class MenuModel {
+  bool isSelected = false;
+  String title;
+
+  MenuModel({@required this.title, this.isSelected});
+
+  static List<MenuModel> getMenuList() {
+    return [
+      MenuModel(title: "item1", isSelected: false),
+      MenuModel(title: "item2", isSelected: false),
+      MenuModel(title: "item3", isSelected: false),
+      MenuModel(title: "item4", isSelected: false)
+    ];
   }
 }

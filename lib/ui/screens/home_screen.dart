@@ -27,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
         appBar: AppBar(
           title: Text(appLocal.translate(LocalKeys.APP_NAME)),
         ),
-        drawer: Drawer(child: MainDrawerWidget()),
+        drawer: Drawer(child: MainDrawerWidget(onMenuItemSelected)),
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           selectedItemColor: selectedColor(),
@@ -57,6 +57,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 "${appLocal.translate(LocalKeys.APP_NAME)}: $_currentIndex"),
           ),
         ));
+  }
+
+  void onMenuItemSelected(String title) {
+    print(title);
   }
 
   void onBottomItemSelected(int index) {
