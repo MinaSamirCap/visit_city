@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../ui/widget/main_toolbar_widget.dart';
 import '../../ui/widget/mian_drawer_widget.dart';
 import '../../res/coolor.dart';
 import '../../utils/lang/app_localization_keys.dart';
@@ -24,9 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final appLocal = AppLocalizations.of(context);
     return Scaffold(
-        appBar: AppBar(
-          title: Text(appLocal.translate(LocalKeys.APP_NAME)),
-        ),
+        appBar: MainAppBar(),
         drawer: Drawer(child: MainDrawerWidget(appLocal, onMenuItemSelected)),
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
