@@ -22,9 +22,11 @@ class Coolor {
 
   static const NAV_SEL_COL = Colors.blue;
   static const NAV_NOT_SEL_COL = Colors.grey;
-  
   static const MENU_SEL_COL = Color(0xffd0e4f3);
-  static const CUR_PICK = Color(0xff443a49);
+  static const NAT_ITI_COL = Color(0xff5b8023);
+  static const ARC_ITI_COL = Color(0xffa00821);
+  static const CUL_ITI_COL = Color(0xff018989);
+  
 
   static const WHITE = Colors.white;
   static const BLACK = Colors.black;

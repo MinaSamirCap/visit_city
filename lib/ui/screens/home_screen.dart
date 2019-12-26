@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:visit_city/res/assets_path.dart';
+import '../../res/assets_path.dart';
+import '../../res/sizes.dart';
 import '../../ui/widget/mian_drawer_widget.dart';
 import '../../res/coolor.dart';
 import '../../utils/lang/app_localization_keys.dart';
@@ -14,6 +15,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
+  List<ItineraryModel> list;
   AppLocalizations _appLocal;
   int _currentIndex;
 
@@ -26,6 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     _appLocal = AppLocalizations.of(context);
+    list = ItineraryModel.getItinerariesList(_appLocal);
     return Scaffold(
         key: _drawerKey,
         drawer: Drawer(child: MainDrawerWidget(_appLocal, onMenuItemSelected)),
@@ -83,10 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
         menuIcon(),
         blueLogo(),
         itinerariesText(),
-        Center(
-          child: Text(
-              "${_appLocal.translate(LocalKeys.APP_NAME)}: $_currentIndex"),
-        ),
+        listBuilder()
       ],
     );
   }
@@ -133,5 +133,90 @@ class _HomeScreenState extends State<HomeScreen> {
             fontWeight: FontWeight.bold, fontSize: 22, color: Coolor.GREY_DARK),
       )),
     );
+  }
+
+  Widget listBuilder() {
+    return Container(
+      alignment: Alignment.bottomCenter,
+      padding: const EdgeInsets.only(left: 60, right: 60),
+      child: ListView.separated(
+        padding: EdgeInsets.only(top: 200),
+        shrinkWrap: true,
+        itemCount: list.length,
+        itemBuilder: (context, index) {
+          return itineraryView(list[index]);
+        },
+        separatorBuilder: (context, index) {
+          return Sizes.DIVIDER_HEIGHT_15;
+        },
+      ),
+    );
+  }
+
+  Widget itineraryView(ItineraryModel model) {
+    return InkWell(
+      onTap: () {
+        print(model.title);
+      },
+      child: Card(
+        elevation: 5,
+        shape: RoundedRectangleBorder(borderRadius: Sizes.BOR_RAD_12),
+        child: Column(
+          children: <Widget>[
+            Container(
+              height: 150,
+              decoration: BoxDecoration(
+                color: model.bgColor,
+                borderRadius: BorderRadiusDirectional.only(
+                  topStart: Sizes.RADIUS_12,
+                  topEnd: Sizes.RADIUS_12,
+                ),
+              ),
+              child: Center(
+                child: Image.asset(model.imgUrl),
+              ),
+            ),
+            Text(
+              model.title,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+            ),
+            Text(
+              model.duration,
+              style: TextStyle(fontSize: 14),
+            ),
+            Sizes.DIVIDER_HEIGHT_10
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ItineraryModel {
+  final String title;
+  final String duration;
+  final String imgUrl;
+  final Color bgColor;
+
+  ItineraryModel(this.title, this.duration, this.imgUrl, this.bgColor);
+
+  static List<ItineraryModel> getItinerariesList(AppLocalizations appLocale) {
+    return [
+      ItineraryModel(
+          appLocale.translate(LocalKeys.NATURAL_ITINERARIES),
+          appLocale.translate(LocalKeys.ABOUT_3_DAYS),
+          AssPath.APP_LOGO,
+          Coolor.NAT_ITI_COL),
+      ItineraryModel(
+          appLocale.translate(LocalKeys.ARCHEOLOGY_ITINERARIES),
+          appLocale.translate(LocalKeys.ABOUT_4_DAYS),
+          AssPath.APP_LOGO,
+          Coolor.ARC_ITI_COL),
+      ItineraryModel(
+          appLocale.translate(LocalKeys.CLUTURE_ITINERARIES),
+          appLocale.translate(LocalKeys.ABOUT_2_DAYS),
+          AssPath.APP_LOGO,
+          Coolor.CUL_ITI_COL)
+    ];
   }
 }

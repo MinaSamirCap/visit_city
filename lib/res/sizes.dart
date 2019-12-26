@@ -4,6 +4,7 @@ class Sizes {
   static const RADIUS_500 = Radius.circular(500);
   static const RADIUS_25 = Radius.circular(25);
   static const RADIUS_50 = Radius.circular(50);
+  static const RADIUS_12 = Radius.circular(12);
 
   static const DIVIDER_HEIGHT_10 = SizedBox(
     height: 10,

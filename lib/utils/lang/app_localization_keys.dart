@@ -28,4 +28,10 @@ class LocalKeys {
   static const FEEDBACK = "feedback";
   static const LOGOUT = "logout";
   static const IN_3_ITINERARIES = "in_3_iti";
+  static const NATURAL_ITINERARIES = "nat_itinerary";
+  static const ARCHEOLOGY_ITINERARIES = "arch_itinerary";
+  static const CLUTURE_ITINERARIES = "clu_itinerary";
+  static const ABOUT_3_DAYS = "about_3_d";
+  static const ABOUT_4_DAYS = "about_4_d";
+  static const ABOUT_2_DAYS = "about_2_d";
 }
