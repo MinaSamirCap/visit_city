@@ -27,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
         appBar: AppBar(
           title: Text(appLocal.translate(LocalKeys.APP_NAME)),
         ),
-        drawer: Drawer(child: MainDrawerWidget(onMenuItemSelected)),
+        drawer: Drawer(child: MainDrawerWidget(appLocal, onMenuItemSelected)),
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           selectedItemColor: selectedColor(),

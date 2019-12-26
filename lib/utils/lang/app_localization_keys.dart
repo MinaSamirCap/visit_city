@@ -23,4 +23,8 @@ class LocalKeys {
   static const HAVE_ACCOUNT = "have_account";
   static const SIGN_IN_LATER = "sign_in_later";
   static const DIALOG_ERROR = "dialog_error";
+  static const WISHLIST = "wishlist";
+  static const PROFILE = "profile";
+  static const FEEDBACK = "feedback";
+  static const LOGOUT = "logout";
 }

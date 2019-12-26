@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:visit_city/res/assets_path.dart';
-import 'package:visit_city/ui/widget/ui.dart';
+import '../../utils/lang/app_localization.dart';
+import '../../utils/lang/app_localization_keys.dart';
+import '../../res/assets_path.dart';
+import '../../res/coolor.dart';
+import '../../ui/widget/ui.dart';
 import '../../res/sizes.dart';
 
 class MainDrawerWidget extends StatefulWidget {
   final Function callback;
-  final menuList = MenuModel.getMenuList();
+  List<MenuModel> menuList;
 
-  MainDrawerWidget(this.callback);
+  MainDrawerWidget(appLocal, this.callback) {
+    menuList = MenuModel.getMenuList(appLocal);
+  }
 
   @override
   _MainDrawerWidgetState createState() => _MainDrawerWidgetState();
@@ -80,7 +85,7 @@ class _MainDrawerWidgetState extends State<MainDrawerWidget> {
             width: constrains.constrainWidth() - 50,
             decoration: model.isSelected
                 ? BoxDecoration(
-                    color: Colors.blue.shade400,
+                    color: Coolor.MENU_SEL_COL,
                     borderRadius: BorderRadiusDirectional.only(
                       bottomEnd: Sizes.RADIUS_50,
                       topEnd: Sizes.RADIUS_50,
@@ -89,10 +94,13 @@ class _MainDrawerWidgetState extends State<MainDrawerWidget> {
                 : null,
             child: ListTile(
               leading: Icon(
-                Icons.favorite,
-                color: Colors.black,
+                model.icon,
+                color: getColor(model.isSelected),
               ),
-              title: Text(model.title),
+              title: Text(
+                model.title,
+                style: TextStyle(color: getColor(model.isSelected)),
+              ),
               onTap: () {
                 widget.menuList.forEach((item) {
                   item.isSelected = false;
@@ -108,20 +116,45 @@ class _MainDrawerWidgetState extends State<MainDrawerWidget> {
       );
     });
   }
+
+  Color selectedColor() {
+    return Coolor.GREY;
+  }
+
+  Color notSelectedColor() {
+    return Coolor.BLACK;
+  }
+
+  Color getColor(bool isSelected) {
+    return isSelected ? selectedColor() : notSelectedColor();
+  }
 }
 
 class MenuModel {
   bool isSelected = false;
   String title;
+  IconData icon;
 
-  MenuModel({@required this.title, this.isSelected});
+  MenuModel({@required this.title, @required this.icon, this.isSelected});
 
-  static List<MenuModel> getMenuList() {
+  static List<MenuModel> getMenuList(AppLocalizations appLocale) {
     return [
-      MenuModel(title: "item1", isSelected: false),
-      MenuModel(title: "item2", isSelected: false),
-      MenuModel(title: "item3", isSelected: false),
-      MenuModel(title: "item4", isSelected: false)
+      MenuModel(
+          title: appLocale.translate(LocalKeys.WISHLIST),
+          icon: Icons.favorite_border,
+          isSelected: false),
+      MenuModel(
+          title: appLocale.translate(LocalKeys.PROFILE),
+          icon: Icons.account_box,
+          isSelected: false),
+      MenuModel(
+          title: appLocale.translate(LocalKeys.FEEDBACK),
+          icon: Icons.feedback,
+          isSelected: false),
+      MenuModel(
+          title: appLocale.translate(LocalKeys.LOGOUT),
+          icon: Icons.exit_to_app,
+          isSelected: false)
     ];
   }
 }

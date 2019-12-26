@@ -9,6 +9,7 @@ import '../../res/assets_path.dart';
 import '../../utils/lang/http_exception.dart';
 import '../../res/sizes.dart';
 import '../../apis/auth.dart';
+import 'home_screen.dart';
 
 class SignInScreen extends StatefulWidget {
   static const ROUTE_NAME = '/signin-screen';
@@ -174,8 +175,8 @@ class _SignInScreenState extends State<SignInScreen> {
           borderRadius: Sizes.BOR_RAD_25,
         ),
         onPressed: () {
-          _submit();
-          // Navigator.of(context).pushReplacementNamed(HomeScreen.ROUTE_NAME);
+          //_submit();
+           Navigator.of(context).pushReplacementNamed(HomeScreen.ROUTE_NAME);
         },
         child: Text(
           "${appLocal.translate(LocalKeys.LOG_IN)}",
