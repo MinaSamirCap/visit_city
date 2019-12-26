@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../ui/widget/main_toolbar_widget.dart';
+import 'package:visit_city/res/assets_path.dart';
 import '../../ui/widget/mian_drawer_widget.dart';
 import '../../res/coolor.dart';
 import '../../utils/lang/app_localization_keys.dart';
@@ -13,6 +13,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
+  AppLocalizations _appLocal;
   int _currentIndex;
 
   @override
@@ -23,39 +25,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final appLocal = AppLocalizations.of(context);
+    _appLocal = AppLocalizations.of(context);
     return Scaffold(
-        appBar: MainAppBar(),
-        drawer: Drawer(child: MainDrawerWidget(appLocal, onMenuItemSelected)),
-        bottomNavigationBar: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          selectedItemColor: selectedColor(),
-          unselectedItemColor: notSeletedColor(),
-          currentIndex: _currentIndex,
-          onTap: onBottomItemSelected,
-          showSelectedLabels: true,
-          items: [
-            BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                title: Text(appLocal.translate(LocalKeys.ITINERARIES))),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.map),
-                title: Text(appLocal.translate(LocalKeys.MAP))),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.mail),
-                title: Text(appLocal.translate(LocalKeys.MY_PLAN))),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.favorite),
-                title: Text(appLocal.translate(LocalKeys.EXPLORE)))
-          ],
-        ),
-        body: Container(
-          color: Colors.greenAccent,
-          child: Center(
-            child: Text(
-                "${appLocal.translate(LocalKeys.APP_NAME)}: $_currentIndex"),
-          ),
-        ));
+        key: _drawerKey,
+        drawer: Drawer(child: MainDrawerWidget(_appLocal, onMenuItemSelected)),
+        bottomNavigationBar: getBottomNavigation(),
+        body: getBody());
   }
 
   void onMenuItemSelected(String title) {
@@ -74,5 +49,89 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Color selectedColor() {
     return Coolor.NAV_SEL_COL;
+  }
+
+  BottomNavigationBar getBottomNavigation() {
+    return BottomNavigationBar(
+      type: BottomNavigationBarType.fixed,
+      selectedItemColor: selectedColor(),
+      unselectedItemColor: notSeletedColor(),
+      currentIndex: _currentIndex,
+      onTap: onBottomItemSelected,
+      showSelectedLabels: true,
+      items: [
+        BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            title: Text(_appLocal.translate(LocalKeys.ITINERARIES))),
+        BottomNavigationBarItem(
+            icon: Icon(Icons.map),
+            title: Text(_appLocal.translate(LocalKeys.MAP))),
+        BottomNavigationBarItem(
+            icon: Icon(Icons.mail),
+            title: Text(_appLocal.translate(LocalKeys.MY_PLAN))),
+        BottomNavigationBarItem(
+            icon: Icon(Icons.favorite),
+            title: Text(_appLocal.translate(LocalKeys.EXPLORE)))
+      ],
+    );
+  }
+
+  Widget getBody() {
+    return Stack(
+      children: <Widget>[
+        headerImage(),
+        menuIcon(),
+        blueLogo(),
+        itinerariesText(),
+        Center(
+          child: Text(
+              "${_appLocal.translate(LocalKeys.APP_NAME)}: $_currentIndex"),
+        ),
+      ],
+    );
+  }
+
+  Widget headerImage() {
+    return Image.network(
+        "https://assets.cairo360.com/app/uploads/2011/01/article_original_1448_2011181_423717764-600x323.jpeg");
+  }
+
+  Widget menuIcon() {
+    return Positioned.directional(
+      start: 3,
+      top: 15,
+      child: IconButton(
+        icon: Icon(Icons.menu),
+        onPressed: () {
+          /// to open the drawer programatically.
+          //Scaffold.of(context).openDrawer();
+          _drawerKey.currentState.openDrawer();
+        },
+      ),
+      textDirection: TextDirection.ltr,
+    );
+  }
+
+  Widget blueLogo() {
+    return Positioned(
+      left: 70,
+      right: 70,
+      top: 70,
+      child: Image.asset(AssPath.LOGO_BLUE),
+    );
+  }
+
+  Widget itinerariesText() {
+    return Positioned(
+      top: 170,
+      left: 0,
+      right: 0,
+      child: Center(
+          child: Text(
+        _appLocal.translate(LocalKeys.IN_3_ITINERARIES),
+        style: TextStyle(
+            fontWeight: FontWeight.bold, fontSize: 22, color: Coolor.GREY_DARK),
+      )),
+    );
   }
 }

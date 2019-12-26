@@ -27,4 +27,5 @@ class LocalKeys {
   static const PROFILE = "profile";
   static const FEEDBACK = "feedback";
   static const LOGOUT = "logout";
+  static const IN_3_ITINERARIES = "in_3_iti";
 }
