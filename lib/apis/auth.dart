@@ -52,7 +52,7 @@ class Auth with ChangeNotifier {
   }
 
   Future<void> signIn(String email, String password) async {
-    final url = '$baseUrl login';
+    final url = 'https://visit-fayoum.herokuapp.com/api/v1/login';
     try {
       print('okay');
       final response = await http.post(
@@ -93,7 +93,7 @@ class Auth with ChangeNotifier {
   }
 
   Future<void> signUp(String name, String email, String password) async {
-    final url = '$baseUrl signup ';
+    final url = 'https://visit-fayoum.herokuapp.com/api/v1/signup';
     try {
       print('okay');
       final response = await http.post(
