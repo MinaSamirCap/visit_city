@@ -6,9 +6,9 @@
     "my_plan": "My Plan",
     "explore": "Explore",
     "sign_in": "SIGN IN",
-    "sign_up": "Register",
+    "sign_up": "Sign up",
     "log_in": "LOGIN",
-    "email": "Email",
+    "email": "E-mail",
     "error_email": "Invalid email!",
     "error_type": "Required",
     "password": "Password",
@@ -17,7 +17,7 @@
     "forget_password": "Forget Password ?",
     "sign_in_fb": "Sign in with Facebook",
     "sign_in_google": "Sign in with Google",
-    "have_account" : "Don't have an account?",
+    "don't_have_account" : "Don't have an account?",
     "sign_in_later" : "Sign in Later",
     "dialog_error" : "An Error Occurred",
     "wishlist" : "Wishlist",
@@ -30,6 +30,14 @@
     "clu_itinerary" : "Cluture Itinerary",
     "about_3_d" : "about 3 days",
     "about_4_d" : "about 4 days",
-    "about_2_d" : "about 2days"
+    "about_2_d" : "about 2days",
+    "password_don't_match" : "Password don't match",
+    "name" : "User Name",
+    "error_name" : "Insert a name",
+    "register" : "Register",
+    "have_account" : "Already have an account?",
+    "next" : "Next",
+    "regestered_email" : "Please enter your registered email.",
+    "send_verification" : "We will send a verification code to your registered email."
     
 }

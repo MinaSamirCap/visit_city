@@ -20,7 +20,7 @@ class LocalKeys {
   static const FORGET_PASSWORD = "forget_password";
   static const SIGN_IN_FB = "sign_in_fb";
   static const SIGN_IN_GOOGLE = "sign_in_google";
-  static const HAVE_ACCOUNT = "have_account";
+  static const DONT_HAVE_ACCOUNT = "don't_have_account";
   static const SIGN_IN_LATER = "sign_in_later";
   static const DIALOG_ERROR = "dialog_error";
   static const WISHLIST = "wishlist";
@@ -34,4 +34,12 @@ class LocalKeys {
   static const ABOUT_3_DAYS = "about_3_d";
   static const ABOUT_4_DAYS = "about_4_d";
   static const ABOUT_2_DAYS = "about_2_d";
+  static const PASS_DONT_MATCH = "password_don't_match";
+  static const NAME = "name";
+  static const ERROR_NAME = "error_name";
+  static const REGISTER = "register";
+  static const HAVE_ACCOUNT = "have_account";
+  static const NEXT = "next";
+  static const REGESTERED_EMAIL = "regestered_email";
+  static const SEND_VERIFICATION = "send_verification";
 }

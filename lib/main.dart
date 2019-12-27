@@ -8,6 +8,8 @@ import 'ui/screens/home_screen.dart';
 import 'ui/screens/splash_screen.dart';
 import 'utils/lang/app_localization.dart';
 import 'apis/auth.dart';
+import 'ui/screens/sign_up_screen.dart';
+import 'ui/screens/forget_password_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -71,6 +73,9 @@ class MyApp extends StatelessWidget {
           routes: {
             HomeScreen.ROUTE_NAME: (ctx) => HomeScreen(),
             SignInScreen.ROUTE_NAME: (ctx) => SignInScreen(),
+            SplashScreen.ROUTE_NAME: (ctx) => SplashScreen(),
+            SignUpScreen.ROUTE_NAME: (ctx) => SignUpScreen(),
+            ForgetPasswordScreen.ROUTE_NAME: (ctx) => ForgetPasswordScreen(),
           },
         ),
       ),

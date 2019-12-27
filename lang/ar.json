@@ -17,7 +17,7 @@
     "forget_password": "هل نسيت كلمة المرور ؟",
     "sign_in_fb": "عبر الفيسبوك",
     "sign_in_google": "عبر جوجل",
-    "have_account": "هل لديك حساب؟",
+    "don't_have_account": "ليس لديك حساب؟",
     "dialog_error": "خطأ",
     "wishlist": "المقضلة",
     "profile": "الملف الشخصي",
@@ -29,5 +29,13 @@
     "clu_itinerary" : "المسار الثقافي",
     "about_3_d" : "لمدة 3 ايام",
     "about_4_d" : "لمدة 4 ليام",
-    "about_2_d" : "لمدة يومان"
+    "about_2_d" : "لمدة يومان",
+    "password_don't_match" : "كلمة المرور غير متطابقة",
+    "name" : "اسم المستخدم",
+    "error_name" : "ادخل الاسم",
+    "register" : "تسجيل",
+    "have_account" : "لديك حساب بالفعل؟",
+    "next" : "التالي",
+    "regestered_email" : "برجاء ادخال البريد الاكتروني المسجل",
+    "send_verification" : "سوف نرسل لك الرمز للبريد الاكتروني المسجل"
 }

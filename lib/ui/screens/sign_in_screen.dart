@@ -9,7 +9,9 @@ import '../../res/assets_path.dart';
 import '../../utils/lang/http_exception.dart';
 import '../../res/sizes.dart';
 import '../../apis/auth.dart';
-import 'home_screen.dart';
+import '../../ui/screens/home_screen.dart';
+import '../../ui/screens/sign_up_screen.dart';
+import '../../ui/screens/forget_password_screen.dart';
 
 class SignInScreen extends StatefulWidget {
   static const ROUTE_NAME = '/signin-screen';
@@ -46,11 +48,11 @@ class _SignInScreenState extends State<SignInScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 SizedBox(
-                  height: 155,
+                  height: 15,
                 ),
                 logoImage(),
                 SizedBox(
-                  height: 45,
+                  height: 15,
                 ),
                 emailTextField(),
                 passwordTextField(),
@@ -60,7 +62,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 ),
                 loginButton(),
                 SizedBox(
-                  height: 35.0,
+                  height: 25,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -70,7 +72,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   ],
                 ),
                 SizedBox(
-                  height: 50.0,
+                  height: 25.0,
                 ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -78,7 +80,9 @@ class _SignInScreenState extends State<SignInScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Text("${appLocal.translate(LocalKeys.HAVE_ACCOUNT)}"),
+                        Text(
+                          "${appLocal.translate(LocalKeys.DONT_HAVE_ACCOUNT)}",
+                        ),
                         registerButton(),
                       ],
                     ),
@@ -135,7 +139,9 @@ class _SignInScreenState extends State<SignInScreen> {
       children: <Widget>[
         FlatButton(
           child: Text("${appLocal.translate(LocalKeys.FORGET_PASSWORD)}"),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).pushReplacementNamed(ForgetPasswordScreen.ROUTE_NAME);
+          },
         ),
       ],
     );
@@ -160,29 +166,29 @@ class _SignInScreenState extends State<SignInScreen> {
           }
         },
         onSaved: (value) {
-          _authData['password'] = value; 
+          _authData['password'] = value;
         },
       ),
     );
   }
 
   Widget loginButton() {
-    return  RaisedButton(
+    return RaisedButton(
       color: Coolor.PRIMARYSWATCH,
-        // minWidth: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.symmetric(vertical: 17.0,horizontal: 70.0),
-        shape: RoundedRectangleBorder(
-          borderRadius: Sizes.BOR_RAD_25,
-        ),
-        onPressed: () {
-          //_submit();
-           Navigator.of(context).pushReplacementNamed(HomeScreen.ROUTE_NAME);
-        },
-        child: Text(
-          "${appLocal.translate(LocalKeys.LOG_IN)}",
-          textAlign: TextAlign.center,
-          style: TextStyle(color: Coolor.WHITE),
-        ),
+      // minWidth: MediaQuery.of(context).size.width,
+      padding: EdgeInsets.symmetric(vertical: 17.0, horizontal: 70.0),
+      shape: RoundedRectangleBorder(
+        borderRadius: Sizes.BOR_RAD_25,
+      ),
+      onPressed: () {
+        _submit();
+        // Navigator.of(context).pushReplacementNamed(HomeScreen.ROUTE_NAME);
+      },
+      child: Text(
+        "${appLocal.translate(LocalKeys.LOG_IN)}",
+        textAlign: TextAlign.center,
+        style: TextStyle(color: Coolor.WHITE),
+      ),
     );
   }
 
@@ -217,8 +223,10 @@ class _SignInScreenState extends State<SignInScreen> {
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
         FlatButton(
-          child: Text("${appLocal.translate(LocalKeys.SIGN_UP)}"),
-          onPressed: () {},
+          child: Text("${appLocal.translate(LocalKeys.REGISTER)}"),
+          onPressed: () {
+            Navigator.of(context).pushReplacementNamed(SignUpScreen.ROUTE_NAME);
+          },
         ),
       ],
     );
@@ -228,7 +236,9 @@ class _SignInScreenState extends State<SignInScreen> {
     return Center(
       child: FlatButton(
         child: Text("${appLocal.translate(LocalKeys.SIGN_IN_LATER)}"),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context).pushReplacementNamed(HomeScreen.ROUTE_NAME);
+        },
       ),
     );
   }
@@ -238,12 +248,13 @@ class _SignInScreenState extends State<SignInScreen> {
       context: context,
       builder: (ctx) => AlertDialog(
         title: Text("${appLocal.translate(LocalKeys.DIALOG_ERROR)}"),
-        
         content: Text(message),
         actions: <Widget>[
-          FlatButton(child: Text('OK'),onPressed: () {
-            Navigator.of(ctx).pop();
-          },
+          FlatButton(
+            child: Text('OK'),
+            onPressed: () {
+              Navigator.of(ctx).pop();
+            },
           ),
         ],
       ),
@@ -256,22 +267,16 @@ class _SignInScreenState extends State<SignInScreen> {
       return;
     }
     _formKey.currentState.save();
-    setState(() {
-      print(_authData['email']);
-      print(_authData['password']);
-      _isLoading = true;
-    });
+    
     try {
-        await Provider.of<Auth>(context, listen: false).signIn(
-          _authData['email'],
-          _authData['password'],
-        );
+      await Provider.of<Auth>(context, listen: false).signIn(
+        _authData['email'],
+        _authData['password'],
+      );
     } catch (error) {
       _showErrorDialog(error.toString());
     }
 
-    setState(() {
-      _isLoading = false;
-    });
+    
   }
 }

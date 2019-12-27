@@ -8,6 +8,8 @@ import '../../res/assets_path.dart';
 
 
 class SplashScreen extends StatefulWidget {
+  static const ROUTE_NAME = '/splash';
+
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
@@ -22,11 +24,17 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final appLocal = AppLocalizations.of(context);
+    final deviceSize = MediaQuery.of(context).size;
     return Container(
-      height: 300,
-      width: 150,
+      height: deviceSize.height,
+      width: deviceSize.width,
       color: Coolor.PRIMARYSWATCH,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
