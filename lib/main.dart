@@ -60,16 +60,17 @@ class MyApp extends StatelessWidget {
             /// from the list (English, in this case).
             return supportedLocales.first;
           },
-          home: auth.isAuth
-              ? HomeScreen()
-              : FutureBuilder(
-                  future: auth.tryAutoLogin(),
-                  builder: (context, authResultSnapshopt) =>
-                      authResultSnapshopt.connectionState ==
-                              ConnectionState.waiting
-                          ? SplashScreen()
-                          : SignInScreen(),
-                ),
+          home: SplashScreen(),
+          // auth.isAuth
+          //     ? HomeScreen()
+          //     : FutureBuilder(
+          //         future: auth.tryAutoLogin(),
+          //         builder: (context, authResultSnapshopt) =>
+          //             authResultSnapshopt.connectionState ==
+          //                     ConnectionState.waiting
+          //                 ? SplashScreen()
+          //                 : SignInScreen(),
+          //       ),
           routes: {
             HomeScreen.ROUTE_NAME: (ctx) => HomeScreen(),
             SignInScreen.ROUTE_NAME: (ctx) => SignInScreen(),

@@ -43,5 +43,10 @@ class Sizes {
   static const EDEGINSETS_30 = EdgeInsets.all(30.0);
   static const EDEGINSETS_35 = EdgeInsets.all(35.0);
 
+
+  static const WIDTH_SIZE_300 = 300.0;
+
+  static const HEIGHT_SIZE_75 = 75.0;
+
   
 }

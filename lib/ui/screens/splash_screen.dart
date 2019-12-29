@@ -3,38 +3,47 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import '../../res/coolor.dart';
 import '../../res/assets_path.dart';
+import '../../ui/screens/sign_in_screen.dart';
+import '../../res/sizes.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
   static const ROUTE_NAME = '/splash';
+  @override
+  _SplashScreenState createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+
+    /// to start time to switch to another screen
+    startTime();
+  }
 
   @override
   Widget build(BuildContext context) {
-    startTime();
-    final deviceSize = MediaQuery.of(context).size;
     return Container(
-      height: deviceSize.height,
-      width: deviceSize.width,
       color: Coolor.BLUE_APP,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          SizedBox(
-            height: 75,
-            child: Image.asset(AssPath.LOGO_WHITE),
-          ),
-        ],
+      child: SizedBox(
+        height: Sizes.HEIGHT_SIZE_75,
+        child: Center(
+            child: Image.asset(
+          AssPath.LOGO_WHITE,
+          width: Sizes.WIDTH_SIZE_300,
+        )),
       ),
     );
   }
 
   /// time to switch with dummy screen
-  startTime() {
+  startTime() async {
     var _duration = Duration(milliseconds: 1500);
-    return Timer(_duration,(){});
+    return Timer(_duration, navigationPage);
   }
 
   /// navigate with dummy screen
-  // void navigationPage(BuildContext context) {
-  //   Navigator.of(context).pushReplacementNamed(SignInScreen.ROUTE_NAME);
-  // }
+  Future navigationPage() async {
+    Navigator.of(context).pushReplacementNamed(SignInScreen.ROUTE_NAME);
+  }
 }
