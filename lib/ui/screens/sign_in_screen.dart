@@ -42,6 +42,7 @@ class _SignInScreenState extends State<SignInScreen> {
         }
       },
       child: Scaffold(
+        backgroundColor: Coolor.BG_COLOR,
         // backgroundColor: Coolor.WHITE,
         body: Container(
           height: double.infinity,
