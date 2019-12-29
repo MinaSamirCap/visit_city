@@ -31,6 +31,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
         }
       },
       child: Scaffold(
+        backgroundColor: Coolor.BG_COLOR,
         appBar: AppBar(
           iconTheme: IconThemeData(color: Coolor.BLACK),
           // automaticallyImplyLeading: true,
@@ -58,7 +59,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                 SizedBox(
                   height: 100,
                 ),
-                Image.asset(AssPath.LOGO_BLUE),
+                Image.asset(AssPath.FORGET_PASS_LOGO,scale:2,),
                 SizedBox(
                   height: 50,
                 ),
@@ -74,7 +75,8 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                       height: 10,
                     ),
                     Text(
-                      "${appLocal.translate(LocalKeys.SEND_VERIFICATION)}",
+                      appLocal.translate(LocalKeys.SEND_VERIFICATION),
+                      style: TextStyle(color: Coolor.GREY),
                     ),
                   ],
                 ),

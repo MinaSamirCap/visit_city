@@ -92,8 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget headerImage() {
-    return Image.network(
-        "https://assets.cairo360.com/app/uploads/2011/01/article_original_1448_2011181_423717764-600x323.jpeg");
+    return Image.asset(AssPath.HEADER_IMAGE);
   }
 
   Widget menuIcon() {
@@ -205,17 +204,17 @@ class ItineraryModel {
       ItineraryModel(
           appLocale.translate(LocalKeys.NATURAL_ITINERARIES),
           appLocale.translate(LocalKeys.ABOUT_3_DAYS),
-          AssPath.APP_LOGO,
+          AssPath.NATURE_LOGO,
           Coolor.NAT_ITI_COL),
       ItineraryModel(
           appLocale.translate(LocalKeys.ARCHEOLOGY_ITINERARIES),
           appLocale.translate(LocalKeys.ABOUT_4_DAYS),
-          AssPath.APP_LOGO,
+          AssPath.ARCHEOLOGY_LOGO,
           Coolor.ARC_ITI_COL),
       ItineraryModel(
           appLocale.translate(LocalKeys.CLUTURE_ITINERARIES),
           appLocale.translate(LocalKeys.ABOUT_2_DAYS),
-          AssPath.APP_LOGO,
+          AssPath.CULTURE_LOGO,
           Coolor.CUL_ITI_COL)
     ];
   }

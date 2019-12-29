@@ -79,6 +79,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         }
       },
       child: Scaffold(
+        backgroundColor: Coolor.BG_COLOR,
         body: Container(
           height: double.infinity,
           width: double.infinity,

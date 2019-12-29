@@ -31,7 +31,7 @@ dependencies:
   http: ^0.12.0+2
   provider: ^4.0.0
   shared_preferences: ^0.5.6
-  
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -55,7 +55,12 @@ flutter:
    - assets/images/logoWhite.png
    - assets/images/logoBlue.png
    - assets/images/google.png
-   - assets/images/facebook.png
+   - assets/images/cultureLogo.png
+   - assets/images/natureLogo.png
+   - assets/images/archeologyLogo.png
+   - assets/images/cultureLogo.png
+   - assets/images/forgetPassword.png
+   - assets/images/headerImage.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
