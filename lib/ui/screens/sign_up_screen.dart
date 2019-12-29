@@ -70,7 +70,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final deviceSize = MediaQuery.of(context).size;
     appLocal = AppLocalizations.of(context);
     return GestureDetector(
       onTap: () {
@@ -81,8 +80,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
       },
       child: Scaffold(
         body: Container(
-          height: deviceSize.height,
-          width: deviceSize.width * 0.85,
+          height: double.infinity,
+          width: double.infinity,
           margin: Sizes.EDEGINSETS_20,
           child: SingleChildScrollView(
             child: Form(
@@ -92,9 +91,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   SizedBox(
-                    height: 30,
+                    height: 85,
                   ),
                   logoImage(),
+                  SizedBox(
+                    height: 45,
+                  ),
                   nameTextField(),
                   emailTextField(),
                   passwordTextField(),

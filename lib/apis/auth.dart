@@ -59,7 +59,10 @@ class Auth with ChangeNotifier {
         url,
         headers: header,
         body: json.encode(
-          {'username': email, 'password': password},
+          {
+            'username': email,
+            'password': password,
+          },
         ),
       );
       final responseData = json.decode(response.body);
@@ -67,24 +70,24 @@ class Auth with ChangeNotifier {
         throw HttpException(responseData['errors']['message']);
       }
       _token = responseData['token'];
-      _userId = responseData['user']['id'];
-      _expiryDate = DateTime.now().add(
-        Duration(
-          days: int.parse(responseData['user']['expiresIn']),
-        ),
-      );
-      _autoLogout();
+      // _userId = responseData['user']['id'];
+      // _expiryDate = DateTime.now().add(
+      //   Duration(
+      //     days: int.parse(responseData['user']['expiresIn']),
+      //   ),
+      // );
+      // _autoLogout();
       notifyListeners();
 
-      final prefs = await SharedPreferences.getInstance();
-      final userData = json.encode([
-        {
-          'token': _token,
-          'userId': _userId,
-          'expiryDate': _expiryDate.toIso8601String()
-        }
-      ]);
-      prefs.setString('userData', userData);
+      // final prefs = await SharedPreferences.getInstance();
+      // final userData = json.encode([
+      //   {
+      //     'token': _token,
+      //     'userId': _userId,
+      //     'expiryDate': _expiryDate.toIso8601String()
+      //   }
+      // ]);
+      // prefs.setString('userData', userData);
 
       print(json.decode(response.body));
     } catch (error) {
@@ -101,11 +104,11 @@ class Auth with ChangeNotifier {
         headers: header,
         body: json.encode(
           {
-            'signupType' :'normal',
+            // 'signupType': 'normal',
             'email': email,
             'password': password,
             'name': name,
-            'phone' : "01210626602",
+            // 'phone': "01210626602",
           },
         ),
       );
@@ -114,24 +117,24 @@ class Auth with ChangeNotifier {
         throw HttpException(responseData['errors']['message']);
       }
       _token = responseData['token'];
-      _userId = responseData['user']['id'];
-      _expiryDate = DateTime.now().add(
-        Duration(
-          days: int.parse(responseData['user']['expiresIn']),
-        ),
-      );
-      _autoLogout();
+      // _userId = responseData['user']['id'];
+      // _expiryDate = DateTime.now().add(
+      //   Duration(
+      //     days: int.parse(responseData['user']['expiresIn']),
+      //   ),
+      // );
+      // _autoLogout();
       notifyListeners();
 
-      final prefs = await SharedPreferences.getInstance();
-      final userData = json.encode([
-        {
-          'token': _token,
-          'userId': _userId,
-          'expiryDate': _expiryDate.toIso8601String()
-        }
-      ]);
-      prefs.setString('userData', userData);
+      // final prefs = await SharedPreferences.getInstance();
+      // final userData = json.encode([
+      //   {
+      //     'token': _token,
+      //     'userId': _userId,
+      //     'expiryDate': _expiryDate.toIso8601String()
+      //   }
+      // ]);
+      // prefs.setString('userData', userData);
 
       print(json.decode(response.body));
     } catch (error) {

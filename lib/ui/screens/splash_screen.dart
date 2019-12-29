@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import '../../ui/screens/sign_in_screen.dart';
 import '../../res/coolor.dart';
 import '../../res/assets_path.dart';
 
@@ -10,7 +9,7 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    startTime(context);
+    startTime();
     final deviceSize = MediaQuery.of(context).size;
     return Container(
       height: deviceSize.height,
@@ -29,13 +28,13 @@ class SplashScreen extends StatelessWidget {
   }
 
   /// time to switch with dummy screen
-  startTime(BuildContext context) {
+  startTime() {
     var _duration = Duration(milliseconds: 1500);
-    return Timer(_duration, () => navigationPage(context));
+    return Timer(_duration,(){});
   }
 
   /// navigate with dummy screen
-  void navigationPage(BuildContext context) {
-    Navigator.of(context).pushReplacementNamed(SignInScreen.ROUTE_NAME);
-  }
+  // void navigationPage(BuildContext context) {
+  //   Navigator.of(context).pushReplacementNamed(SignInScreen.ROUTE_NAME);
+  // }
 }

@@ -14,7 +14,7 @@ import '../../ui/screens/sign_up_screen.dart';
 import '../../ui/screens/forget_password_screen.dart';
 
 class SignInScreen extends StatefulWidget {
-  static const ROUTE_NAME = '/signin-screen';
+  static const ROUTE_NAME = '/signin';
 
   @override
   _SignInScreenState createState() => _SignInScreenState();
@@ -34,62 +34,65 @@ class _SignInScreenState extends State<SignInScreen> {
     final deviceSize = MediaQuery.of(context).size;
     appLocal = AppLocalizations.of(context);
 
-    return Scaffold(
-      // backgroundColor: Coolor.WHITE,
-      body: Container(
-        height: deviceSize.height,
-        width: deviceSize.width,
-        margin: Sizes.EDEGINSETS_20,
-        child: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  height: 15,
-                ),
-                logoImage(),
-                SizedBox(
-                  height: 15,
-                ),
-                emailTextField(),
-                passwordTextField(),
-                forgetPasswordButton(),
-                SizedBox(
-                  height: 25.0,
-                ),
-                loginButton(),
-                SizedBox(
-                  height: 25,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    fbLogin(),
-                    googleLogin(),
-                  ],
-                ),
-                SizedBox(
-                  height: 25.0,
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text(
-                          "${appLocal.translate(LocalKeys.DONT_HAVE_ACCOUNT)}",
-                        ),
-                        registerButton(),
-                      ],
-                    ),
-                    signInLaterButton(),
-                  ],
-                ),
-              ],
+    return GestureDetector(
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
+      child: Scaffold(
+        // backgroundColor: Coolor.WHITE,
+        body: Container(
+          height: double.infinity,
+          width: double.infinity,
+          margin: Sizes.EDEGINSETS_20,
+          child: SingleChildScrollView(
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    height: 85,
+                  ),
+                  logoImage(),
+                  SizedBox(
+                    height: 50,
+                  ),
+                  emailTextField(),
+                  passwordTextField(),
+                  forgetPasswordButton(),
+                  SizedBox(
+                    height: 25.0,
+                  ),
+                  loginButton(),
+                  SizedBox(
+                    height: 50,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      fbLogin(),
+                      googleLogin(),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 75,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        "${appLocal.translate(LocalKeys.DONT_HAVE_ACCOUNT)}",
+                      ),
+                      registerButton(),
+                    ],
+                  ),
+                  signInLaterButton(),
+                ],
+              ),
             ),
           ),
         ),
@@ -113,7 +116,7 @@ class _SignInScreenState extends State<SignInScreen> {
       padding: Sizes.EDEGINSETS_8,
       child: TextFormField(
         decoration: InputDecoration(
-          labelText: LocalKeys.EMAIL,
+          labelText: appLocal.translate(LocalKeys.EMAIL),
           contentPadding: Sizes.EDEGINSETS_20,
           border: OutlineInputBorder(
             gapPadding: 3.3,
@@ -123,8 +126,9 @@ class _SignInScreenState extends State<SignInScreen> {
         keyboardType: TextInputType.emailAddress,
         validator: (value) {
           if (value.isEmpty || !EmailValidator.validate(value)) {
-            return "${appLocal.translate(LocalKeys.ERROR_EMAIL)}";
+            return appLocal.translate(LocalKeys.ERROR_EMAIL);
           }
+          // return "";
         },
         onSaved: (value) {
           _authData['email'] = value;
@@ -138,9 +142,10 @@ class _SignInScreenState extends State<SignInScreen> {
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
         FlatButton(
-          child: Text("${appLocal.translate(LocalKeys.FORGET_PASSWORD)}"),
+          child: Text(appLocal.translate(LocalKeys.FORGET_PASSWORD)),
           onPressed: () {
-            Navigator.of(context).pushReplacementNamed(ForgetPasswordScreen.ROUTE_NAME);
+            Navigator.of(context)
+                .pushNamed(ForgetPasswordScreen.ROUTE_NAME);
           },
         ),
       ],
@@ -153,7 +158,7 @@ class _SignInScreenState extends State<SignInScreen> {
       child: TextFormField(
         obscureText: true,
         decoration: InputDecoration(
-          labelText: LocalKeys.PASSWORD,
+          labelText: appLocal.translate(LocalKeys.PASSWORD),
           contentPadding: Sizes.EDEGINSETS_20,
           border: OutlineInputBorder(
             gapPadding: 3.3,
@@ -162,7 +167,7 @@ class _SignInScreenState extends State<SignInScreen> {
         ),
         validator: (value) {
           if (value.isEmpty || value.length < 8) {
-            return "${appLocal.translate(LocalKeys.ERROR_PASSWORD)}";
+            return appLocal.translate(LocalKeys.ERROR_PASSWORD);
           }
         },
         onSaved: (value) {
@@ -185,7 +190,7 @@ class _SignInScreenState extends State<SignInScreen> {
         // Navigator.of(context).pushReplacementNamed(HomeScreen.ROUTE_NAME);
       },
       child: Text(
-        "${appLocal.translate(LocalKeys.LOG_IN)}",
+        appLocal.translate(LocalKeys.LOG_IN),
         textAlign: TextAlign.center,
         style: TextStyle(color: Coolor.WHITE),
       ),
@@ -223,7 +228,7 @@ class _SignInScreenState extends State<SignInScreen> {
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
         FlatButton(
-          child: Text("${appLocal.translate(LocalKeys.REGISTER)}"),
+          child: Text(appLocal.translate(LocalKeys.REGISTER)),
           onPressed: () {
             Navigator.of(context).pushReplacementNamed(SignUpScreen.ROUTE_NAME);
           },
@@ -235,7 +240,7 @@ class _SignInScreenState extends State<SignInScreen> {
   Widget signInLaterButton() {
     return Center(
       child: FlatButton(
-        child: Text("${appLocal.translate(LocalKeys.SIGN_IN_LATER)}"),
+        child: Text(appLocal.translate(LocalKeys.SIGN_IN_LATER)),
         onPressed: () {
           Navigator.of(context).pushReplacementNamed(HomeScreen.ROUTE_NAME);
         },
@@ -247,7 +252,7 @@ class _SignInScreenState extends State<SignInScreen> {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: Text("${appLocal.translate(LocalKeys.DIALOG_ERROR)}"),
+        title: Text(appLocal.translate(LocalKeys.DIALOG_ERROR)),
         content: Text(message),
         actions: <Widget>[
           FlatButton(
@@ -267,16 +272,20 @@ class _SignInScreenState extends State<SignInScreen> {
       return;
     }
     _formKey.currentState.save();
-    
+
     try {
       await Provider.of<Auth>(context, listen: false).signIn(
         _authData['email'],
         _authData['password'],
       );
-    } catch (error) {
+    }on HttpException catch (error) {
+      var errorMessage = error;
+      
+      _showErrorDialog(errorMessage.toString());
+      print(errorMessage.toString());
+    } 
+    catch (error) {
       _showErrorDialog(error.toString());
     }
-
-    
   }
 }

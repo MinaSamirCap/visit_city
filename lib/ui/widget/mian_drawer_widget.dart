@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../utils/lang/app_localization.dart';
 import '../../utils/lang/app_localization_keys.dart';
 import '../../res/assets_path.dart';
 import '../../res/coolor.dart';
 import '../../ui/widget/ui.dart';
 import '../../res/sizes.dart';
+import '../../apis/auth.dart';
+import '../../ui/screens/sign_in_screen.dart';
 
 class MainDrawerWidget extends StatefulWidget {
   final Function callback;
@@ -109,6 +112,8 @@ class _MainDrawerWidgetState extends State<MainDrawerWidget> {
                 widget.callback(model.title);
                 setState(() {});
                 Navigator.pop(ctx);
+                Navigator.of(context)
+                    .pushReplacementNamed(SignInScreen.ROUTE_NAME);
               },
             ),
           ),
