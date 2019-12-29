@@ -206,7 +206,7 @@ class _SignInScreenState extends State<SignInScreen> {
       backgroundColor: Coolor.WHITE,
       child: Image.asset(
         AssPath.LOGO_FB,
-        fit: BoxFit.cover,
+        fit: BoxFit.contain,
       ),
     );
   }
