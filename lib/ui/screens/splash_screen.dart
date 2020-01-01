@@ -26,11 +26,11 @@ class _SplashScreenState extends State<SplashScreen> {
     return Container(
       color: Coolor.BLUE_APP,
       child: SizedBox(
-        height: Sizes.HEIGHT_SIZE_75,
+        height: Sizes.SIZE_75,
         child: Center(
             child: Image.asset(
           AssPath.LOGO_WHITE,
-          width: Sizes.WIDTH_SIZE_300,
+          width: Sizes.SIZE_300,
         )),
       ),
     );

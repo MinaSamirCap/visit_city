@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Sizes {
+
   static const RADIUS_500 = Radius.circular(500);
   static const RADIUS_25 = Radius.circular(25);
   static const RADIUS_50 = Radius.circular(50);
@@ -24,6 +25,10 @@ class Sizes {
     height: 100,
   );
 
+   static const DIVIDER_HEIGHT_200 = SizedBox(
+    height: 200,
+  );
+
   static const DIVIDER_WIDTH_15 = SizedBox(
     width: 15,
   );
@@ -44,9 +49,24 @@ class Sizes {
   static const EDEGINSETS_35 = EdgeInsets.all(35.0);
 
 
-  static const WIDTH_SIZE_300 = 300.0;
+  
 
-  static const HEIGHT_SIZE_75 = 75.0;
 
+
+
+  static const SIZE_3_3 = 3.3;
+  static const SIZE_10 = 10.0;
+  static const SIZE_18 = 18.0;
+  static const SIZE_20 = 20.0;
+  static const SIZE_25 = 25.0;
+  static const SIZE_35 = 35.0;
+  static const SIZE_50 = 50.0;
+  static const SIZE_75 = 75.0;
+  static const SIZE_100 = 100.0;
+  static const SIZE_120 = 120.0;
+  static const SIZE_150 = 150.0;
+  static const SIZE_300 = 300.0;
+
+  static const MENU_SIZE = SIZE_35;
   
 }

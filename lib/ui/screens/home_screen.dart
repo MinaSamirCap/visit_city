@@ -97,10 +97,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget menuIcon() {
     return Positioned.directional(
-      start: 3,
-      top: 15,
+      start: 1.5,
+      top: 20,
       child: IconButton(
-        icon: Icon(Icons.menu),
+        icon: Icon(Icons.menu, size: Sizes.MENU_SIZE,),
         onPressed: () {
           /// to open the drawer programatically.
           //Scaffold.of(context).openDrawer();

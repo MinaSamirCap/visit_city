@@ -36,7 +36,7 @@ class _MainDrawerWidgetState extends State<MainDrawerWidget> {
               child: listView(),
               context: context,
             ),
-            Sizes.DIVIDER_HEIGHT_100,
+            Sizes.DIVIDER_HEIGHT_200,
             lineDivider(),
             Sizes.DIVIDER_HEIGHT_10,
             MediaQuery.removePadding(

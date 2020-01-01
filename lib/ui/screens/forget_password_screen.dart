@@ -40,7 +40,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
           //   onPressed: () => Navigator.pop(context),
           // ),
           title: Text(
-            "Forget Password",
+            appLocal.translate(LocalKeys.FORGET_PASSWORD),
             style: TextStyle(
               color: Coolor.BLACK,
             ),
@@ -57,11 +57,11 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 SizedBox(
-                  height: 100,
+                  height: Sizes.SIZE_20,
                 ),
                 Image.asset(AssPath.FORGET_PASS_LOGO,scale:2,),
                 SizedBox(
-                  height: 50,
+                  height: Sizes.SIZE_50,
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -69,10 +69,10 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                     Text(
                       appLocal.translate(LocalKeys.REGESTERED_EMAIL),
                       // textAlign: TextAlign.start,
-                      style: TextStyle(fontSize: 20),
+                      style: TextStyle(fontSize: Sizes.SIZE_20),
                     ),
                     SizedBox(
-                      height: 10,
+                      height: Sizes.SIZE_25,
                     ),
                     Text(
                       appLocal.translate(LocalKeys.SEND_VERIFICATION),
@@ -81,16 +81,16 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                   ],
                 ),
                 SizedBox(
-                  height: 25,
+                  height: Sizes.SIZE_25,
                 ),
                 Padding(
                   padding: Sizes.EDEGINSETS_8,
                   child: TextFormField(
                     decoration: InputDecoration(
-                      labelText: LocalKeys.EMAIL,
+                      labelText: appLocal.translate(LocalKeys.EMAIL),
                       contentPadding: Sizes.EDEGINSETS_20,
                       border: OutlineInputBorder(
-                        gapPadding: 3.3,
+                        gapPadding: Sizes.SIZE_3_3,
                         borderRadius: Sizes.BOR_RAD_25,
                       ),
                     ),
@@ -106,13 +106,14 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                   ),
                 ),
                 SizedBox(
-                  height: 25,
+                  height: Sizes.SIZE_25,
                 ),
                 RaisedButton(
-                  color: Coolor.PRIMARYSWATCH,
+                  color: Coolor.BLUE_APP,
                   // minWidth: MediaQuery.of(context).size.width,
                   padding:
-                      EdgeInsets.symmetric(vertical: 18.0, horizontal: 150.0),
+                    EdgeInsets.symmetric(horizontal: Sizes.SIZE_120,vertical: Sizes.SIZE_10),
+                      // EdgeInsets.symmetric(vertical: Sizes.SIZE_18, horizontal: Sizes.SIZE_150),
                   shape: RoundedRectangleBorder(
                     borderRadius: Sizes.BOR_RAD_25,
                   ),
@@ -125,7 +126,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Coolor.WHITE,
-                      fontSize: 20,
+                      fontSize: Sizes.SIZE_25,
                       // fontWeight: FontWeight.bold,
                     ),
                   ),

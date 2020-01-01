@@ -241,7 +241,7 @@ class _SignInScreenState extends State<SignInScreen> {
   Widget signInLaterButton() {
     return Center(
       child: FlatButton(
-        child: Text(appLocal.translate(LocalKeys.SIGN_IN_LATER)),
+        child: Text("${appLocal.translate(LocalKeys.SIGN_IN_LATER)}"),
         onPressed: () {
           Navigator.of(context).pushReplacementNamed(HomeScreen.ROUTE_NAME);
         },
