@@ -26,6 +26,7 @@ class Coolor {
   static const NAT_ITI_COL = Color(0xff5b8023);
   static const ARC_ITI_COL = Color(0xffa00821);
   static const CUL_ITI_COL = Color(0xff018989);
+  static const FEEDBACK_OFF_WHITE = Color(0xffFBFCFE);
   
 
   static const WHITE = Colors.white;

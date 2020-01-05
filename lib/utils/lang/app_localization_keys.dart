@@ -42,4 +42,8 @@ class LocalKeys {
   static const NEXT = "next";
   static const REGESTERED_EMAIL = "regestered_email";
   static const SEND_VERIFICATION = "send_verification";
+  static const SEND_YOURS = "send_yours";
+  static const YOUR_REVIEW_WILL_BE = "your_review_will_be";
+  static const LEAVE_YOUR_COMMENT = "leave_your_comment";
+  static const SEND = "send";
 }

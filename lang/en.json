@@ -38,6 +38,10 @@
     "have_account" : "Already have an account?",
     "next" : "Next",
     "regestered_email" : "Please enter your registered email.",
-    "send_verification" : "We will send a verification code to your registered email."
+    "send_verification" : "We will send a verification code to your registered email.",
+    "send_yours" : "Send your",
+    "your_review_will_be" : "Your review will help us to give you a better experience. Make it a good one!",
+    "leave_your_comment" : "Leave your comment...",
+    "send" : "Send"
     
 }
