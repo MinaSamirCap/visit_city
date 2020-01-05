@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import '../../res/assets_path.dart';
-import '../../res/sizes.dart';
-import '../../ui/widget/mian_drawer_widget.dart';
-import '../../res/coolor.dart';
 import '../../utils/lang/app_localization_keys.dart';
 import '../../utils/lang/app_localization.dart';
+import '../../res/assets_path.dart';
+import '../../res/coolor.dart';
+import '../../res/sizes.dart';
+import '../../ui/widget/mian_drawer_widget.dart';
+import '../../ui/screens/feedback_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   static const ROUTE_NAME = '/home-screen';
@@ -37,6 +38,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void onMenuItemSelected(String title) {
+    if (title == _appLocal.translate(LocalKeys.FEEDBACK)) {
+      Navigator.of(context).pushNamed(FeedbackScreen.ROUTE_NAME);
+    } else {}
     print(title);
   }
 
@@ -100,7 +104,10 @@ class _HomeScreenState extends State<HomeScreen> {
       start: 1.5,
       top: 20,
       child: IconButton(
-        icon: Icon(Icons.menu, size: Sizes.MENU_SIZE,),
+        icon: Icon(
+          Icons.menu,
+          size: Sizes.MENU_SIZE,
+        ),
         onPressed: () {
           /// to open the drawer programatically.
           //Scaffold.of(context).openDrawer();
