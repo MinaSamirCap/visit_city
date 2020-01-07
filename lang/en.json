@@ -42,6 +42,8 @@
     "send_yours" : "Send your",
     "your_review_will_be" : "Your review will help us to give you a better experience. Make it a good one!",
     "leave_your_comment" : "Leave your comment...",
-    "send" : "Send"
+    "send" : "Send",
+    "feedback_img_error" : "You need to select a rate image",
+    "feedback_comment_error" : "Kindly leave your comment"
     
 }

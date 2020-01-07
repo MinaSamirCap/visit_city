@@ -46,4 +46,6 @@ class LocalKeys {
   static const YOUR_REVIEW_WILL_BE = "your_review_will_be";
   static const LEAVE_YOUR_COMMENT = "leave_your_comment";
   static const SEND = "send";
+  static const FEEDBACK_IMAGE_ERROR = "feedback_img_error";
+  static const FEEDBACK_COMMENT_ERROR = "feedback_comment_error";
 }

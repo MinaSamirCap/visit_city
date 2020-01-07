@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:visit_city/ui/widget/ui.dart';
 import '../../res/assets_path.dart';
 import '../../res/sizes.dart';
 import '../../res/coolor.dart';
@@ -19,14 +20,18 @@ class FeedbackScreen extends StatefulWidget {
 }
 
 class _FeedbackScreenState extends State<FeedbackScreen> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   AppLocalizations _appLocal;
   int rateId = -1;
+  TextEditingController _controller = TextEditingController();
+  String _errorText;
   String comment = "";
 
   @override
   Widget build(BuildContext context) {
     _appLocal = AppLocalizations.of(context);
     return Scaffold(
+      key: _scaffoldKey,
       appBar: getAppBarWidget(),
       body: SingleChildScrollView(
         child:
@@ -129,28 +134,19 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
     return Padding(
       padding: const EdgeInsets.only(top: 10, left: 30, right: 30),
       child: TextFormField(
+        controller: _controller,
         keyboardType: TextInputType.text,
         maxLines: 5,
         minLines: 5,
         decoration: InputDecoration(
-          alignLabelWithHint: true,
-          labelText: _appLocal.translate(LocalKeys.LEAVE_YOUR_COMMENT),
-          contentPadding: Sizes.EDEGINSETS_20,
-          border: OutlineInputBorder(
-            gapPadding: 3.3,
-            borderRadius: Sizes.BOR_RAD_25,
-          ),
-        ),
-        validator: (value) {
-          if (value.isEmpty || value.length < 8) {
-            return _appLocal.translate(LocalKeys.LEAVE_YOUR_COMMENT);
-          } else
-            return null;
-        },
-        onSaved: (value) {
-          comment = value;
-          print("Comment $comment");
-        },
+            alignLabelWithHint: true,
+            labelText: _appLocal.translate(LocalKeys.LEAVE_YOUR_COMMENT),
+            contentPadding: Sizes.EDEGINSETS_20,
+            border: OutlineInputBorder(
+              gapPadding: 3.3,
+              borderRadius: Sizes.BOR_RAD_25,
+            ),
+            errorText: _errorText),
       ),
     );
   }
@@ -173,6 +169,21 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
   }
 
   void _submit() {
-    print("submit");
+    if (rateId == -1) {
+      showSnackBar(
+          createSnackBar(_appLocal.translate(LocalKeys.FEEDBACK_IMAGE_ERROR)),
+          _scaffoldKey);
+    } else if (_controller.text.isEmpty) {
+      _errorText = _appLocal.translate(LocalKeys.LEAVE_YOUR_COMMENT);
+      showSnackBar(
+          createSnackBar(_appLocal.translate(LocalKeys.FEEDBACK_COMMENT_ERROR)),
+          _scaffoldKey);
+      setState(() {});
+    } else {
+      _errorText = null;
+      setState(() {});
+      /// call api .. :)
+      print("submit: ${_controller.text} rate: $rateId");
+    }
   }
 }
