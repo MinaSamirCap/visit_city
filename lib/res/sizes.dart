@@ -42,6 +42,9 @@ class Sizes {
   );
 
   static final BOR_RAD_25 = BorderRadius.circular(25);
+  static final BOR_RAD_20 = BorderRadius.circular(20);
+  static final BOR_RAD_18 = BorderRadius.circular(18);
+  static final BOR_RAD_15 = BorderRadius.circular(15);
   static final BOR_RAD_17 = BorderRadius.circular(17);
   static final BOR_RAD_12 = BorderRadius.circular(12);
   static final BOR_RAD_7 = BorderRadius.circular(7);
