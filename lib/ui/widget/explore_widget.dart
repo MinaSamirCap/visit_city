@@ -19,17 +19,12 @@ class _ExploreWidgetState extends State<ExploreWidget> {
   Widget build(BuildContext context) {
     _appLocal = AppLocalizations.of(context);
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Coolor.FEEDBACK_OFF_WHITE,
-        bottom: FilterWidget(FilterItem.getFilterList(_appLocal)),
-        title: searchWidget(),
-      ),
-      body: Container(
-        child: Center(
-          child: Text("Explore"),
+        appBar: AppBar(
+          backgroundColor: Coolor.FEEDBACK_OFF_WHITE,
+          bottom: FilterWidget(FilterItem.getFilterList(_appLocal)),
+          title: searchWidget(),
         ),
-      ),
-    );
+        body: listWidget());
   }
 
   Widget searchWidget() {
@@ -40,5 +35,22 @@ class _ExploreWidgetState extends State<ExploreWidget> {
       decoration:
           InputDecoration(icon: Icon(Icons.search), labelText: "search"),
     );
+  }
+
+  Widget listWidget() {
+    return ListView.separated(
+      padding: Sizes.EDEGINSETS_15,
+      separatorBuilder: (_, __) {
+        return Sizes.DIVIDER_HEIGHT_10;
+      },
+      itemBuilder: (ctx, index) {
+        return exploreItemWidget(index);
+      },
+      itemCount: 18,
+    );
+  }
+
+  Widget exploreItemWidget(int index) {
+    return Text("Mina\nnubdsafjadsfla");
   }
 }

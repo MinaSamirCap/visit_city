@@ -54,6 +54,7 @@ class Sizes {
   static const EDEGINSETS_5 = EdgeInsets.all(5.0);
   static const EDEGINSETS_8 = EdgeInsets.all(8.0);
   static const EDEGINSETS_10 = EdgeInsets.all(10.0);
+  static const EDEGINSETS_15 = EdgeInsets.all(15.0);
   static const EDEGINSETS_20 = EdgeInsets.all(20.0);
   static const EDEGINSETS_25 = EdgeInsets.all(25.0);
   static const EDEGINSETS_30 = EdgeInsets.all(30.0);
