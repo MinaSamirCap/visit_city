@@ -69,6 +69,7 @@ class Sizes {
   static const SIZE_25 = 25.0;
   static const SIZE_35 = 35.0;
   static const SIZE_50 = 50.0;
+  static const SIZE_60 = 60.0;
   static const SIZE_75 = 75.0;
   static const SIZE_100 = 100.0;
   static const SIZE_120 = 120.0;
