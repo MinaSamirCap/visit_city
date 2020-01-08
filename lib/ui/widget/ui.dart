@@ -10,6 +10,14 @@ Widget lineDivider() {
   );
 }
 
+Widget lineDividerWidth(double width) {
+  return Container(
+    color: Coolor.GREY,
+    width: width,
+    height: 1,
+  );
+}
+
 SnackBar createSnackBar(String message) {
   return SnackBar(content: Text(message));
 }
