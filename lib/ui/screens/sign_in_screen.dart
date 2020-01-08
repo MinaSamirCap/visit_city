@@ -47,8 +47,8 @@ class _SignInScreenState extends State<SignInScreen> {
         body: Container(
           height: double.infinity,
           width: double.infinity,
-          margin: Sizes.EDEGINSETS_20,
           child: SingleChildScrollView(
+            padding: Sizes.EDEGINSETS_20,
             child: Form(
               key: _formKey,
               child: Column(
