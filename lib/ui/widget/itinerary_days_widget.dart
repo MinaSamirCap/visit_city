@@ -14,7 +14,7 @@ class ItineraryDaysWidget extends StatefulWidget
   _ItineraryDaysWidgetState createState() => _ItineraryDaysWidgetState();
 
   @override
-  Size get preferredSize => Size.fromHeight(80);
+  Size get preferredSize => Size.fromHeight(60);
 }
 
 class _ItineraryDaysWidgetState extends State<ItineraryDaysWidget> {
