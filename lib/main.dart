@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:visit_city/ui/screens/itinerary_details_screen.dart';
 
 import 'utils/lang/app_localization.dart';
 import 'apis/auth.dart';
@@ -79,6 +80,7 @@ class MyApp extends StatelessWidget {
             SignUpScreen.ROUTE_NAME: (ctx) => SignUpScreen(),
             ForgetPasswordScreen.ROUTE_NAME: (ctx) => ForgetPasswordScreen(),
             FeedbackScreen.ROUTE_NAME: (ctx) => FeedbackScreen(),
+            ItineraryDetailsScreen.ROUTE_NAME: (ctx) => ItineraryDetailsScreen(),
           },
         ),
       ),

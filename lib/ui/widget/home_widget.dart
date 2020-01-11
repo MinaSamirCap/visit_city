@@ -4,16 +4,19 @@ import '../../res/coolor.dart';
 import '../../res/sizes.dart';
 import '../../utils/lang/app_localization.dart';
 import '../../utils/lang/app_localization_keys.dart';
+import '../../ui/screens/itinerary_details_screen.dart';
 
 class HomeWidget extends StatelessWidget {
   final AppLocalizations _appLocal;
   final GlobalKey<ScaffoldState> _drawerKey;
   final List<ItineraryModel> list;
+  var _navigate;
 
   HomeWidget(this._appLocal, this._drawerKey, this.list);
 
   @override
   Widget build(BuildContext context) {
+    _navigate = Navigator.of(context);
     return Stack(
       children: <Widget>[
         headerImage(),
@@ -93,6 +96,7 @@ class HomeWidget extends StatelessWidget {
     return InkWell(
       onTap: () {
         print(model.title);
+        _navigate.pushNamed(ItineraryDetailsScreen.ROUTE_NAME);
       },
       child: Card(
         elevation: 5,

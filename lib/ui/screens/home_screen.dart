@@ -79,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: Icon(Icons.mail),
             title: Text(_appLocal.translate(LocalKeys.MY_PLAN))),
         BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
+            icon: Icon(Icons.explore),
             title: Text(_appLocal.translate(LocalKeys.EXPLORE)))
       ],
     );

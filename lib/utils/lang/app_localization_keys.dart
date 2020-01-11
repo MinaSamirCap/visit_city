@@ -48,4 +48,10 @@ class LocalKeys {
   static const SEND = "send";
   static const FEEDBACK_IMAGE_ERROR = "feedback_img_error";
   static const FEEDBACK_COMMENT_ERROR = "feedback_comment_error";
+  static const DAY = "day";
+  static const ONE = "one";
+  static const TWO = "two";
+  static const THREE = "three";
+  static const FOUR = "four";
+  static const SET_AS_MY_PLAN = "set_as_my_plan";
 }

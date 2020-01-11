@@ -71,6 +71,7 @@ flutter:
    - assets/images/cultureLogo.png
    - assets/images/forgetPassword.png
    - assets/images/headerImage.png
+   - assets/images/natureBackground.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

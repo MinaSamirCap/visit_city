@@ -41,6 +41,7 @@ class Sizes {
     width: 15,
   );
 
+  static final BOR_RAD_35 = BorderRadius.circular(35);
   static final BOR_RAD_25 = BorderRadius.circular(25);
   static final BOR_RAD_20 = BorderRadius.circular(20);
   static final BOR_RAD_18 = BorderRadius.circular(18);
@@ -71,6 +72,7 @@ class Sizes {
   static const SIZE_18 = 18.0;
   static const SIZE_20 = 20.0;
   static const SIZE_25 = 25.0;
+  static const SIZE_30 = 30.0;
   static const SIZE_35 = 35.0;
   static const SIZE_50 = 50.0;
   static const SIZE_60 = 60.0;
