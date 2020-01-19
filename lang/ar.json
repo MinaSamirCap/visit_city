@@ -50,5 +50,8 @@
     "two" : "٢",
     "three" : "٣",
     "four" : "٤",
-    "set_as_my_plan" : "تعيين في خطتي"
+    "set_as_my_plan" : "تعيين في خطتي",
+    "culture" : "ثقافي",
+    "archeology" : "اثري",
+    "nature" : "طبيعي"
 }

@@ -10,4 +10,5 @@ class AssPath {
   static const FORGET_PASS_LOGO = 'assets/images/forgetPassword.png';
   static const HEADER_IMAGE = 'assets/images/headerImage.png';
   static const NATURE_BACKGROUND = 'assets/images/natureBackground.png';
+  static const MAP_FULL = 'assets/images/map.png';
 }

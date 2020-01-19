@@ -54,4 +54,7 @@ class LocalKeys {
   static const THREE = "three";
   static const FOUR = "four";
   static const SET_AS_MY_PLAN = "set_as_my_plan";
+  static const NATURE = "nature";
+  static const ARCHEOLOGY = "archeology";
+  static const CULTURE = "culture";
 }

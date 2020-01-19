@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:visit_city/utils/lang/app_localization.dart';
-import 'package:visit_city/utils/lang/app_localization_keys.dart';
 
+import '../../utils/lang/app_localization.dart';
+import '../../utils/lang/app_localization_keys.dart';
 import '../../res/coolor.dart';
 import '../../res/sizes.dart';
 

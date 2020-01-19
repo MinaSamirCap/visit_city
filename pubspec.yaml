@@ -33,6 +33,7 @@ dependencies:
   shared_preferences: ^0.5.6
   flutter_launcher_icons: ^0.7.4
   flutter_rating_bar: ^3.0.0+1
+  photo_view: ^0.9.1
 
   
 
@@ -72,6 +73,7 @@ flutter:
    - assets/images/forgetPassword.png
    - assets/images/headerImage.png
    - assets/images/natureBackground.png
+   - assets/images/map.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

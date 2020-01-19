@@ -27,7 +27,7 @@
     "in_3_iti" : "In 3 Itineraries",
     "nat_itinerary" : "Natural Itinerary",
     "arch_itinerary" : "Archeology Itinerary",
-    "clu_itinerary" : "Cluture Itinerary",
+    "clu_itinerary" : "Culture Itinerary",
     "about_3_d" : "about 3 days",
     "about_4_d" : "about 4 days",
     "about_2_d" : "about 2days",
@@ -50,6 +50,9 @@
     "two" : "2",
     "three" : "3",
     "four" : "4",
-    "set_as_my_plan" : "Set as My Plan"
+    "set_as_my_plan" : "Set as My Plan",
+    "culture" : "Culture",
+    "archeology" : "Archeology",
+    "nature" : "Nature"
     
 }
