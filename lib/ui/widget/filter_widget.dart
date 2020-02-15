@@ -79,8 +79,9 @@ class FilterItem {
 
   static List<FilterItem> getFilterList(AppLocalizations appLocale) {
     return [
+      FilterItem(title: appLocale.translate(LocalKeys.ALL), isSelected: true),
       FilterItem(
-          title: appLocale.translate(LocalKeys.WISHLIST), isSelected: true),
+          title: appLocale.translate(LocalKeys.WISHLIST), isSelected: false),
       FilterItem(
           title: appLocale.translate(LocalKeys.PROFILE), isSelected: false),
       FilterItem(

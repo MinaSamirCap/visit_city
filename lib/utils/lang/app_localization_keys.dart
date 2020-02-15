@@ -57,4 +57,5 @@ class LocalKeys {
   static const NATURE = "nature";
   static const ARCHEOLOGY = "archeology";
   static const CULTURE = "culture";
+  static const ALL = "all";
 }
