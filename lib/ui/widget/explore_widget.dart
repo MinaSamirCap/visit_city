@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:visit_city/res/assets_path.dart';
 import 'package:visit_city/ui/widget/ui.dart';
 import '../../res/coolor.dart';
 import '../../res/sizes.dart';
@@ -78,11 +79,15 @@ class _ExploreWidgetState extends State<ExploreWidget> {
   }
 
   Widget imageWidget() {
-    return Image.network(
-      "https://indiabests.com/wp-content/uploads/2019/09/khajrho-1230x692.jpg",
-      width: imgeWidth,
+    // I am sure it is working tested on real device ...
+    return FadeInImage.assetNetwork(
+      placeholder: AssPath.APP_LOGO,
+      image:
+          "https://www.telegraph.co.uk/content/dam/Travel/Destinations/Europe/acropolis-athens-medium.jpg",
       height: double.infinity,
+      width: imgeWidth,
       fit: BoxFit.cover,
+      fadeInDuration: new Duration(milliseconds: 100),
     );
   }
 
@@ -138,13 +143,13 @@ class _ExploreWidgetState extends State<ExploreWidget> {
               Column(
                 children: <Widget>[
                   Icon(Icons.navigation),
-                  Text("go", style: actionStyleItem())
+                  Text("Go", style: actionStyleItem())
                 ],
               ),
               Column(
                 children: <Widget>[
                   Icon(Icons.access_time),
-                  Text("closed", style: actionStyleItem())
+                  Text("Closed", style: actionStyleItem())
                 ],
               ),
               Column(
