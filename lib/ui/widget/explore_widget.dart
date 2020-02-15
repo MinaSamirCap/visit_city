@@ -142,7 +142,12 @@ class _ExploreWidgetState extends State<ExploreWidget> {
             children: <Widget>[
               Column(
                 children: <Widget>[
-                  Icon(Icons.navigation),
+                  InkWell(
+                    child: Icon(Icons.navigation),
+                    onTap: () {
+                      print("go clicked");
+                    },
+                  ),
                   Text("Go", style: actionStyleItem())
                 ],
               ),
@@ -154,7 +159,12 @@ class _ExploreWidgetState extends State<ExploreWidget> {
               ),
               Column(
                 children: <Widget>[
-                  Icon(Icons.favorite_border),
+                  InkWell(
+                    child: Icon(Icons.favorite_border),
+                    onTap: () {
+                      print("favorite clicked");
+                    },
+                  ),
                   Text("", style: actionStyleItem())
                 ],
               )
