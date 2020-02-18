@@ -74,6 +74,11 @@ flutter:
    - assets/images/headerImage.png
    - assets/images/natureBackground.png
    - assets/images/map.png
+   - assets/images/imoji1.png
+   - assets/images/imoji2.png
+   - assets/images/imoji3.png
+   - assets/images/imoji4.png
+   - assets/images/imoji5.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

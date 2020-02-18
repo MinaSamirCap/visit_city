@@ -100,11 +100,11 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          rateImgWidget(IMG_VERY_BAD_ID, AssPath.LOGO_GOOGLE),
-          rateImgWidget(IMG_BAD_ID, AssPath.LOGO_GOOGLE),
-          rateImgWidget(IMG_NOT_GOOD_NOT_BAD_ID, AssPath.LOGO_GOOGLE),
-          rateImgWidget(IMG_GOOD_ID, AssPath.LOGO_GOOGLE),
-          rateImgWidget(IMG_VERY_GOOD_ID, AssPath.LOGO_GOOGLE)
+          rateImgWidget(IMG_VERY_BAD_ID, AssPath.IMOJI1),
+          rateImgWidget(IMG_BAD_ID, AssPath.IMOJI2),
+          rateImgWidget(IMG_NOT_GOOD_NOT_BAD_ID, AssPath.IMOJI3),
+          rateImgWidget(IMG_GOOD_ID, AssPath.IMOJI4),
+          rateImgWidget(IMG_VERY_GOOD_ID, AssPath.IMOJI5)
         ],
       ),
     );
