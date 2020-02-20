@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:visit_city/apis/api_manager.dart';
+import 'package:visit_city/models/feedback_model.dart';
 import 'package:visit_city/ui/widget/ui.dart';
 import '../../res/assets_path.dart';
 import '../../res/sizes.dart';
@@ -25,7 +28,6 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
   int rateId = -1;
   TextEditingController _controller = TextEditingController();
   String _errorText;
-  String comment = "";
 
   @override
   Widget build(BuildContext context) {
@@ -181,9 +183,32 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
       setState(() {});
     } else {
       _errorText = null;
-      setState(() {});
-      /// call api .. :)
-      print("submit: ${_controller.text} rate: $rateId");
+      setState(() {
+        /// call api .. :)
+        callFeedbackApi();
+        //print("submit: ${_controller.text} rate: $rateId");
+      });
+    }
+  }
+
+  Future<void> callFeedbackApi() async {
+    try {
+      
+      await Provider.of<ApiManager>(context, listen: false)
+          .feedbackApi(FeedbackModel(rateId, _controller.text))
+          .then((isSuccess) {
+        print("is Success: $isSuccess");
+
+      });
+    } /*on HttpException catch (error) {
+      var errorMessage = error;
+      
+      _showErrorDialog(errorMessage.toString());
+      print(errorMessage.toString());
+    } */
+    catch (error) {
+      print(error);
+      //_showErrorDialog(error.toString());
     }
   }
 }
