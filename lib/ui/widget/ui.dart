@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:progress_dialog/progress_dialog.dart';
+import '../../utils/lang/app_localization.dart';
+import '../../utils/lang/app_localization_keys.dart';
 import '../../res/coolor.dart';
 
 Widget lineDivider() {
@@ -22,6 +25,32 @@ SnackBar createSnackBar(String message) {
   return SnackBar(content: Text(message));
 }
 
-void showSnackBar(SnackBar snackBar, GlobalKey<ScaffoldState> key){
+void showSnackBar(SnackBar snackBar, GlobalKey<ScaffoldState> key) {
   key.currentState.showSnackBar(snackBar);
+}
+
+ProgressDialog getProgress(BuildContext context, String message) {
+  /// reference 
+  /// https://medium.com/@fayaz07/progressdialog-in-flutter-817d36bd6eb1
+  /// 
+  var pr = new ProgressDialog(context,
+      type: ProgressDialogType.Normal, isDismissible: false, showLogs: false);
+
+  pr.style(
+      message: message,
+      progressWidget: Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: CircularProgressIndicator(
+          strokeWidth: 6,
+        ),
+      ),
+      insetAnimCurve: Curves.easeInOut,
+      messageTextStyle: TextStyle(
+          color: Coolor.BLACK, fontSize: 18.0, fontWeight: FontWeight.w600));
+  return pr;
+}
+
+ProgressDialog getPlzWaitProgress(
+    BuildContext context, AppLocalizations appLocal) {
+  return getProgress(context, appLocal.translate(LocalKeys.PLZ_WAIT));
 }

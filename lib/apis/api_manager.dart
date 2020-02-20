@@ -17,15 +17,19 @@ class ApiManager with ChangeNotifier {
       'rate': feedbackModel.rate,
       'comment': feedbackModel.comment,
     });
-    print(jsonBody);
 
     try {
       final response = await http.post(ApiKeys.feedbackUrl,
           headers: ApiKeys.getHeaders(), body: jsonBody);
 
-      print(response.body);
+      final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      if (extractedData == null) {
+        return false;
+      } else {
+        print("extracted:$extractedData");
+        return false;
+      }
       notifyListeners();
-      return true;
     } catch (error) {
       print(error.toString());
       return false;

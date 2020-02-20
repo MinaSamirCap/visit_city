@@ -58,4 +58,5 @@ class LocalKeys {
   static const ARCHEOLOGY = "archeology";
   static const CULTURE = "culture";
   static const ALL = "all";
+  static const PLZ_WAIT = "please_wait";
 }

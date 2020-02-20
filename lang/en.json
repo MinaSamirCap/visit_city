@@ -54,5 +54,6 @@
     "culture" : "Culture",
     "archeology" : "Archeology",
     "nature" : "Nature",
-    "all" : "All"
+    "all" : "All",
+    "please_wait" : "Please wait ..."
 }
