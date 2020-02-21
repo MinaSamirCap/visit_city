@@ -9,9 +9,9 @@ class FeedbackWrapper extends BaseWrapper {
       : super(info, messageModel);
 
   FeedbackWrapper.fromJson(Map<String, dynamic> json)
-      : data = json['data'],
+      : data = FeedbackResponse.fromJson(json['data']),
         super.fromJson(json);
 
   Map<String, dynamic> toJson() =>
-      {'data': data, 'info': info, 'message': message.toJson()};
+      {'data': data.toJson(), 'info': info, 'message': message.toJson()};
 }

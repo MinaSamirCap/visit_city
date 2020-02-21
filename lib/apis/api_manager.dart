@@ -17,12 +17,13 @@ class ApiManager with ChangeNotifier {
           headers: ApiKeys.getHeaders(),
           body: json.encode(feedbackModel.toJson()));
 
-      final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      Map extractedData = json.decode(response.body);
       if (extractedData == null) {
         return false;
       } else {
         print("extracted:$extractedData");
         FeedbackWrapper wrapper = FeedbackWrapper.fromJson(extractedData);
+        print('object ${wrapper.data.comment}');
         if (wrapper.info) {
           return true;
         } else {
