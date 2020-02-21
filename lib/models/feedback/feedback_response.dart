@@ -1,6 +1,4 @@
-import 'package:visit_city/models/base_response.dart';
-
-class FeedbackResponse extends BaseResponse {
+class FeedbackResponse {
   final int id;
   final int user;
   final int rate;
@@ -9,9 +7,7 @@ class FeedbackResponse extends BaseResponse {
   final String updatedAt;
 
   FeedbackResponse(this.id, this.user, this.rate, this.comment, this.createdAt,
-      this.updatedAt){
-        
-      }
+      this.updatedAt);
 
   FeedbackResponse.fromJson(Map<String, dynamic> json)
       : id = json['id'],

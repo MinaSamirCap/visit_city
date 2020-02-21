@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
 import '../../apis/api_manager.dart';
-import '../../models/feedback_model.dart';
+import '../../models/feedback/feedback_send_model.dart';
 import '../../ui/widget/ui.dart';
 import '../../res/assets_path.dart';
 import '../../res/sizes.dart';
@@ -198,7 +198,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
     try {
       progressDialog.show();
       await Provider.of<ApiManager>(context, listen: false)
-          .feedbackApi(FeedbackModel(rateId, _controller.text))
+          .feedbackApi(FeedbackSendModel(rateId, _controller.text))
           .then((isSuccess) {
         progressDialog.hide();
         if (isSuccess) Navigator.pop(context);
