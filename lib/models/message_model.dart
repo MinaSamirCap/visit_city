@@ -17,3 +17,4 @@ class MessageModel {
 
 /// reference
 /// https://flutter.dev/docs/development/data-and-backend/json
+/// https://www.raywenderlich.com/4038868-parsing-json-in-flutter
