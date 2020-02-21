@@ -13,3 +13,7 @@ class MessageModel {
   Map<String, dynamic> toJson() =>
       {'messageId': messageId, 'messageType': messageType, 'message': message};
 }
+
+
+/// reference
+/// https://flutter.dev/docs/development/data-and-backend/json
