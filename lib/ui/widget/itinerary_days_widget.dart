@@ -4,6 +4,7 @@ import '../../utils/lang/app_localization.dart';
 import '../../utils/lang/app_localization_keys.dart';
 import '../../res/coolor.dart';
 import '../../res/sizes.dart';
+import 'package:http/http.dart' as http;
 
 class ItineraryDaysWidget extends StatefulWidget
     implements PreferredSizeWidget {
@@ -19,6 +20,7 @@ class ItineraryDaysWidget extends StatefulWidget
 
 class _ItineraryDaysWidgetState extends State<ItineraryDaysWidget> {
   AppLocalizations _appLocal;
+
   @override
   Widget build(BuildContext context) {
     _appLocal = AppLocalizations.of(context);
