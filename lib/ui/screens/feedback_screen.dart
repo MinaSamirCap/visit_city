@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:visit_city/ui/widget/ui.dart';
+import 'package:progress_dialog/progress_dialog.dart';
+import 'package:provider/provider.dart';
+import '../../apis/api_manager.dart';
+import '../../models/feedback/feedback_send_model.dart';
+import '../../ui/widget/ui.dart';
 import '../../res/assets_path.dart';
 import '../../res/sizes.dart';
 import '../../res/coolor.dart';
@@ -25,11 +29,12 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
   int rateId = -1;
   TextEditingController _controller = TextEditingController();
   String _errorText;
-  String comment = "";
+  ProgressDialog progressDialog;
 
   @override
   Widget build(BuildContext context) {
     _appLocal = AppLocalizations.of(context);
+    progressDialog = getPlzWaitProgress(context, _appLocal);
     return Scaffold(
       key: _scaffoldKey,
       appBar: getAppBarWidget(),
@@ -181,9 +186,33 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
       setState(() {});
     } else {
       _errorText = null;
-      setState(() {});
-      /// call api .. :)
-      print("submit: ${_controller.text} rate: $rateId");
+      setState(() {
+        /// call api .. :)
+        callFeedbackApi();
+        //print("submit: ${_controller.text} rate: $rateId");
+      });
+    }
+  }
+
+  Future<void> callFeedbackApi() async {
+    try {
+      progressDialog.show();
+      await Provider.of<ApiManager>(context, listen: false)
+          .feedbackApi(FeedbackSendModel(rateId, _controller.text))
+          .then((isSuccess) {
+        progressDialog.hide();
+        if (isSuccess) Navigator.pop(context);
+      });
+    } /*on HttpException catch (error) {
+      var errorMessage = error;
+      
+      _showErrorDialog(errorMessage.toString());
+      print(errorMessage.toString());
+    } */
+    catch (error) {
+      print(error);
+      progressDialog.hide();
+      //_showErrorDialog(error.toString());
     }
   }
 }

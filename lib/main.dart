@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:visit_city/ui/screens/itinerary_details_screen.dart';
 
+import 'apis/api_manager.dart';
 import 'utils/lang/app_localization.dart';
 import 'apis/auth.dart';
 import 'res/coolor.dart';
@@ -21,9 +22,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider.value(
-          value: Auth(),
-        )
+        ChangeNotifierProvider.value(value: Auth(),),
+        ChangeNotifierProvider.value(value: ApiManager(),),
       ],
       child: Consumer<Auth>(
         builder: (context, auth, _) => MaterialApp(
