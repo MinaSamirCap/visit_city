@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http; // to avoid crashing with names ..
+import 'package:visit_city/models/category/category_wrapper.dart';
 import '../models/feedback/feedback_wrapper.dart';
 import '../models/message_model.dart';
 import '../models/feedback/feedback_send_model.dart';
@@ -22,6 +23,33 @@ class ApiManager with ChangeNotifier {
         return false;
       } else {
         FeedbackWrapper wrapper = FeedbackWrapper.fromJson(extractedData);
+        if (wrapper.info) {
+          success(wrapper);
+          return true;
+        } else {
+          fail(wrapper.message);
+          return false;
+        }
+      }
+    } catch (error) {
+      /// still not sure if it is working well or not
+      fail(checkErrorType(error));
+      return false;
+    }
+  }
+
+  Future<bool> categoriesApi(Function success, Function fail) async {
+    try {
+      final response =
+          await http.post(ApiKeys.categoriesUrl, headers: ApiKeys.getHeaders());
+
+      Map extractedData = json.decode(response.body);
+      if (extractedData == null) {
+        // decode error;
+        fail(MessageModel.getDecodeError());
+        return false;
+      } else {
+        CategoryWrapper wrapper = CategoryWrapper.fromJson(extractedData);
         if (wrapper.info) {
           success(wrapper);
           return true;

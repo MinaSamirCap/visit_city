@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:visit_city/res/assets_path.dart';
-import 'package:visit_city/ui/widget/ui.dart';
+import 'package:progress_dialog/progress_dialog.dart';
+import 'package:provider/provider.dart';
+import '../../apis/api_manager.dart';
+import '../../models/category/category_wrapper.dart';
+import '../../models/message_model.dart';
+import '../../res/assets_path.dart';
+import '../../ui/widget/ui.dart';
 import '../../res/coolor.dart';
 import '../../res/sizes.dart';
 import '../../utils/lang/app_localization.dart';
@@ -15,8 +20,10 @@ class ExploreWidget extends StatefulWidget {
 }
 
 class _ExploreWidgetState extends State<ExploreWidget> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   AppLocalizations _appLocal;
   double columnCellWidth = 0;
+  ProgressDialog progressDialog;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +31,10 @@ class _ExploreWidgetState extends State<ExploreWidget> {
     columnCellWidth = MediaQuery.of(context).size.width - imgeWidth - 30 - 10;
     print("Width ${MediaQuery.of(context).size.width}");
     print("ColumnWidth $columnCellWidth");
+    progressDialog = getPlzWaitProgress(context, _appLocal);
+    callCategoriesApi();
     return Scaffold(
+        key: _scaffoldKey,
         appBar: AppBar(
           backgroundColor: Coolor.FEEDBACK_OFF_WHITE,
           bottom: FilterWidget(FilterItem.getFilterList(_appLocal)),
@@ -195,5 +205,18 @@ class _ExploreWidgetState extends State<ExploreWidget> {
 
   TextStyle actionStyleItem() {
     return TextStyle(fontWeight: FontWeight.bold, fontSize: 17);
+  }
+
+  Future<void> callCategoriesApi() async {
+    progressDialog.show();
+    await Provider.of<ApiManager>(context, listen: false).categoriesApi(
+        (CategoryWrapper wrapper) {
+      progressDialog.hide();
+      showToast(wrapper.message.message);
+      Navigator.pop(context);
+    }, (MessageModel messageModel) {
+      progressDialog.hide();
+      showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
+    });
   }
 }
