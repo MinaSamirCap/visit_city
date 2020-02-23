@@ -18,7 +18,7 @@ class ApiKeys {
   static final enLang = "en";
 
   static String getLanguage() {
-    return arLang;
+    return enLang;
   }
 
   static String getToken() {

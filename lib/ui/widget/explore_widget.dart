@@ -25,14 +25,21 @@ class _ExploreWidgetState extends State<ExploreWidget> {
   double columnCellWidth = 0;
   ProgressDialog progressDialog;
 
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      callCategoriesApi();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     _appLocal = AppLocalizations.of(context);
+    progressDialog = getPlzWaitProgress(context, _appLocal);
     columnCellWidth = MediaQuery.of(context).size.width - imgeWidth - 30 - 10;
     print("Width ${MediaQuery.of(context).size.width}");
     print("ColumnWidth $columnCellWidth");
-    progressDialog = getPlzWaitProgress(context, _appLocal);
-    callCategoriesApi();
+
     return Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
@@ -212,8 +219,7 @@ class _ExploreWidgetState extends State<ExploreWidget> {
     await Provider.of<ApiManager>(context, listen: false).categoriesApi(
         (CategoryWrapper wrapper) {
       progressDialog.hide();
-      showToast(wrapper.message.message);
-      Navigator.pop(context);
+      
     }, (MessageModel messageModel) {
       progressDialog.hide();
       showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);

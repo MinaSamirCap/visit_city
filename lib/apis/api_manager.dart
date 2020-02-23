@@ -41,8 +41,9 @@ class ApiManager with ChangeNotifier {
   Future<bool> categoriesApi(Function success, Function fail) async {
     try {
       final response =
-          await http.post(ApiKeys.categoriesUrl, headers: ApiKeys.getHeaders());
+          await http.get(ApiKeys.categoriesUrl, headers: ApiKeys.getHeaders());
 
+      //print(response.body);
       Map extractedData = json.decode(response.body);
       if (extractedData == null) {
         // decode error;
