@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import '../../utils/lang/app_localization.dart';
 import '../../utils/lang/app_localization_keys.dart';
@@ -29,10 +30,24 @@ void showSnackBar(SnackBar snackBar, GlobalKey<ScaffoldState> key) {
   key.currentState.showSnackBar(snackBar);
 }
 
-ProgressDialog getProgress(BuildContext context, String message) {
+void showToast(String message) {
   /// reference 
-  /// https://medium.com/@fayaz07/progressdialog-in-flutter-817d36bd6eb1
+  /// https://pub.dev/packages/fluttertoast
   /// 
+  Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIos: 1,
+      backgroundColor: Coolor.BLACK,
+      textColor: Coolor.WHITE,
+      fontSize: 16.0);
+}
+
+ProgressDialog getProgress(BuildContext context, String message) {
+  /// reference
+  /// https://medium.com/@fayaz07/progressdialog-in-flutter-817d36bd6eb1
+  ///
   var pr = new ProgressDialog(context,
       type: ProgressDialogType.Normal, isDismissible: false, showLogs: false);
 

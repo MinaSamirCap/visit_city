@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
+import '../../models/feedback/feedback_wrapper.dart';
+import '../../models/message_model.dart';
 import '../../apis/api_manager.dart';
 import '../../models/feedback/feedback_send_model.dart';
 import '../../ui/widget/ui.dart';
@@ -195,24 +197,16 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
   }
 
   Future<void> callFeedbackApi() async {
-    try {
-      progressDialog.show();
-      await Provider.of<ApiManager>(context, listen: false)
-          .feedbackApi(FeedbackSendModel(rateId, _controller.text))
-          .then((isSuccess) {
-        progressDialog.hide();
-        if (isSuccess) Navigator.pop(context);
-      });
-    } /*on HttpException catch (error) {
-      var errorMessage = error;
-      
-      _showErrorDialog(errorMessage.toString());
-      print(errorMessage.toString());
-    } */
-    catch (error) {
-      print(error);
+    progressDialog.show();
+    await Provider.of<ApiManager>(context, listen: false).feedbackApi(
+        FeedbackSendModel(rateId, _controller.text), (FeedbackWrapper wrapper) {
       progressDialog.hide();
-      //_showErrorDialog(error.toString());
-    }
+      showToast(wrapper.message.message);
+      Navigator.pop(context);
+    }, (MessageModel messageModel) {
+      progressDialog.hide();
+      showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
+    });
   }
+
 }
