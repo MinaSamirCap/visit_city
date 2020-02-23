@@ -23,7 +23,7 @@ class ApiKeys {
   }
 
   static String getToken() {
-    return 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyLCJ1c2VyUm9sZSI6Im5vcm1hbCIsImlhdCI6MTU4MTc5NjgxNiwiZXhwIjoxNTgzMDkyODE2fQ.HEUxYZ905vH8za-EfQ-U1riCn1VHJUB4eYgK8Ozjoeo';
+    return 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..HEUxYZ905vH8za-EfQ-U1riCn1VHJUB4eYgK8Ozjoeo';
   }
 
   static final baseUrl = 'https://visit-fayoum.herokuapp.com/api/v1';
