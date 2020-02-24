@@ -43,10 +43,8 @@ class ApiManager with ChangeNotifier {
       final response =
           await http.get(ApiKeys.categoriesUrl, headers: ApiKeys.getHeaders());
 
-      //print(response.body);
       Map extractedData = json.decode(response.body);
       if (extractedData == null) {
-        // decode error;
         fail(MessageModel.getDecodeError());
         return false;
       } else {
@@ -60,7 +58,6 @@ class ApiManager with ChangeNotifier {
         }
       }
     } catch (error) {
-      /// still not sure if it is working well or not
       fail(checkErrorType(error));
       return false;
     }
