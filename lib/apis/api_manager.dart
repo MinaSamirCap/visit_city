@@ -36,7 +36,7 @@ class ApiManager with ChangeNotifier {
     });
   }
 
-  Future<void> categoriesApi(Function success, Function fail) async {
+  void categoriesApi(Function success, Function fail) async {
     await http
         .get(ApiKeys.categoriesUrl, headers: ApiKeys.getHeaders())
         .then((response) {

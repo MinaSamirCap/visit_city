@@ -216,7 +216,7 @@ class _ExploreWidgetState extends State<ExploreWidget> {
 
   void callCategoriesApi() async {
     progressDialog.show();
-    await Provider.of<ApiManager>(context, listen: false).categoriesApi(
+    Provider.of<ApiManager>(context, listen: false).categoriesApi(
         (CategoryWrapper wrapper) {
       progressDialog.hide();
       setState(() {
