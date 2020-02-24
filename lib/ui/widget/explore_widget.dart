@@ -45,9 +45,11 @@ class _ExploreWidgetState extends State<ExploreWidget> {
         key: _scaffoldKey,
         appBar: AppBar(
           backgroundColor: Coolor.FEEDBACK_OFF_WHITE,
-          bottom: /*filterList.length == 0
+          bottom:
+              /*filterList.length == 0
               ? null
-              : */FilterWidget(filterList),
+              : */
+              FilterWidget(filterList),
           title: searchWidget(),
         ),
         body: listWidget());
@@ -222,8 +224,9 @@ class _ExploreWidgetState extends State<ExploreWidget> {
     await Provider.of<ApiManager>(context, listen: false).categoriesApi(
         (CategoryWrapper wrapper) {
       progressDialog.hide();
+      filterList = FilterItem.getFilterList(wrapper.data, _appLocal);
       setState(() {
-        filterList = FilterItem.getFilterList(wrapper.data);
+        
       });
     }, (MessageModel messageModel) {
       progressDialog.hide();

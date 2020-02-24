@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:visit_city/utils/lang/app_localization.dart';
 import '../../models/category/category_response.dart';
 import '../../res/coolor.dart';
 import '../../res/sizes.dart';
@@ -76,11 +77,18 @@ class FilterItem {
 
   FilterItem({@required this.category, this.isSelected});
 
-  static List<FilterItem> getFilterList(List<CategoryResponse> list) {
+  static List<FilterItem> getFilterList(
+      List<CategoryResponse> list, AppLocalizations appLocal) {
     List<FilterItem> filterList = list.map((item) {
-      FilterItem(category: item, isSelected: false);
+      return FilterItem(category: item, isSelected: false);
     }).toList();
-    filterList[0].isSelected = true;
+    filterList.insert(0, getAllFilterItem(appLocal));
     return filterList;
+  }
+
+  static FilterItem getAllFilterItem(AppLocalizations appLocal) {
+    return FilterItem(
+        category: CategoryResponse.getAllNameCategory(appLocal),
+        isSelected: true);
   }
 }

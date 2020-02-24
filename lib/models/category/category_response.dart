@@ -1,3 +1,6 @@
+import 'package:visit_city/utils/lang/app_localization.dart';
+import 'package:visit_city/utils/lang/app_localization_keys.dart';
+
 class CategoryResponse {
   final int id;
   final String name;
@@ -7,8 +10,8 @@ class CategoryResponse {
   final String createdAt;
   final String updatedAt;
 
-  CategoryResponse(this.id, this.name, this.nameAr, this.nameEn,this.logo, this.createdAt,
-      this.updatedAt);
+  CategoryResponse(this.id, this.name, this.nameAr, this.nameEn, this.logo,
+      this.createdAt, this.updatedAt);
 
   CategoryResponse.fromJson(Map<String, dynamic> json)
       : id = json['id'],
@@ -28,4 +31,9 @@ class CategoryResponse {
         'createdAt': createdAt,
         'updatedAt': updatedAt
       };
+
+  static CategoryResponse getAllNameCategory(AppLocalizations appLocal) {
+    return CategoryResponse(0, appLocal.translate(LocalKeys.ALL), "noName",
+        "noName", "noName", "noName", "noName");
+  }
 }

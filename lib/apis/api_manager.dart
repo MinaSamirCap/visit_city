@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http; // to avoid crashing with names ..
+import 'package:visit_city/models/category/category_response.dart';
 import 'package:visit_city/models/category/category_wrapper.dart';
 import '../models/feedback/feedback_wrapper.dart';
 import '../models/message_model.dart';
@@ -51,7 +52,6 @@ class ApiManager with ChangeNotifier {
         CategoryWrapper wrapper = CategoryWrapper.fromJson(extractedData);
         if (wrapper.info) {
           success(wrapper);
-          print(wrapper.data);
           return true;
         } else {
           fail(wrapper.message);
