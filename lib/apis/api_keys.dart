@@ -28,4 +28,5 @@ class ApiKeys {
   static final baseUrl = 'https://visit-fayoum.herokuapp.com/api/v1';
   static final feedbackUrl = baseUrl + "/feedbacks";
   static final categoriesUrl = baseUrl + "/categories";
+  static final exploreUrl = baseUrl + "/services-explored?";
 }

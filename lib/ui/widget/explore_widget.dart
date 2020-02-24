@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
+import '../../models/explore/explore_wrapper.dart';
 import '../../apis/api_manager.dart';
 import '../../models/category/category_wrapper.dart';
 import '../../models/message_model.dart';
@@ -221,9 +222,23 @@ class _ExploreWidgetState extends State<ExploreWidget> {
       progressDialog.hide();
       setState(() {
         filterList = FilterItem.getFilterList(wrapper.data, _appLocal);
+        callExploreApi();
       });
     }, (MessageModel messageModel) {
       progressDialog.hide();
+      showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
+    });
+  }
+
+  void callExploreApi() async {
+    //progressDialog.show();
+    Provider.of<ApiManager>(context, listen: false).exploreApi("",
+        (ExploreWrapper wrapper) {
+      print(wrapper.toJson());
+      //progressDialog.hide();
+      setState(() {});
+    }, (MessageModel messageModel) {
+      //progressDialog.hide();
       showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
     });
   }

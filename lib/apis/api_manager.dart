@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http; // to avoid crashing with names ..
+import '../models/explore/explore_wrapper.dart';
 import '../models/category/category_wrapper.dart';
 import '../models/feedback/feedback_wrapper.dart';
 import '../models/message_model.dart';
@@ -46,6 +47,28 @@ class ApiManager with ChangeNotifier {
         return false;
       } else {
         CategoryWrapper wrapper = CategoryWrapper.fromJson(extractedData);
+        if (wrapper.info) {
+          success(wrapper);
+          return true;
+        } else {
+          fail(wrapper.message);
+          return false;
+        }
+      }
+    }).catchError((onError) {
+      fail(checkErrorType(onError));
+    });
+  }
+
+  void exploreApi(String query, Function success, Function fail) async {
+    final finalUrl = ApiKeys.exploreUrl + query + "category=1,2";
+    await http.get(finalUrl, headers: ApiKeys.getHeaders()).then((response) {
+      Map extractedData = json.decode(response.body);
+      if (extractedData == null) {
+        fail(MessageModel.getDecodeError());
+        return false;
+      } else {
+        ExploreWrapper wrapper = ExploreWrapper.fromJson(extractedData);
         if (wrapper.info) {
           success(wrapper);
           return true;
