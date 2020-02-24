@@ -27,10 +27,10 @@ class _ExploreWidgetState extends State<ExploreWidget> {
   ProgressDialog progressDialog;
 
   void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    Future.delayed(Duration.zero).then((_) {
       callCategoriesApi();
     });
+    super.initState();
   }
 
   @override
@@ -45,11 +45,7 @@ class _ExploreWidgetState extends State<ExploreWidget> {
         key: _scaffoldKey,
         appBar: AppBar(
           backgroundColor: Coolor.FEEDBACK_OFF_WHITE,
-          bottom:
-              /*filterList.length == 0
-              ? null
-              : */
-              FilterWidget(filterList),
+          bottom: FilterWidget(filterList),
           title: searchWidget(),
         ),
         body: listWidget());
@@ -219,14 +215,13 @@ class _ExploreWidgetState extends State<ExploreWidget> {
     return TextStyle(fontWeight: FontWeight.bold, fontSize: 17);
   }
 
-  Future<void> callCategoriesApi() async {
+  void callCategoriesApi() async {
     progressDialog.show();
-    await Provider.of<ApiManager>(context, listen: false).categoriesApi(
+    Provider.of<ApiManager>(context, listen: false).categoriesApi(
         (CategoryWrapper wrapper) {
       progressDialog.hide();
-      filterList = FilterItem.getFilterList(wrapper.data, _appLocal);
       setState(() {
-        
+        filterList = FilterItem.getFilterList(wrapper.data, _appLocal);
       });
     }, (MessageModel messageModel) {
       progressDialog.hide();

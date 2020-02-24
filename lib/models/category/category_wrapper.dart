@@ -8,15 +8,15 @@ class CategoryWrapper extends BaseWrapper {
   CategoryWrapper(this.data, bool info, MessageModel messageModel)
       : super(info, messageModel);
 
-  CategoryWrapper.fromJson(Map<String, dynamic> json)
-      : data = (json['data'] as List).map((item) {
-          return CategoryResponse.fromJson(item);
-        }).toList(),
-        super.fromJson(json);
+  CategoryWrapper.fromJson(Map<String, dynamic> json) : super.fromJson(json) {
+    data = (json['data'] as List).map((item) {
+      return CategoryResponse.fromJson(item);
+    }).toList();
+  }
 
   Map<String, dynamic> toJson() => {
         'data': data.map((item) {
-          item.toJson();
+          return item.toJson();
         }).toList(),
         'info': info,
         'message': message.toJson()

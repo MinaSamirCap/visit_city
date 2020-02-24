@@ -9,13 +9,13 @@ import 'dart:convert';
 import 'api_keys.dart';
 
 class ApiManager with ChangeNotifier {
-  Future<bool> feedbackApi(
+  void feedbackApi(
       FeedbackSendModel feedbackModel, Function success, Function fail) async {
-    try {
-      final response = await http.post(ApiKeys.feedbackUrl,
-          headers: ApiKeys.getHeaders(),
-          body: json.encode(feedbackModel.toJson()));
-
+    await http
+        .post(ApiKeys.feedbackUrl,
+            headers: ApiKeys.getHeaders(),
+            body: json.encode(feedbackModel.toJson()))
+        .then((response) {
       Map extractedData = json.decode(response.body);
       if (extractedData == null) {
         // decode error;
@@ -31,18 +31,16 @@ class ApiManager with ChangeNotifier {
           return false;
         }
       }
-    } catch (error) {
-      /// still not sure if it is working well or not
-      fail(checkErrorType(error));
-      return false;
-    }
+    }).catchError((onError) {
+      fail(checkErrorType(onError));
+    });
   }
 
-  Future<bool> categoriesApi(Function success, Function fail) async {
-    try {
-      final response =
-          await http.get(ApiKeys.categoriesUrl, headers: ApiKeys.getHeaders());
-
+  void categoriesApi(Function success, Function fail) async {
+    await http
+        .get(ApiKeys.categoriesUrl, headers: ApiKeys.getHeaders())
+        .then((response) {
+      print("RESPOSE: ${response.body}");
       Map extractedData = json.decode(response.body);
       if (extractedData == null) {
         fail(MessageModel.getDecodeError());
@@ -57,10 +55,9 @@ class ApiManager with ChangeNotifier {
           return false;
         }
       }
-    } catch (error) {
-      fail(checkErrorType(error));
-      return false;
-    }
+    }).catchError((onError) {
+      fail(checkErrorType(onError));
+    });
   }
 
   MessageModel checkErrorType(Error error) {

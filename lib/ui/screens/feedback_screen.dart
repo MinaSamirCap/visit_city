@@ -196,9 +196,9 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
     }
   }
 
-  Future<void> callFeedbackApi() async {
+  void callFeedbackApi() async {
     progressDialog.show();
-    await Provider.of<ApiManager>(context, listen: false).feedbackApi(
+    Provider.of<ApiManager>(context, listen: false).feedbackApi(
         FeedbackSendModel(rateId, _controller.text), (FeedbackWrapper wrapper) {
       progressDialog.hide();
       showToast(wrapper.message.message);
@@ -208,5 +208,4 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
       showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
     });
   }
-
 }
