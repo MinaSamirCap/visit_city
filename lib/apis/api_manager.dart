@@ -51,6 +51,7 @@ class ApiManager with ChangeNotifier {
         CategoryWrapper wrapper = CategoryWrapper.fromJson(extractedData);
         if (wrapper.info) {
           success(wrapper);
+          print(wrapper.data);
           return true;
         } else {
           fail(wrapper.message);

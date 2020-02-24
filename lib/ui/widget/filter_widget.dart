@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import '../../models/category/category_response.dart';
 import '../../res/coolor.dart';
 import '../../res/sizes.dart';
-import '../../utils/lang/app_localization.dart';
-import '../../utils/lang/app_localization_keys.dart';
 
 class FilterWidget extends StatefulWidget implements PreferredSizeWidget {
   final List<FilterItem> _filterList;
@@ -46,14 +45,14 @@ class _FilterWidgetState extends State<FilterWidget> {
   Widget filterItemWidget(FilterItem item) {
     return RaisedButton(
         onPressed: () {
-          if (widget._filterList[0].title == item.title && !item.isSelected) {
+          if (widget._filterList[0].category.name == item.category.name &&
+              !item.isSelected) {
             widget._filterList.forEach((item) {
               item.isSelected = false;
             });
           }
           item.isSelected = !item.isSelected;
           setState(() {});
-          print(item.title);
           selectedItem(item);
         },
         shape: RoundedRectangleBorder(
@@ -63,7 +62,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                 : BorderSide(color: Coolor.GREY)),
         color: item.isSelected ? Coolor.BLUE_APP : Coolor.FEEDBACK_OFF_WHITE,
         textColor: item.isSelected ? Coolor.WHITE : Coolor.GREY,
-        child: Text(item.title));
+        child: Text(item.category.name));
   }
 
   void selectedItem(FilterItem item) {
@@ -73,27 +72,15 @@ class _FilterWidgetState extends State<FilterWidget> {
 
 class FilterItem {
   bool isSelected = false;
-  String title;
+  CategoryResponse category;
 
-  FilterItem({@required this.title, this.isSelected});
+  FilterItem({@required this.category, this.isSelected});
 
-  static List<FilterItem> getFilterList(AppLocalizations appLocale) {
-    return [
-      FilterItem(title: appLocale.translate(LocalKeys.ALL), isSelected: true),
-      FilterItem(
-          title: appLocale.translate(LocalKeys.WISHLIST), isSelected: false),
-      FilterItem(
-          title: appLocale.translate(LocalKeys.PROFILE), isSelected: false),
-      FilterItem(
-          title: appLocale.translate(LocalKeys.FEEDBACK), isSelected: false),
-      FilterItem(
-          title: appLocale.translate(LocalKeys.LOGOUT), isSelected: false),
-      FilterItem(
-          title: appLocale.translate(LocalKeys.LOGOUT), isSelected: false),
-      FilterItem(
-          title: appLocale.translate(LocalKeys.LOGOUT), isSelected: false),
-      FilterItem(
-          title: appLocale.translate(LocalKeys.LOGOUT), isSelected: false),
-    ];
+  static List<FilterItem> getFilterList(List<CategoryResponse> list) {
+    List<FilterItem> filterList = list.map((item) {
+      FilterItem(category: item, isSelected: false);
+    }).toList();
+    filterList[0].isSelected = true;
+    return filterList;
   }
 }

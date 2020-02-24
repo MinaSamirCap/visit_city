@@ -9,7 +9,7 @@ class CategoryWrapper extends BaseWrapper {
       : super(info, messageModel);
 
   CategoryWrapper.fromJson(Map<String, dynamic> json)
-      : data = (json['data'] as Iterable).map((item) {
+      : data = (json['data'] as List).map((item) {
           CategoryResponse.fromJson(item);
         }).toList(),
         super.fromJson(json);
@@ -17,7 +17,7 @@ class CategoryWrapper extends BaseWrapper {
   Map<String, dynamic> toJson() => {
         'data': data.map((item) {
           item.toJson();
-        }),
+        }).toList(),
         'info': info,
         'message': message.toJson()
       };

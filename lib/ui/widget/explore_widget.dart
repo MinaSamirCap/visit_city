@@ -21,6 +21,7 @@ class ExploreWidget extends StatefulWidget {
 
 class _ExploreWidgetState extends State<ExploreWidget> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  List<FilterItem> filterList = [];
   AppLocalizations _appLocal;
   double columnCellWidth = 0;
   ProgressDialog progressDialog;
@@ -44,7 +45,9 @@ class _ExploreWidgetState extends State<ExploreWidget> {
         key: _scaffoldKey,
         appBar: AppBar(
           backgroundColor: Coolor.FEEDBACK_OFF_WHITE,
-          bottom: FilterWidget(FilterItem.getFilterList(_appLocal)),
+          bottom: /*filterList.length == 0
+              ? null
+              : */FilterWidget(filterList),
           title: searchWidget(),
         ),
         body: listWidget());
@@ -219,7 +222,9 @@ class _ExploreWidgetState extends State<ExploreWidget> {
     await Provider.of<ApiManager>(context, listen: false).categoriesApi(
         (CategoryWrapper wrapper) {
       progressDialog.hide();
-      
+      setState(() {
+        filterList = FilterItem.getFilterList(wrapper.data);
+      });
     }, (MessageModel messageModel) {
       progressDialog.hide();
       showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
