@@ -36,11 +36,10 @@ class ApiManager with ChangeNotifier {
     });
   }
 
-  void categoriesApi(Function success, Function fail) async {
+  Future<void> categoriesApi(Function success, Function fail) async {
     await http
         .get(ApiKeys.categoriesUrl, headers: ApiKeys.getHeaders())
         .then((response) {
-      print("RESPOSE: ${response.body}");
       Map extractedData = json.decode(response.body);
       if (extractedData == null) {
         fail(MessageModel.getDecodeError());

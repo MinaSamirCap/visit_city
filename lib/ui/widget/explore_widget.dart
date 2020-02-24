@@ -40,12 +40,11 @@ class _ExploreWidgetState extends State<ExploreWidget> {
     columnCellWidth = MediaQuery.of(context).size.width - imgeWidth - 30 - 10;
     print("Width ${MediaQuery.of(context).size.width}");
     print("ColumnWidth $columnCellWidth");
-
     return Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
           backgroundColor: Coolor.FEEDBACK_OFF_WHITE,
-          bottom: FilterWidget(filterList),
+          bottom: FilterWidget(filterList, allIsSelected, selectedFilters),
           title: searchWidget(),
         ),
         body: listWidget());
@@ -217,7 +216,7 @@ class _ExploreWidgetState extends State<ExploreWidget> {
 
   void callCategoriesApi() async {
     progressDialog.show();
-    Provider.of<ApiManager>(context, listen: false).categoriesApi(
+    await Provider.of<ApiManager>(context, listen: false).categoriesApi(
         (CategoryWrapper wrapper) {
       progressDialog.hide();
       setState(() {
@@ -227,5 +226,14 @@ class _ExploreWidgetState extends State<ExploreWidget> {
       progressDialog.hide();
       showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
     });
+  }
+
+  void allIsSelected() {
+    print("All is selected");
+  }
+
+  void selectedFilters(List<FilterItem> list) {
+    print("Selected Filters");
+    list.forEach((item) => print(item.category.toJson()));
   }
 }

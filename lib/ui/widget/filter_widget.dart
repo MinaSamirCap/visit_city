@@ -6,8 +6,10 @@ import '../../res/sizes.dart';
 
 class FilterWidget extends StatefulWidget implements PreferredSizeWidget {
   final List<FilterItem> _filterList;
+  final Function _allSelected;
+  final Function _selectedItems;
 
-  FilterWidget(this._filterList);
+  FilterWidget(this._filterList, this._allSelected, this._selectedItems);
 
   @override
   _FilterWidgetState createState() => _FilterWidgetState();
@@ -46,15 +48,33 @@ class _FilterWidgetState extends State<FilterWidget> {
   Widget filterItemWidget(FilterItem item) {
     return RaisedButton(
         onPressed: () {
-          if (widget._filterList[0].category.name == item.category.name &&
-              !item.isSelected) {
+          /// reset all filter to false if we selected all
+          if (isFirstItemInList(item) && !item.isSelected) {
             widget._filterList.forEach((item) {
               item.isSelected = false;
             });
+
+            /// means all is selected
+            setState(() {
+              widget._filterList[0].isSelected = true;
+              widget._allSelected();
+            });
+          } else {
+            if (isFirstItemInList(item)) {
+              setState(() {
+                widget._filterList[0].isSelected = false;
+              });
+            } else {
+              item.isSelected = !item.isSelected;
+              deSelectFirstItem();
+              final selecedItems = widget._filterList.where((item) {
+                return item.isSelected;
+              }).toList();
+              setState(() {
+                widget._selectedItems(selecedItems);
+              });
+            }
           }
-          item.isSelected = !item.isSelected;
-          setState(() {});
-          selectedItem(item);
         },
         shape: RoundedRectangleBorder(
             borderRadius: Sizes.BOR_RAD_18,
@@ -68,6 +88,14 @@ class _FilterWidgetState extends State<FilterWidget> {
 
   void selectedItem(FilterItem item) {
     //// you can call api here or outside.
+  }
+
+  bool isFirstItemInList(FilterItem item) {
+    return widget._filterList.indexOf(item) == 0;
+  }
+
+  void deSelectFirstItem() {
+    widget._filterList[0].isSelected = false;
   }
 }
 
