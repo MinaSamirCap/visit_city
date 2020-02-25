@@ -3,6 +3,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:visit_city/models/explore/explore_response.dart';
+import 'package:visit_city/ui/widget/explore_cell_widget.dart';
 import 'package:visit_city/utils/lang/app_localization_keys.dart';
 import '../../models/explore/explore_model.dart';
 import '../../models/explore/explore_wrapper.dart';
@@ -192,34 +193,16 @@ class _ExploreWidgetState extends State<ExploreWidget> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              Column(
-                children: <Widget>[
-                  InkWell(
-                    child: Icon(Icons.navigation),
-                    onTap: () {
-                      print("go clicked");
-                    },
-                  ),
-                  Text("Go", style: actionStyleItem())
-                ],
-              ),
-              Column(
-                children: <Widget>[
-                  Icon(Icons.access_time),
-                  Text("Closed", style: actionStyleItem())
-                ],
-              ),
-              Column(
-                children: <Widget>[
-                  InkWell(
-                    child: Icon(Icons.favorite_border),
-                    onTap: () {
-                      print("favorite clicked");
-                    },
-                  ),
-                  Text("", style: actionStyleItem())
-                ],
-              )
+              ExploreCellWidget(
+                  _appLocal.translate(LocalKeys.GO), Icons.near_me, () {
+                print("go clicked");
+              }),
+              ExploreCellWidget("${model.openHours.from} ${model.openHours.to}", Icons.access_time, () {
+                print("time clicked");
+              }),
+              ExploreCellWidget("", Icons.favorite_border, () {
+                print("favorite clicked");
+              }),
             ],
           ),
         )
@@ -246,7 +229,7 @@ class _ExploreWidgetState extends State<ExploreWidget> {
   }
 
   TextStyle actionStyleItem() {
-    return TextStyle(fontWeight: FontWeight.bold, fontSize: 17);
+    return TextStyle(fontWeight: FontWeight.w700, fontSize: 15);
   }
 
   void callCategoriesApi() async {
