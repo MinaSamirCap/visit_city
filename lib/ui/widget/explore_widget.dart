@@ -23,14 +23,21 @@ class ExploreWidget extends StatefulWidget {
 
 class _ExploreWidgetState extends State<ExploreWidget> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
+  double columnCellWidth = 0;
+
   List<FilterItem> filterList = [];
   List<ExploreModel> exploreList = [];
+
   AppLocalizations _appLocal;
-  double columnCellWidth = 0;
-  ProgressDialog progressDialog;
+  ProgressDialog _progressDialog;
+  ApiManager _apiManager;
 
   void initState() {
     Future.delayed(Duration.zero).then((_) {
+      _appLocal = AppLocalizations.of(context);
+      _progressDialog = getPlzWaitProgress(context, _appLocal);
+      _apiManager = Provider.of<ApiManager>(context, listen: false);
       callCategoriesApi();
     });
     super.initState();
@@ -38,8 +45,6 @@ class _ExploreWidgetState extends State<ExploreWidget> {
 
   @override
   Widget build(BuildContext context) {
-    _appLocal = AppLocalizations.of(context);
-    progressDialog = getPlzWaitProgress(context, _appLocal);
     columnCellWidth = MediaQuery.of(context).size.width - imgeWidth - 30 - 10;
     print("Width ${MediaQuery.of(context).size.width}");
     print("ColumnWidth $columnCellWidth");
@@ -219,32 +224,27 @@ class _ExploreWidgetState extends State<ExploreWidget> {
   }
 
   void callCategoriesApi() async {
-    progressDialog.show();
-    Provider.of<ApiManager>(context, listen: false).categoriesApi(
-        (CategoryWrapper wrapper) {
-      progressDialog.hide();
+    _progressDialog.show();
+    _apiManager.categoriesApi((CategoryWrapper wrapper) {
+      _progressDialog.hide();
       setState(() {
         filterList = FilterItem.getFilterList(wrapper.data, _appLocal);
         callExploreApi();
       });
     }, (MessageModel messageModel) {
-      progressDialog.hide();
+      _progressDialog.hide();
       showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
     });
   }
 
   void callExploreApi() async {
-    //progressDialog.show();
-    Provider.of<ApiManager>(context, listen: false).exploreApi("",
-        (ExploreWrapper wrapper) {
+    _apiManager.exploreApi("", (ExploreWrapper wrapper) {
       print("WRAPPER: ${wrapper.toJson()}");
-      wrapper.data.docs.forEach((item) => print("TTTTTTT: ${item.toJson()}"));
-      //progressDialog.hide();
+      //wrapper.data.docs.forEach((item) => print("TTTTTTT: ${item.toJson()}"));
       setState(() {
         exploreList.addAll(wrapper.data.docs);
       });
     }, (MessageModel messageModel) {
-      //progressDialog.hide();
       showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
     });
   }
