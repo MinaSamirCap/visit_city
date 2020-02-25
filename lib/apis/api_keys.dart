@@ -21,6 +21,7 @@ class ApiKeys {
   static final limitKey = "limit";
   static final limitValue = "15";
   static final pageKey = "page";
+  static final categoryKey = "category";
 
   static String getLanguage() {
     return enLang;

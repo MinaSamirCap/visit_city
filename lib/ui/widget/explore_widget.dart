@@ -44,10 +44,15 @@ class _ExploreWidgetState extends State<ExploreWidget> {
     Future.delayed(Duration.zero).then((_) {
       _progressDialog = getPlzWaitProgress(context, _appLocal);
       _apiManager = Provider.of<ApiManager>(context, listen: false);
-      _pagingInfo = ExploreResponse.clearPagin();
+      clearPaging();
       callCategoriesApi();
     });
     super.initState();
+  }
+
+  void clearPaging() {
+    exploreList.clear();
+    _pagingInfo = ExploreResponse.clearPagin();
   }
 
   @override
@@ -181,7 +186,7 @@ class _ExploreWidgetState extends State<ExploreWidget> {
               Padding(
                 padding: const EdgeInsetsDirectional.fromSTEB(0, 5, 10, 0),
                 child: Text(
-                  "@@##%",
+                  model.price,
                   style: TextStyle(color: Coolor.BLUE_APP),
                 ),
               )
@@ -250,8 +255,9 @@ class _ExploreWidgetState extends State<ExploreWidget> {
     });
   }
 
-  void callExploreApi() async {
-    _apiManager.exploreApi(_pagingInfo.page + 1, "", (ExploreWrapper wrapper) {
+  void callExploreApi({String query = ""}) async {
+    _apiManager.exploreApi(_pagingInfo.page + 1, query,
+        (ExploreWrapper wrapper) {
       print("WRAPPER: ${wrapper.toJson()}");
       //wrapper.data.docs.forEach((item) => print("TTTTTTT: ${item.toJson()}"));
       setState(() {
@@ -273,12 +279,17 @@ class _ExploreWidgetState extends State<ExploreWidget> {
   }
 
   void allIsSelected() {
-    print("All is selected");
+    clearPaging();
+    callExploreApi();
   }
 
   void selectedFilters(List<FilterItem> list) {
     print("Selected Filters");
     list.forEach((item) => print(item.category.toJson()));
+    list.forEach((item) {});
+    clearPaging();
+    List ids = list.map((item) => item.category.id.toString()).toList();
+    callExploreApi(query: ids.join(","));
   }
 
   bool shouldLoadMore(ScrollNotification scrollInfo) {

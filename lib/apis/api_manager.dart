@@ -60,10 +60,12 @@ class ApiManager with ChangeNotifier {
     });
   }
 
-  void exploreApi(
-      int pageNum, String query, Function success, Function fail) async {
+  String generateExploreUrl(int pageNum, String query) {
     /// /services-explored? + limit=15 + &page=1 +"category=1,2&page=2"
-    final finalUrl = ApiKeys.exploreUrl +
+    if (query.isNotEmpty) {
+      query = ApiKeys.categoryKey + "=" + query;
+    }
+    return ApiKeys.exploreUrl +
         ApiKeys.limitKey +
         "=" +
         ApiKeys.limitValue +
@@ -73,8 +75,13 @@ class ApiManager with ChangeNotifier {
         pageNum.toString() +
         "&" +
         query;
-    print(finalUrl);
-    await http.get(finalUrl, headers: ApiKeys.getHeaders()).then((response) {
+  }
+
+  void exploreApi(
+      int pageNum, String query, Function success, Function fail) async {
+    await http
+        .get(generateExploreUrl(pageNum, query), headers: ApiKeys.getHeaders())
+        .then((response) {
       Map extractedData = json.decode(response.body);
       if (extractedData == null) {
         fail(MessageModel.getDecodeError());
