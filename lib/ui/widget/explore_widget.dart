@@ -136,8 +136,7 @@ class _ExploreWidgetState extends State<ExploreWidget> {
     // I am sure it is working tested on real device ...
     return FadeInImage.assetNetwork(
       placeholder: AssPath.APP_LOGO,
-      image:
-          "https://www.telegraph.co.uk/content/dam/Travel/Destinations/Europe/acropolis-athens-medium.jpg",
+      image: model.photos.isEmpty ? "" : model.photos[0],
       height: double.infinity,
       width: imgeWidth,
       fit: BoxFit.cover,
