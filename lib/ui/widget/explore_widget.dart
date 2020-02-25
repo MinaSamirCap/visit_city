@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
+import 'package:visit_city/general/general.dart';
 import 'package:visit_city/models/explore/explore_response.dart';
 import 'package:visit_city/ui/widget/explore_cell_widget.dart';
 import 'package:visit_city/utils/lang/app_localization_keys.dart';
@@ -195,11 +196,12 @@ class _ExploreWidgetState extends State<ExploreWidget> {
             children: <Widget>[
               ExploreCellWidget(
                   _appLocal.translate(LocalKeys.GO), Icons.near_me, () {
-                print("go clicked");
+                if (model.location.isNotEmpty && model.location.length == 2) {
+                  launchMap(model.location[0], model.location[1]);
+                }
               }),
-              ExploreCellWidget("${model.openHours.from} ${model.openHours.to}", Icons.access_time, () {
-                print("time clicked");
-              }),
+              ExploreCellWidget("${model.openHours.from} ${model.openHours.to}",
+                  Icons.access_time, () {}),
               ExploreCellWidget("", Icons.favorite_border, () {
                 print("favorite clicked");
               }),
