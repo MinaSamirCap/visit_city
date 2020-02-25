@@ -61,7 +61,7 @@ class ApiManager with ChangeNotifier {
   }
 
   void exploreApi(String query, Function success, Function fail) async {
-    final finalUrl = ApiKeys.exploreUrl + query + "category=1,2";
+    final finalUrl = ApiKeys.exploreUrl + query + "category=1,2&page=2";
     await http.get(finalUrl, headers: ApiKeys.getHeaders()).then((response) {
       Map extractedData = json.decode(response.body);
       if (extractedData == null) {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
+import '../../models/explore/explore_model.dart';
 import '../../models/explore/explore_wrapper.dart';
 import '../../apis/api_manager.dart';
 import '../../models/category/category_wrapper.dart';
@@ -23,6 +24,7 @@ class ExploreWidget extends StatefulWidget {
 class _ExploreWidgetState extends State<ExploreWidget> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   List<FilterItem> filterList = [];
+  List<ExploreModel> exploreList = [];
   AppLocalizations _appLocal;
   double columnCellWidth = 0;
   ProgressDialog progressDialog;
@@ -70,18 +72,19 @@ class _ExploreWidgetState extends State<ExploreWidget> {
       itemBuilder: (ctx, index) {
         return exploreItemWidget(index);
       },
-      itemCount: 18,
+      itemCount: exploreList.length,
     );
   }
 
   Widget exploreItemWidget(int index) {
+    ExploreModel model = exploreList[index];
     return Card(
         shape: RoundedRectangleBorder(borderRadius: Sizes.BOR_RAD_20),
         child: ClipRRect(
           borderRadius: Sizes.BOR_RAD_20,
           child: InkWell(
             onTap: () {
-              print("object$index");
+              print("object${model.name}");
             },
             child: Container(
               height: 170,
@@ -89,14 +92,14 @@ class _ExploreWidgetState extends State<ExploreWidget> {
                   borderRadius: Sizes.BOR_RAD_20,
                   border: Border.all(color: Coolor.GREY, width: 1)),
               child: Row(
-                children: <Widget>[imageWidget(), halfExporeWidget()],
+                children: <Widget>[imageWidget(model), halfExporeWidget(model)],
               ),
             ),
           ),
         ));
   }
 
-  Widget imageWidget() {
+  Widget imageWidget(ExploreModel model) {
     // I am sure it is working tested on real device ...
     return FadeInImage.assetNetwork(
       placeholder: AssPath.APP_LOGO,
@@ -109,14 +112,14 @@ class _ExploreWidgetState extends State<ExploreWidget> {
     );
   }
 
-  Widget halfExporeWidget() {
+  Widget halfExporeWidget(ExploreModel model) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Padding(
           padding: const EdgeInsetsDirectional.fromSTEB(10, 10, 0, 0),
           child: Text(
-            "Mina",
+            model.name,
             style: TextStyle(fontSize: 20),
           ),
         ),
@@ -234,9 +237,12 @@ class _ExploreWidgetState extends State<ExploreWidget> {
     //progressDialog.show();
     Provider.of<ApiManager>(context, listen: false).exploreApi("",
         (ExploreWrapper wrapper) {
-      print(wrapper.toJson());
+      print("WRAPPER: ${wrapper.toJson()}");
+      wrapper.data.docs.forEach((item) => print("TTTTTTT: ${item.toJson()}"));
       //progressDialog.hide();
-      setState(() {});
+      setState(() {
+        exploreList.addAll(wrapper.data.docs);
+      });
     }, (MessageModel messageModel) {
       //progressDialog.hide();
       showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);

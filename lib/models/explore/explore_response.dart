@@ -1,5 +1,7 @@
+import 'package:visit_city/models/explore/explore_model.dart';
+
 class ExploreResponse {
-  List data;
+  List<ExploreModel> docs;
   final int totalDocs;
   final int limit;
   final int totalPages;
@@ -11,7 +13,7 @@ class ExploreResponse {
   final int nextPage;
 
   ExploreResponse(
-      this.data,
+      this.docs,
       this.totalDocs,
       this.limit,
       this.totalPages,
@@ -31,7 +33,10 @@ class ExploreResponse {
         hasPrevPage = json['hasPrevPage'],
         hasNextPage = json['hasNextPage'],
         prevPage = json['prevPage'],
-        nextPage = json['nextPage'];
+        nextPage = json['nextPage'],
+        docs = (json['docs'] as List).map((item) {
+          return ExploreModel.fromJson(item);
+        }).toList();
 
   Map<String, dynamic> toJson() => {
         'totalDocs': totalDocs,
@@ -42,6 +47,9 @@ class ExploreResponse {
         'hasPrevPage': hasPrevPage,
         'hasNextPage': hasNextPage,
         'prevPage': prevPage,
-        'nextPage': nextPage
+        'nextPage': nextPage,
+        'docs': docs.map((item) {
+          return item.toJson();
+        }).toList()
       };
 }
