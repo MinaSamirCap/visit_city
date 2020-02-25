@@ -155,7 +155,7 @@ class _ExploreWidgetState extends State<ExploreWidget> {
           padding: const EdgeInsetsDirectional.fromSTEB(10, 10, 0, 0),
           child: Text(
             model.name,
-            style: TextStyle(fontSize: 20),
+            style: TextStyle(fontSize: 18),
           ),
         ),
         Container(
