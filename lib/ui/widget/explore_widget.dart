@@ -3,6 +3,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:visit_city/models/explore/explore_response.dart';
+import 'package:visit_city/utils/lang/app_localization_keys.dart';
 import '../../models/explore/explore_model.dart';
 import '../../models/explore/explore_wrapper.dart';
 import '../../apis/api_manager.dart';
@@ -34,6 +35,7 @@ class _ExploreWidgetState extends State<ExploreWidget> {
   AppLocalizations _appLocal;
   ProgressDialog _progressDialog;
   ApiManager _apiManager;
+  bool _isLoadingNow = true;
 
   void initState() {
     Future.delayed(Duration.zero).then((_) {
@@ -58,7 +60,34 @@ class _ExploreWidgetState extends State<ExploreWidget> {
           bottom: FilterWidget(filterList, allIsSelected, selectedFilters),
           title: searchWidget(),
         ),
-        body: listWidget());
+        body: pagingWidget());
+  }
+
+  Widget pagingWidget() {
+    return Column(
+      children: <Widget>[
+        Expanded(
+          child: NotificationListener<ScrollNotification>(
+              onNotification: (ScrollNotification scrollInfo) {
+                if (shouldLoadMore(scrollInfo)) {
+                  callExploreApi();
+                  setState(() {
+                    _isLoadingNow = true;
+                  });
+                }
+                return false;
+              },
+              child: listWidget()),
+        ),
+        Container(
+          height: _isLoadingNow ? 50.0 : 0,
+          color: Colors.transparent,
+          child: Center(
+            child: new CircularProgressIndicator(),
+          ),
+        ),
+      ],
+    );
   }
 
   Widget searchWidget() {
@@ -247,9 +276,16 @@ class _ExploreWidgetState extends State<ExploreWidget> {
       setState(() {
         exploreList.addAll(wrapper.data.docs);
         _pagingInfo = wrapper.data;
+        _isLoadingNow = false;
+        if(!_pagingInfo.hasNextPage){
+          showSnackBar(createSnackBar(_appLocal.translate(LocalKeys.NO_MORE_DATA)), _scaffoldKey);
+        }
       });
     }, (MessageModel messageModel) {
-      showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
+      setState(() {
+        showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
+        _isLoadingNow = false;
+      });
     });
   }
 
@@ -260,5 +296,11 @@ class _ExploreWidgetState extends State<ExploreWidget> {
   void selectedFilters(List<FilterItem> list) {
     print("Selected Filters");
     list.forEach((item) => print(item.category.toJson()));
+  }
+
+  bool shouldLoadMore(ScrollNotification scrollInfo) {
+    return (!_isLoadingNow &&
+        scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent &&
+        _pagingInfo.hasNextPage);
   }
 }

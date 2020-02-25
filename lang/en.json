@@ -55,5 +55,6 @@
     "archeology" : "Archeology",
     "nature" : "Nature",
     "all" : "All",
-    "please_wait" : "Please wait ..."
+    "please_wait" : "Please wait ...",
+    "no_more_data" : "No more data to load ..."
 }

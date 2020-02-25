@@ -55,5 +55,6 @@
     "archeology" : "اثري",
     "nature" : "طبيعي",
     "all" : "الكل",
-    "please_wait" : "من فضلك انتظر ..."
+    "please_wait" : "من فضلك انتظر ...",
+    "no_more_data" : "لا يوجد بيانات اخرى"
 }
