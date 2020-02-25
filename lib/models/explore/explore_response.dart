@@ -52,4 +52,8 @@ class ExploreResponse {
           return item.toJson();
         }).toList()
       };
+
+  static ExploreResponse clearPagin() {
+    return ExploreResponse([], 0, 0, 0, 0, 0, false, false, 0, 0);
+  }
 }

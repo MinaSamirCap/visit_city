@@ -17,6 +17,11 @@ class ApiKeys {
   static final arLang = "ar";
   static final enLang = "en";
 
+
+  static final limitKey = "limit";
+  static final limitValue = "15";
+  static final pageKey = "page";
+
   static String getLanguage() {
     return enLang;
   }
@@ -29,4 +34,5 @@ class ApiKeys {
   static final feedbackUrl = baseUrl + "/feedbacks";
   static final categoriesUrl = baseUrl + "/categories";
   static final exploreUrl = baseUrl + "/services-explored?";
+
 }

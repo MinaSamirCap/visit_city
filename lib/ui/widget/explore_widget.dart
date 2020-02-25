@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
+import 'package:visit_city/models/explore/explore_response.dart';
 import '../../models/explore/explore_model.dart';
 import '../../models/explore/explore_wrapper.dart';
 import '../../apis/api_manager.dart';
@@ -28,6 +29,7 @@ class _ExploreWidgetState extends State<ExploreWidget> {
 
   List<FilterItem> filterList = [];
   List<ExploreModel> exploreList = [];
+  ExploreResponse _pagingInfo;
 
   AppLocalizations _appLocal;
   ProgressDialog _progressDialog;
@@ -38,6 +40,7 @@ class _ExploreWidgetState extends State<ExploreWidget> {
       _appLocal = AppLocalizations.of(context);
       _progressDialog = getPlzWaitProgress(context, _appLocal);
       _apiManager = Provider.of<ApiManager>(context, listen: false);
+      _pagingInfo = ExploreResponse.clearPagin();
       callCategoriesApi();
     });
     super.initState();
@@ -238,11 +241,12 @@ class _ExploreWidgetState extends State<ExploreWidget> {
   }
 
   void callExploreApi() async {
-    _apiManager.exploreApi("", (ExploreWrapper wrapper) {
+    _apiManager.exploreApi(_pagingInfo.page + 1, "", (ExploreWrapper wrapper) {
       print("WRAPPER: ${wrapper.toJson()}");
       //wrapper.data.docs.forEach((item) => print("TTTTTTT: ${item.toJson()}"));
       setState(() {
         exploreList.addAll(wrapper.data.docs);
+        _pagingInfo = wrapper.data;
       });
     }, (MessageModel messageModel) {
       showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);

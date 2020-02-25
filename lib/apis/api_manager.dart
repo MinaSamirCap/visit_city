@@ -60,8 +60,20 @@ class ApiManager with ChangeNotifier {
     });
   }
 
-  void exploreApi(String query, Function success, Function fail) async {
-    final finalUrl = ApiKeys.exploreUrl + query + "category=1,2&page=2";
+  void exploreApi(
+      int pageNum, String query, Function success, Function fail) async {
+    /// /services-explored? + limit=15 + &page=1 +"category=1,2&page=2"
+    final finalUrl = ApiKeys.exploreUrl +
+        ApiKeys.limitKey +
+        "=" +
+        ApiKeys.limitValue +
+        "&" +
+        ApiKeys.pageKey +
+        "=" +
+        pageNum.toString() +
+        "&" +
+        query;
+    print(finalUrl);
     await http.get(finalUrl, headers: ApiKeys.getHeaders()).then((response) {
       Map extractedData = json.decode(response.body);
       if (extractedData == null) {
