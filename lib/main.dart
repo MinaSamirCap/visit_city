@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:visit_city/ui/screens/itinerary_details_screen.dart';
-
-import 'apis/api_manager.dart';
-import 'utils/lang/app_localization.dart';
-import 'apis/auth.dart';
 import 'res/coolor.dart';
+import 'utils/lang/app_localization.dart';
+import 'apis/api_manager.dart';
+import 'apis/auth.dart';
+import 'ui/screens/explore_details_screen.dart';
+import 'ui/screens/itinerary_details_screen.dart';
 import 'ui/screens/sign_in_screen.dart';
 import 'ui/screens/home_screen.dart';
 import 'ui/screens/splash_screen.dart';
@@ -22,8 +22,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider.value(value: Auth(),),
-        ChangeNotifierProvider.value(value: ApiManager(),),
+        ChangeNotifierProvider.value(
+          value: Auth(),
+        ),
+        ChangeNotifierProvider.value(
+          value: ApiManager(),
+        ),
       ],
       child: Consumer<Auth>(
         builder: (context, auth, _) => MaterialApp(
@@ -80,7 +84,9 @@ class MyApp extends StatelessWidget {
             SignUpScreen.ROUTE_NAME: (ctx) => SignUpScreen(),
             ForgetPasswordScreen.ROUTE_NAME: (ctx) => ForgetPasswordScreen(),
             FeedbackScreen.ROUTE_NAME: (ctx) => FeedbackScreen(),
-            ItineraryDetailsScreen.ROUTE_NAME: (ctx) => ItineraryDetailsScreen(),
+            ItineraryDetailsScreen.ROUTE_NAME: (ctx) =>
+                ItineraryDetailsScreen(),
+            ExploreDetailsScreen.ROUTE_NAME: (ctx) => ExploreDetailsScreen(),
           },
         ),
       ),

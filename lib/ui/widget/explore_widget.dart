@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
-import 'package:visit_city/general/general.dart';
-import 'package:visit_city/models/explore/explore_response.dart';
-import 'package:visit_city/ui/widget/explore_cell_widget.dart';
-import 'package:visit_city/utils/lang/app_localization_keys.dart';
+import '../../general/general.dart';
+import '../../models/explore/explore_response.dart';
+import '../../ui/screens/explore_details_screen.dart';
+import '../../ui/widget/explore_cell_widget.dart';
+import '../../utils/lang/app_localization_keys.dart';
 import '../../models/explore/explore_model.dart';
 import '../../models/explore/explore_wrapper.dart';
 import '../../apis/api_manager.dart';
@@ -41,7 +42,6 @@ class _ExploreWidgetState extends State<ExploreWidget> {
 
   void initState() {
     Future.delayed(Duration.zero).then((_) {
-      _appLocal = AppLocalizations.of(context);
       _progressDialog = getPlzWaitProgress(context, _appLocal);
       _apiManager = Provider.of<ApiManager>(context, listen: false);
       _pagingInfo = ExploreResponse.clearPagin();
@@ -52,6 +52,7 @@ class _ExploreWidgetState extends State<ExploreWidget> {
 
   @override
   Widget build(BuildContext context) {
+    _appLocal = AppLocalizations.of(context);
     columnCellWidth = MediaQuery.of(context).size.width - imgeWidth - 30 - 10;
     print("Width ${MediaQuery.of(context).size.width}");
     print("ColumnWidth $columnCellWidth");
@@ -91,8 +92,9 @@ class _ExploreWidgetState extends State<ExploreWidget> {
       keyboardType: TextInputType.text,
       maxLines: 1,
       minLines: 1,
-      decoration:
-          InputDecoration(icon: Icon(Icons.search), labelText: "search"),
+      decoration: InputDecoration(
+          icon: Icon(Icons.search),
+          labelText: _appLocal.translate(LocalKeys.SEARCH)),
     );
   }
 
@@ -117,7 +119,8 @@ class _ExploreWidgetState extends State<ExploreWidget> {
           borderRadius: Sizes.BOR_RAD_20,
           child: InkWell(
             onTap: () {
-              print("object${model.name}");
+              /// open details screen
+              Navigator.of(context).pushNamed(ExploreDetailsScreen.ROUTE_NAME);
             },
             child: Container(
               height: 170,

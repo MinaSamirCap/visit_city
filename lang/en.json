@@ -57,5 +57,6 @@
     "all" : "All",
     "please_wait" : "Please wait ...",
     "no_more_data" : "No more data to load ...",
-    "go" : "Go"
+    "go" : "Go",
+    "search" : "Search"
 }
