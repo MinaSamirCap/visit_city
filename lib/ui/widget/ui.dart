@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import '../../res/sizes.dart';
 import '../../utils/lang/app_localization.dart';
 import '../../utils/lang/app_localization_keys.dart';
 import '../../res/coolor.dart';
@@ -31,9 +32,9 @@ void showSnackBar(SnackBar snackBar, GlobalKey<ScaffoldState> key) {
 }
 
 void showToast(String message) {
-  /// reference 
+  /// reference
   /// https://pub.dev/packages/fluttertoast
-  /// 
+  ///
   Fluttertoast.showToast(
       msg: message,
       toastLength: Toast.LENGTH_SHORT,
@@ -68,4 +69,17 @@ ProgressDialog getProgress(BuildContext context, String message) {
 ProgressDialog getPlzWaitProgress(
     BuildContext context, AppLocalizations appLocal) {
   return getProgress(context, appLocal.translate(LocalKeys.PLZ_WAIT));
+}
+
+Widget pagingLoadingWidget(bool isLoading) {
+  return AnimatedContainer(
+    curve: Curves.fastOutSlowIn,
+    padding: Sizes.EDEGINSETS_10,
+    height: isLoading ? 55.0 : 0,
+    color: isLoading ? Coolor.BLUE_APP : Colors.transparent,
+    child: Center(
+      child: new CircularProgressIndicator(),
+    ),
+    duration: Duration(milliseconds: 300),
+  );
 }

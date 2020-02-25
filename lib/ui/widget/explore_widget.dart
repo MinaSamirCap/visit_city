@@ -79,13 +79,7 @@ class _ExploreWidgetState extends State<ExploreWidget> {
               },
               child: listWidget()),
         ),
-        Container(
-          height: _isLoadingNow ? 50.0 : 0,
-          color: Colors.transparent,
-          child: Center(
-            child: new CircularProgressIndicator(),
-          ),
-        ),
+        pagingLoadingWidget(_isLoadingNow),
       ],
     );
   }
@@ -277,8 +271,10 @@ class _ExploreWidgetState extends State<ExploreWidget> {
         exploreList.addAll(wrapper.data.docs);
         _pagingInfo = wrapper.data;
         _isLoadingNow = false;
-        if(!_pagingInfo.hasNextPage){
-          showSnackBar(createSnackBar(_appLocal.translate(LocalKeys.NO_MORE_DATA)), _scaffoldKey);
+        if (!_pagingInfo.hasNextPage) {
+          showSnackBar(
+              createSnackBar(_appLocal.translate(LocalKeys.NO_MORE_DATA)),
+              _scaffoldKey);
         }
       });
     }, (MessageModel messageModel) {
