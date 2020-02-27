@@ -71,8 +71,6 @@ class _ExploreWidgetState extends State<ExploreWidget> {
   Widget build(BuildContext context) {
     _appLocal = AppLocalizations.of(context);
     columnCellWidth = MediaQuery.of(context).size.width - imgeWidth - 30 - 10;
-    print("Width ${MediaQuery.of(context).size.width}");
-    print("ColumnWidth $columnCellWidth");
     return Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
@@ -187,7 +185,7 @@ class _ExploreWidgetState extends State<ExploreWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              ratingWidget(model.rate.toDouble()),
+              ratingWidget(model.rate),
               Padding(
                 padding: const EdgeInsetsDirectional.fromSTEB(0, 5, 10, 0),
                 child: Text(model.reviews.toString() +
@@ -231,7 +229,7 @@ class _ExploreWidgetState extends State<ExploreWidget> {
                   Icons.access_time, () {}),
               // removed favorite icon
               // ExploreCellWidget("", Icons.favorite_border, () {
-              //   print("favorite clicked");
+              //
               // }),
             ],
           ),
@@ -279,8 +277,6 @@ class _ExploreWidgetState extends State<ExploreWidget> {
   void callExploreApi({String query = ""}) async {
     _apiManager.exploreApi(_pagingInfo.page + 1, query,
         (ExploreWrapper wrapper) {
-      print("WRAPPER: ${wrapper.toJson()}");
-      //wrapper.data.docs.forEach((item) => print("TTTTTTT: ${item.toJson()}"));
       setState(() {
         exploreList.addAll(wrapper.data.docs);
         adjustSearchList();

@@ -11,7 +11,7 @@ class ExploreModel {
   final String descAr;
   final String descEn;
   final CategoryResponse categoryId;
-  final int rate;
+  final double rate;
   final int reviews;
   List<double> location;
   final OpenHourModel openHours;
@@ -49,7 +49,7 @@ class ExploreModel {
         descAr = json['descAr'],
         descEn = json['descEn'],
         categoryId = CategoryResponse.fromJson(json['categoryId']),
-        rate = json['rate'],
+        rate = double.parse(json['rate'].toString()),
         reviews = json['reviews'],
         location = (json['location'] as List).map((item) {
           return item as double;
