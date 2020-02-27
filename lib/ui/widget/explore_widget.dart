@@ -28,11 +28,13 @@ class ExploreWidget extends StatefulWidget {
 
 class _ExploreWidgetState extends State<ExploreWidget> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final TextEditingController _searchTextController = TextEditingController();
 
   double columnCellWidth = 0;
 
   List<FilterItem> filterList = [];
   List<ExploreModel> exploreList = [];
+  List<ExploreModel> searchList = [];
   ExploreResponse _pagingInfo;
 
   AppLocalizations _appLocal;
@@ -50,9 +52,19 @@ class _ExploreWidgetState extends State<ExploreWidget> {
     super.initState();
   }
 
+  void resetScreen() {
+    clearPaging();
+    clearSearch();
+  }
+
   void clearPaging() {
     exploreList.clear();
     _pagingInfo = ExploreResponse.clearPagin();
+  }
+
+  void clearSearch() {
+    _searchTextController.text = "";
+    searchList.clear();
   }
 
   @override
@@ -94,12 +106,17 @@ class _ExploreWidgetState extends State<ExploreWidget> {
 
   Widget searchWidget() {
     return TextFormField(
+      controller: _searchTextController,
       keyboardType: TextInputType.text,
       maxLines: 1,
       minLines: 1,
       decoration: InputDecoration(
           icon: Icon(Icons.search),
           labelText: _appLocal.translate(LocalKeys.SEARCH)),
+      onChanged: (textChanged) {
+        /// filter current list according to received text.
+        updateSearchList(textChanged);
+      },
     );
   }
 
@@ -112,12 +129,12 @@ class _ExploreWidgetState extends State<ExploreWidget> {
       itemBuilder: (ctx, index) {
         return exploreItemWidget(index);
       },
-      itemCount: exploreList.length,
+      itemCount: searchList.length,
     );
   }
 
   Widget exploreItemWidget(int index) {
-    ExploreModel model = exploreList[index];
+    ExploreModel model = searchList[index];
     return Card(
         shape: RoundedRectangleBorder(borderRadius: Sizes.BOR_RAD_20),
         child: ClipRRect(
@@ -266,6 +283,7 @@ class _ExploreWidgetState extends State<ExploreWidget> {
       //wrapper.data.docs.forEach((item) => print("TTTTTTT: ${item.toJson()}"));
       setState(() {
         exploreList.addAll(wrapper.data.docs);
+        adjustSearchList();
         _pagingInfo = wrapper.data;
         _isLoadingNow = false;
         if (!_pagingInfo.hasNextPage) {
@@ -283,15 +301,12 @@ class _ExploreWidgetState extends State<ExploreWidget> {
   }
 
   void allIsSelected() {
-    clearPaging();
+    resetScreen();
     callExploreApi();
   }
 
   void selectedFilters(List<FilterItem> list) {
-    print("Selected Filters");
-    list.forEach((item) => print(item.category.toJson()));
-    list.forEach((item) {});
-    clearPaging();
+    resetScreen();
     List ids = list.map((item) => item.category.id.toString()).toList();
     callExploreApi(query: ids.join(","));
   }
@@ -300,5 +315,19 @@ class _ExploreWidgetState extends State<ExploreWidget> {
     return (!_isLoadingNow &&
         scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent &&
         _pagingInfo.hasNextPage);
+  }
+
+  void adjustSearchList() {
+    clearSearch();
+    searchList.addAll(exploreList);
+  }
+
+  void updateSearchList(String changedText) {
+    setState(() {
+      searchList = exploreList
+          .where((element) =>
+              (element.name.toLowerCase().contains(changedText.toLowerCase())))
+          .toList();
+    });
   }
 }
