@@ -169,10 +169,12 @@ class _ExploreWidgetState extends State<ExploreWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              ratingWidget(),
+              ratingWidget(model.rate.toDouble()),
               Padding(
                 padding: const EdgeInsetsDirectional.fromSTEB(0, 5, 10, 0),
-                child: Text("5 reviews"),
+                child: Text(model.reviews.toString() +
+                    " " +
+                    _appLocal.translate(LocalKeys.REVIEWS)),
               ),
             ],
           ),
@@ -209,9 +211,10 @@ class _ExploreWidgetState extends State<ExploreWidget> {
               }),
               ExploreCellWidget("${model.openHours.from} ${model.openHours.to}",
                   Icons.access_time, () {}),
-              ExploreCellWidget("", Icons.favorite_border, () {
-                print("favorite clicked");
-              }),
+              // removed favorite icon    
+              // ExploreCellWidget("", Icons.favorite_border, () {
+              //   print("favorite clicked");
+              // }),
             ],
           ),
         )
@@ -219,11 +222,11 @@ class _ExploreWidgetState extends State<ExploreWidget> {
     );
   }
 
-  Widget ratingWidget() {
+  Widget ratingWidget(double rate) {
     return Padding(
       padding: const EdgeInsetsDirectional.fromSTEB(10, 5, 0, 0),
       child: RatingBarIndicator(
-        rating: 3.25,
+        rating: rate,
         itemCount: 5,
         itemSize: 20,
         itemPadding: EdgeInsets.all(0),

@@ -11,6 +11,8 @@ class ExploreModel {
   final String descAr;
   final String descEn;
   final CategoryResponse categoryId;
+  final int rate;
+  final int reviews;
   List<double> location;
   final OpenHourModel openHours;
   final String price;
@@ -27,6 +29,8 @@ class ExploreModel {
       this.descAr,
       this.descEn,
       this.categoryId,
+      this.rate,
+      this.reviews,
       this.location,
       this.openHours,
       this.price,
@@ -45,6 +49,8 @@ class ExploreModel {
         descAr = json['descAr'],
         descEn = json['descEn'],
         categoryId = CategoryResponse.fromJson(json['categoryId']),
+        rate = json['rate'],
+        reviews = json['reviews'],
         location = (json['location'] as List).map((item) {
           return item as double;
         }).toList(),
@@ -65,6 +71,8 @@ class ExploreModel {
         'descAr': descAr,
         'descEn': descEn,
         'categoryId': categoryId.toJson(),
+        'rate': rate,
+        'reviews': reviews,
         'location': location.map((item) {
           return item;
         }).toList(),
