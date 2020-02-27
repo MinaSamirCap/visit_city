@@ -125,7 +125,8 @@ class _ExploreWidgetState extends State<ExploreWidget> {
           child: InkWell(
             onTap: () {
               /// open details screen
-              Navigator.of(context).pushNamed(ExploreDetailsScreen.ROUTE_NAME);
+              Navigator.of(context).pushNamed(ExploreDetailsScreen.ROUTE_NAME,
+                  arguments: {ExploreDetailsScreen.MODEL_KEY: model.toJson()});
             },
             child: Container(
               height: 170,
@@ -211,7 +212,7 @@ class _ExploreWidgetState extends State<ExploreWidget> {
               }),
               ExploreCellWidget("${model.openHours.from} ${model.openHours.to}",
                   Icons.access_time, () {}),
-              // removed favorite icon    
+              // removed favorite icon
               // ExploreCellWidget("", Icons.favorite_border, () {
               //   print("favorite clicked");
               // }),
