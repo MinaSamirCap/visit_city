@@ -50,6 +50,12 @@ class Sizes {
   static const DIVIDER_WIDTH_15 = SizedBox(
     width: 15,
   );
+  static const DIVIDER_WIDTH_20 = SizedBox(
+    width: 20,
+  );
+  static const DIVIDER_WIDTH_50 = SizedBox(
+    width: 50,
+  );
 
   static final BOR_RAD_35 = BorderRadius.circular(35);
   static final BOR_RAD_25 = BorderRadius.circular(25);

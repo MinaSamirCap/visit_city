@@ -7,6 +7,7 @@ import '../../res/assets_path.dart';
 import '../../res/sizes.dart';
 import '../../res/coolor.dart';
 import '../../ui/widget/ui.dart';
+import '../../ui/widget/map_widget.dart';
 
 class ItineraryDetailsScreen extends StatefulWidget {
   static const ROUTE_NAME = '/itinerary-details-screen';
@@ -20,36 +21,49 @@ class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
   Widget build(BuildContext context) {
     _appLocal = AppLocalizations.of(context);
     return Scaffold(
-      appBar: AppBar(
-        iconTheme: IconThemeData(color: Coolor.GREY_DARK),
-        backgroundColor: Coolor.FEEDBACK_OFF_WHITE,
-        actions: <Widget>[
-          MaterialButton(
-            onPressed: () {},
-            shape: RoundedRectangleBorder(
-              borderRadius: Sizes.BOR_RAD_35,
-              side: BorderSide(
-                color: Coolor.GREY_DARK,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(150),
+        child: AppBar(
+          iconTheme: IconThemeData(color: Coolor.GREY_DARK),
+          backgroundColor: Coolor.FEEDBACK_OFF_WHITE,
+          actions: <Widget>[
+            Padding(
+              padding: Sizes.EDEGINSETS_10,
+              child: MaterialButton(
+                onPressed: () {},
+                shape: RoundedRectangleBorder(
+                  borderRadius: Sizes.BOR_RAD_35,
+                  side: BorderSide(
+                    color: Coolor.GREY_DARK,
+                  ),
+                ),
+                child: Text(
+                  _appLocal.translate(
+                    LocalKeys.SET_AS_MY_PLAN,
+                  ),
+                ),
               ),
             ),
-            child: Text(
-              _appLocal.translate(
-                LocalKeys.SET_AS_MY_PLAN,
-              ),
+            IconButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed(MapWidget.ROUTE_NAME);
+              },
+              icon: Icon(Icons.map),
+              color: Coolor.GREY_DARK,
             ),
-          ),
-          IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.map),
-            color: Coolor.GREY_DARK,
-          ),
-        ],
-        // title: itineraryTitle(),
-        bottom: ItineraryDaysWidget(DayItem.getDaysList(_appLocal)),
+          ],
+          // title: itineraryTitle(),
+          bottom: ItineraryDaysWidget(DayItem.getDaysList(_appLocal)),
+        ),
       ),
       body: Stack(
         children: <Widget>[
-          backgroundImageWidget(),
+          Container(
+            width: double.infinity,
+            height: double.infinity,
+            child: backgroundImageWidget(),
+          ),
+          // backgroundImageWidget(),
           listWidget(),
         ],
       ),

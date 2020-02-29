@@ -13,6 +13,7 @@ import 'ui/screens/splash_screen.dart';
 import 'ui/screens/sign_up_screen.dart';
 import 'ui/screens/forget_password_screen.dart';
 import 'ui/screens/feedback_screen.dart';
+import 'ui/widget/map_widget.dart';
 
 void main() => runApp(MyApp());
 
@@ -87,6 +88,7 @@ class MyApp extends StatelessWidget {
             ItineraryDetailsScreen.ROUTE_NAME: (ctx) =>
                 ItineraryDetailsScreen(),
             ExploreDetailsScreen.ROUTE_NAME: (ctx) => ExploreDetailsScreen(),
+            MapWidget.ROUTE_NAME: (ctx) => MapWidget(),
           },
         ),
       ),

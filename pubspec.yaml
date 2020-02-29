@@ -83,6 +83,9 @@ flutter:
    - assets/images/imoji3.png
    - assets/images/imoji4.png
    - assets/images/imoji5.png
+   - assets/images/archeology_map.png
+   - assets/images/nature_map.png
+   - assets/images/culture_map.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

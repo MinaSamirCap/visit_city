@@ -5,6 +5,7 @@ import '../../utils/lang/app_localization_keys.dart';
 import '../../res/coolor.dart';
 import '../../res/sizes.dart';
 import 'package:http/http.dart' as http;
+import "../screens/explore_details_screen.dart";
 
 class ItineraryDaysWidget extends StatefulWidget
     implements PreferredSizeWidget {
@@ -20,6 +21,7 @@ class ItineraryDaysWidget extends StatefulWidget
 
 class _ItineraryDaysWidgetState extends State<ItineraryDaysWidget> {
   AppLocalizations _appLocal;
+  int _value = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -38,20 +40,21 @@ class _ItineraryDaysWidgetState extends State<ItineraryDaysWidget> {
       padding: EdgeInsets.symmetric(horizontal: 20),
       child: Center(
         child: ListView.separated(
+          shrinkWrap: true,
           scrollDirection: Axis.horizontal,
           itemCount: widget._daysList.length,
           itemBuilder: (ctx, index) {
-            return daysItemWidget(widget._daysList[index]);
+            return daysItemWidget(widget._daysList[index], index);
           },
           separatorBuilder: (_, __) {
-            return Sizes.DIVIDER_WIDTH_10;
+            return Sizes.DIVIDER_WIDTH_50;
           },
         ),
       ),
     );
   }
 
-  Widget daysItemWidget(DayItem item) {
+  Widget daysItemWidget(DayItem item, int index) {
     return Column(
       children: <Widget>[
         Text(
@@ -61,26 +64,37 @@ class _ItineraryDaysWidgetState extends State<ItineraryDaysWidget> {
             color: Coolor.GREY_DARK,
           ),
         ),
-        RaisedButton(
-          onPressed: () {
-            if (widget._daysList[0].title == item.title && !item.isSelected) {
-              widget._daysList.forEach((item) {
-                item.isSelected = false;
-              });
-            }
-            item.isSelected = !item.isSelected;
-            setState(() {});
-            print(item.title);
-            selectedItem(item);
+        ChoiceChip(
+          label: Text(item.title),
+          selected: _value == index,
+          selectedColor: Coolor.MENU_SEL_COL,
+          onSelected: (selected) {
+            setState(() {
+              _value = selected ? index : null;
+            });
           },
-          shape: CircleBorder(
-              side: item.isSelected
-                  ? BorderSide(color: Coolor.FEEDBACK_OFF_WHITE)
-                  : BorderSide(color: Coolor.GREY)),
-          color: item.isSelected ? Coolor.BLUE_APP : Coolor.FEEDBACK_OFF_WHITE,
-          textColor: item.isSelected ? Coolor.WHITE : Coolor.GREY,
-          child: Text(item.title),
         ),
+
+        // RaisedButton(
+        //   onPressed: () {
+        //     if (widget._daysList[0].title == item.title && item.isSelected) {
+        //       widget._daysList.forEach((item) {
+        //         item.isSelected = false;
+        //       });
+        //     }
+        //     item.isSelected = !item.isSelected;
+        //     setState(() {});
+        //     print(item.title);
+        //     selectedItem(item);
+        //   },
+        //   shape: CircleBorder(
+        //       side: item.isSelected
+        //           ? BorderSide(color: Coolor.FEEDBACK_OFF_WHITE)
+        //           : BorderSide(color: Coolor.GREY)),
+        //   color: item.isSelected ? Coolor.BLUE_APP : Coolor.FEEDBACK_OFF_WHITE,
+        //   textColor: item.isSelected ? Coolor.WHITE : Coolor.GREY,
+        //   child: Text(item.title),
+        // ),
       ],
     );
   }

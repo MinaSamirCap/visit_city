@@ -11,6 +11,9 @@ class AssPath {
   static const HEADER_IMAGE = 'assets/images/headerImage.png';
   static const NATURE_BACKGROUND = 'assets/images/natureBackground.png';
   static const MAP_FULL = 'assets/images/map.png';
+  static const NATURE_MAP = 'assets/images/nature_map.png';
+  static const CULTURE_MAP = 'assets/images/culture_map.png';
+  static const ARCH_MAP = 'assets/images/archeology_map.png';
   static const IMOJI1 = 'assets/images/imoji1.png';
   static const IMOJI2 = 'assets/images/imoji2.png';
   static const IMOJI3 = 'assets/images/imoji3.png';
