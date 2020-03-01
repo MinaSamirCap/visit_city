@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:visit_city/ui/screens/wishlist_screen.dart';
 import '../../utils/lang/app_localization_keys.dart';
 import '../../utils/lang/app_localization.dart';
 
