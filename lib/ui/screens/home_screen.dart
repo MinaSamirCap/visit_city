@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:visit_city/general/general.dart';
+import '../../ui/screens/qr_code_screen.dart';
 import '../../ui/screens/wishlist_screen.dart';
 import '../../ui/widget/explore_widget.dart';
 import '../../ui/widget/home_widget.dart';
@@ -60,6 +61,8 @@ class _HomeScreenState extends State<HomeScreen> {
       ///
     } else if (title == _appLocal.translate(LocalKeys.USEFUL_CONTACTS)) {
       ///
+    } else if (title == _appLocal.translate(LocalKeys.QR_CODE)) {
+      Navigator.of(context).pushNamed(QrCodeScreen.ROUTE_NAME);
     }
   }
 
