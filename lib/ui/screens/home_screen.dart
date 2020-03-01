@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:visit_city/general/general.dart';
+import '../../ui/screens/wishlist_screen.dart';
 import '../../ui/widget/explore_widget.dart';
 import '../../ui/widget/home_widget.dart';
 import '../../ui/widget/map_widget.dart';
@@ -48,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
     } else if (title == _appLocal.translate(LocalKeys.PROFILE)) {
       ///
     } else if (title == _appLocal.translate(LocalKeys.WISHLIST)) {
-      ///
+      Navigator.of(context).pushNamed(WishlistScreen.ROUTE_NAME);
     } else if (title == _appLocal.translate(LocalKeys.GUIDE_BOOK)) {
       launchUrl("https://www.google.com");
     } else if (title == _appLocal.translate(LocalKeys.MIXED_ITE)) {
