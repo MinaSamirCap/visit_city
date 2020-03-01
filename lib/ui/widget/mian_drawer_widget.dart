@@ -6,6 +6,8 @@ import '../../res/coolor.dart';
 import '../../ui/widget/ui.dart';
 import '../../res/sizes.dart';
 
+const LENGHT_ITEMS = 8;
+
 class MainDrawerWidget extends StatefulWidget {
   final Function callback;
   List<MenuModel> menuList;
@@ -58,7 +60,7 @@ class _MainDrawerWidgetState extends State<MainDrawerWidget> {
   Widget listView() {
     return ListView.builder(
       physics: NeverScrollableScrollPhysics(),
-      itemCount: 7,
+      itemCount: LENGHT_ITEMS,
       shrinkWrap: true,
       itemBuilder: (context, index) {
         return menuListItem(widget.menuList[index]);
@@ -72,7 +74,7 @@ class _MainDrawerWidgetState extends State<MainDrawerWidget> {
       itemCount: 2,
       shrinkWrap: true,
       itemBuilder: (context, index) {
-        return menuListItem(widget.menuList[index + 7]);
+        return menuListItem(widget.menuList[index + LENGHT_ITEMS]);
       },
     );
   }
@@ -165,7 +167,11 @@ class MenuModel {
           isSelected: false),
       MenuModel(
           title: appLocale.translate(LocalKeys.USEFUL_CONTACTS),
-          icon: Icons.contacts,
+          icon: Icons.dialer_sip,
+          isSelected: false),
+      MenuModel(
+          title: appLocale.translate(LocalKeys.QR_CODE),
+          icon: Icons.filter_center_focus,
           isSelected: false),
       MenuModel(
           title: appLocale.translate(LocalKeys.FEEDBACK),
