@@ -27,6 +27,11 @@ class LocalKeys {
   static const PROFILE = "profile";
   static const FEEDBACK = "feedback";
   static const LOGOUT = "logout";
+  static const GUIDE_BOOK = "guide_book";
+  static const MIXED_ITE = "mixed_itinerary";
+  static const HOW_TO_USE_APP = "how_to_use_app";
+  static const INTRO_ABOUT_FAYOUM = "intro_about_fayoum";
+  static const USEFUL_CONTACTS = "useful_contacts";
   static const IN_3_ITINERARIES = "in_3_iti";
   static const NATURAL_ITINERARIES = "nat_itinerary";
   static const ARCHEOLOGY_ITINERARIES = "arch_itinerary";

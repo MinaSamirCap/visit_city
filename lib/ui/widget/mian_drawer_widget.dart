@@ -33,7 +33,7 @@ class _MainDrawerWidgetState extends State<MainDrawerWidget> {
               child: listView(),
               context: context,
             ),
-            Sizes.DIVIDER_HEIGHT_200,
+            Sizes.DIVIDER_HEIGHT_100,
             lineDivider(),
             Sizes.DIVIDER_HEIGHT_10,
             MediaQuery.removePadding(
@@ -58,7 +58,7 @@ class _MainDrawerWidgetState extends State<MainDrawerWidget> {
   Widget listView() {
     return ListView.builder(
       physics: NeverScrollableScrollPhysics(),
-      itemCount: 2,
+      itemCount: 7,
       shrinkWrap: true,
       itemBuilder: (context, index) {
         return menuListItem(widget.menuList[index]);
@@ -72,7 +72,7 @@ class _MainDrawerWidgetState extends State<MainDrawerWidget> {
       itemCount: 2,
       shrinkWrap: true,
       itemBuilder: (context, index) {
-        return menuListItem(widget.menuList[index + 2]);
+        return menuListItem(widget.menuList[index + 7]);
       },
     );
   }
@@ -146,6 +146,26 @@ class MenuModel {
       MenuModel(
           title: appLocale.translate(LocalKeys.PROFILE),
           icon: Icons.account_box,
+          isSelected: false),
+      MenuModel(
+          title: appLocale.translate(LocalKeys.GUIDE_BOOK),
+          icon: Icons.book,
+          isSelected: false),
+      MenuModel(
+          title: appLocale.translate(LocalKeys.MIXED_ITE),
+          icon: Icons.calendar_today,
+          isSelected: false),
+      MenuModel(
+          title: appLocale.translate(LocalKeys.HOW_TO_USE_APP),
+          icon: Icons.question_answer,
+          isSelected: false),
+      MenuModel(
+          title: appLocale.translate(LocalKeys.INTRO_ABOUT_FAYOUM),
+          icon: Icons.info,
+          isSelected: false),
+      MenuModel(
+          title: appLocale.translate(LocalKeys.USEFUL_CONTACTS),
+          icon: Icons.contacts,
           isSelected: false),
       MenuModel(
           title: appLocale.translate(LocalKeys.FEEDBACK),
