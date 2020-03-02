@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:visit_city/qr/qr.dart';
 import '../../utils/lang/app_localization_keys.dart';
 import '../../utils/lang/app_localization.dart';
 
@@ -12,13 +13,10 @@ class QrCodeScreen extends StatelessWidget {
         appBar: AppBar(
           title: Text(_appLocal.translate(LocalKeys.QR_CODE)),
         ),
-        body: Center(
-          child: Text(
-            _appLocal.translate(LocalKeys.QR_CODE),
-          ),
-        ));
+        body: Qr());
   }
 }
 
 /// reference for library ...WishlistScreen
-/// https://pub.dev/packages/qr_flutter#-readme-tab-
+/// https://pub.dev/packages/flutter_qr_reader#-readme-tab-
+/// https://pub.dev/packages/permission_handler
