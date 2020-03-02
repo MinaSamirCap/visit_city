@@ -67,5 +67,6 @@
     "search" : "Search",
     "reviews" : "reviews",
     "allow_permission" : "Allow Permission",
-    "we_need_camera_permission" : "We need your permission to scan QR Code with Camera ..."
+    "we_need_camera_permission" : "We need your permission to scan QR Code with Camera ...",
+    "plz_align_qr" : "Please align QR Code box border"
 }

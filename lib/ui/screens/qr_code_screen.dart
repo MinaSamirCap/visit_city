@@ -1,7 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_qr_reader/qrcode_reader_view.dart';
 import 'package:permission_handler/permission_handler.dart';
+import '../../ui/widget/qr_reader_widget.dart';
+import '../../ui/widget/ui.dart';
 import '../../res/coolor.dart';
-import '../../qr/qr.dart';
 import '../../res/sizes.dart';
 import '../../utils/lang/app_localization_keys.dart';
 import '../../utils/lang/app_localization.dart';
@@ -14,7 +17,9 @@ class QrCodeScreen extends StatefulWidget {
 }
 
 class _QrCodeScreenState extends State<QrCodeScreen> {
+  GlobalKey<QrcodeReaderViewState> _key = GlobalKey();
   bool isPermissionGranded = false;
+  bool isShowPermissionLayout = false;
   AppLocalizations _appLocal;
 
   @override
@@ -32,7 +37,42 @@ class _QrCodeScreenState extends State<QrCodeScreen> {
         appBar: AppBar(
           title: Text(_appLocal.translate(LocalKeys.QR_CODE)),
         ),
-        body: isPermissionGranded ? Qr() : requestPermissionLayout());
+        body: getBody());
+  }
+
+  Widget getBody() {
+    if (isPermissionGranded) {
+      return scanView();
+    } else {
+      if (isShowPermissionLayout) {
+        return requestPermissionLayout();
+      } else {
+        return getLoadingView();
+      }
+    }
+  }
+
+  Widget scanView() {
+    return QrReaderWidget(
+      key: _key,
+      onScan: onScan,
+      helpWidget: Text(_appLocal.translate(LocalKeys.PLZ_ALIGN_QR)),
+    );
+  }
+
+  Future onScan(String data) async {
+    showToast(data);
+    Navigator.pop(context);
+    //_key.currentState.startScan();
+  }
+
+  Widget getLoadingView() {
+    return Container(
+      color: Coolor.BLACK,
+      child: Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
   }
 
   Widget requestPermissionLayout() {
@@ -64,16 +104,13 @@ class _QrCodeScreenState extends State<QrCodeScreen> {
         await PermissionHandler().requestPermissions([PermissionGroup.camera]);
     print(permissions);
     if (permissions[PermissionGroup.camera] == PermissionStatus.granted) {
-      showDialog(
-        context: context,
-        builder: (context) {
-          return Dialog(
-            child: Text("ok"),
-          );
-        },
-      );
       setState(() {
         isPermissionGranded = true;
+      });
+    } else {
+      setState(() {
+        isPermissionGranded = false;
+        isShowPermissionLayout = true;
       });
     }
   }
