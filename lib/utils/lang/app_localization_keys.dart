@@ -69,4 +69,6 @@ class LocalKeys {
   static const GO = "go";
   static const SEARCH = "search";
   static const REVIEWS = "reviews";
+  static const ALLOW_PERMISSION = "allow_permission";
+  static const WE_NEED_CAMERA_PERMISSION = "we_need_camera_permission";
 }

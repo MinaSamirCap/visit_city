@@ -46,5 +46,7 @@
     	<string>English</string>
     	<string>ar</string>
   	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>We need to access the camera to be able to scan the QR Code...</string>
 </dict>
 </plist>

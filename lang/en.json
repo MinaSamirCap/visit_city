@@ -65,5 +65,7 @@
     "no_more_data" : "No more data to load ...",
     "go" : "Go",
     "search" : "Search",
-    "reviews" : "reviews"
+    "reviews" : "reviews",
+    "allow_permission" : "Allow Permission",
+    "we_need_camera_permission" : "We need your permission to scan QR Code with Camera ..."
 }
