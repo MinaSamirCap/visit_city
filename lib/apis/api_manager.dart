@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http; // to avoid crashing with names ..
+import 'package:visit_city/models/wishlist/wishlist_send_model.dart';
 import 'package:visit_city/models/wishlist/wishlist_wrapper.dart';
 import '../models/explore/explore_wrapper.dart';
 import '../models/category/category_wrapper.dart';
@@ -117,6 +118,32 @@ class ApiManager with ChangeNotifier {
   void wishlistApi(int pageNum, Function success, Function fail) async {
     await http
         .get(generateWishlistUrl(pageNum), headers: ApiKeys.getHeaders())
+        .then((response) {
+      Map extractedData = json.decode(response.body);
+      print(extractedData);
+      if (extractedData == null) {
+        fail(MessageModel.getDecodeError());
+        return false;
+      } else {
+        WishlistWrapper wrapper = WishlistWrapper.fromJson(extractedData);
+        if (wrapper.info) {
+          success(wrapper);
+          return true;
+        } else {
+          fail(wrapper.message);
+          return false;
+        }
+      }
+    }).catchError((onError) {
+      fail(checkErrorType(onError));
+    });
+  }
+
+  void likeDislikeApi(
+      WishlistSendModel model, Function success, Function fail) async {
+    await http
+        .post(ApiKeys.wishlistUrl,
+            headers: ApiKeys.getHeaders(), body: model.toJson())
         .then((response) {
       Map extractedData = json.decode(response.body);
       print(extractedData);
