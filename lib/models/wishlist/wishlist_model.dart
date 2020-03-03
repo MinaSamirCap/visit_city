@@ -1,7 +1,6 @@
-import '../../models/category/category_response.dart';
 import '../../models/explore/open_hour_model.dart';
 
-class ExploreModel {
+class WishlistModel {
   final int id;
   final String name;
   final String nameAr;
@@ -10,16 +9,21 @@ class ExploreModel {
   final String desc;
   final String descAr;
   final String descEn;
-  final CategoryResponse categoryId;
   final double rate;
   final int reviews;
   List<double> location;
+  List<int> services;
   final OpenHourModel openHours;
   final String price;
+  final String contact;
+  final String website;
+  final String qr;
   final String createdAt;
   final String updatedAt;
+  final bool like;
+  final bool plan;
 
-  ExploreModel(
+  WishlistModel(
       this.id,
       this.name,
       this.nameAr,
@@ -28,16 +32,21 @@ class ExploreModel {
       this.desc,
       this.descAr,
       this.descEn,
-      this.categoryId,
       this.rate,
       this.reviews,
       this.location,
+      this.services,
       this.openHours,
       this.price,
+      this.contact,
+      this.website,
+      this.qr,
       this.createdAt,
-      this.updatedAt);
+      this.updatedAt,
+      this.like,
+      this.plan);
 
-  ExploreModel.fromJson(Map<String, dynamic> json)
+  WishlistModel.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         name = json['name'],
         nameAr = json['nameAr'],
@@ -48,37 +57,21 @@ class ExploreModel {
         desc = json['desc'],
         descAr = json['descAr'],
         descEn = json['descEn'],
-        categoryId = CategoryResponse.fromJson(json['categoryId']),
         rate = double.parse(json['rate'].toString()),
         reviews = json['reviews'],
         location = (json['location'] as List).map((item) {
           return item as double;
         }).toList(),
+        services = (json['services'] as List).map((item) {
+          return item as int;
+        }).toList(),
         openHours = OpenHourModel.fromJson(json['openHours']),
         price = json['price'],
+        contact = json['contact'],
+        website = json['website'],
+        qr = json['QR'],
         createdAt = json['createdAt'],
-        updatedAt = json['updatedAt'];
-
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'name': name,
-        'nameAr': nameAr,
-        'nameEn': nameEn,
-        'photos': photos.map((item) {
-          return item;
-        }).toList(),
-        'desc': desc,
-        'descAr': descAr,
-        'descEn': descEn,
-        'categoryId': categoryId.toJson(),
-        'rate': rate,
-        'reviews': reviews,
-        'location': location.map((item) {
-          return item;
-        }).toList(),
-        'openHours': openHours.toJson(),
-        'price': price,
-        'createdAt': createdAt,
-        'updatedAt': updatedAt
-      };
+        updatedAt = json['updatedAt'],
+        like = json['like'],
+        plan = json['plan'];
 }

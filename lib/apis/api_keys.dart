@@ -35,5 +35,6 @@ class ApiKeys {
   static final feedbackUrl = baseUrl + "/feedbacks";
   static final categoriesUrl = baseUrl + "/categories";
   static final exploreUrl = baseUrl + "/services-explored?";
+  static final wishlistUrl = baseUrl + "/wishlist?";
 
 }

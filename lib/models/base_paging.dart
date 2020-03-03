@@ -1,7 +1,4 @@
-import '../../models/explore/explore_model.dart';
-
-class ExploreResponse {
-  List<ExploreModel> docs;
+class BaseBaging {
   final int totalDocs;
   final int limit;
   final int totalPages;
@@ -12,8 +9,7 @@ class ExploreResponse {
   final int prevPage;
   final int nextPage;
 
-  ExploreResponse(
-      this.docs,
+  BaseBaging(
       this.totalDocs,
       this.limit,
       this.totalPages,
@@ -24,7 +20,7 @@ class ExploreResponse {
       this.prevPage,
       this.nextPage);
 
-  ExploreResponse.fromJson(Map<String, dynamic> json)
+  BaseBaging.fromJson(Map<String, dynamic> json)
       : totalDocs = json['totalDocs'],
         limit = json['limit'],
         totalPages = json['totalPages'],
@@ -33,10 +29,7 @@ class ExploreResponse {
         hasPrevPage = json['hasPrevPage'],
         hasNextPage = json['hasNextPage'],
         prevPage = json['prevPage'],
-        nextPage = json['nextPage'],
-        docs = (json['docs'] as List).map((item) {
-          return ExploreModel.fromJson(item);
-        }).toList();
+        nextPage = json['nextPage'];
 
   Map<String, dynamic> toJson() => {
         'totalDocs': totalDocs,
@@ -48,12 +41,9 @@ class ExploreResponse {
         'hasNextPage': hasNextPage,
         'prevPage': prevPage,
         'nextPage': nextPage,
-        'docs': docs.map((item) {
-          return item.toJson();
-        }).toList()
       };
 
-  static ExploreResponse clearPagin() {
-    return ExploreResponse([], 0, 0, 0, 0, 0, false, false, 0, 0);
+  static BaseBaging clearPagin() {
+    return BaseBaging(0, 0, 0, 0, 0, false, false, 0, 0);
   }
 }

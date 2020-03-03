@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http; // to avoid crashing with names ..
+import 'package:visit_city/models/wishlist/wishlist_wrapper.dart';
 import '../models/explore/explore_wrapper.dart';
 import '../models/category/category_wrapper.dart';
 import '../models/feedback/feedback_wrapper.dart';
@@ -88,6 +89,42 @@ class ApiManager with ChangeNotifier {
         return false;
       } else {
         ExploreWrapper wrapper = ExploreWrapper.fromJson(extractedData);
+        if (wrapper.info) {
+          success(wrapper);
+          return true;
+        } else {
+          fail(wrapper.message);
+          return false;
+        }
+      }
+    }).catchError((onError) {
+      fail(checkErrorType(onError));
+    });
+  }
+
+  String generateWishlistUrl(int pageNum) {
+    /// /wishlist? + limit=15 + &page=1 +"category=1,2&page=2"
+    return ApiKeys.wishlistUrl +
+        ApiKeys.limitKey +
+        "=" +
+        ApiKeys.limitValue +
+        "&" +
+        ApiKeys.pageKey +
+        "=" +
+        pageNum.toString();
+  }
+
+  void wishlistApi(int pageNum, Function success, Function fail) async {
+    await http
+        .get(generateWishlistUrl(pageNum), headers: ApiKeys.getHeaders())
+        .then((response) {
+      Map extractedData = json.decode(response.body);
+      print(extractedData);
+      if (extractedData == null) {
+        fail(MessageModel.getDecodeError());
+        return false;
+      } else {
+        WishlistWrapper wrapper = WishlistWrapper.fromJson(extractedData);
         if (wrapper.info) {
           success(wrapper);
           return true;
