@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_qr_reader/qrcode_reader_view.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:visit_city/qr/scanViewDemo.dart';
+import 'package:visit_city/ui/screens/wishlist_screen.dart';
 import '../../ui/widget/qr_reader_widget.dart';
 import '../../ui/widget/ui.dart';
 import '../../res/coolor.dart';
@@ -62,8 +64,18 @@ class _QrCodeScreenState extends State<QrCodeScreen> {
 
   Future onScan(String data) async {
     showToast(data);
-    Navigator.pop(context);
-    //_key.currentState.startScan();
+    _key.currentState.stopScan();
+    await Navigator.of(context).pushNamed(WishlistScreen.ROUTE_NAME);
+    showToast("I am back");
+    _key.currentState.startScan();
+    
+    // Navigator.of(context).pushNamed(WishlistScreen.ROUTE_NAME).then((_) {
+    //   _key.currentState.startScan();
+    //   showToast("I am back");
+    // });
+
+    //Navigator.pop(context);
+    //setState(() {});
   }
 
   Widget getLoadingView() {
