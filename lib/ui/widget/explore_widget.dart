@@ -19,7 +19,7 @@ import '../../res/sizes.dart';
 import '../../utils/lang/app_localization.dart';
 import 'filter_widget.dart';
 
-const imgeWidth = 110.0;
+const imgeWidth = Sizes.imgeWidth;
 
 class ExploreWidget extends StatefulWidget {
   @override
@@ -71,6 +71,7 @@ class _ExploreWidgetState extends State<ExploreWidget> {
   Widget build(BuildContext context) {
     _appLocal = AppLocalizations.of(context);
     columnCellWidth = MediaQuery.of(context).size.width - imgeWidth - 30 - 10;
+    //columnCellWidth =Sizes.calculateColumnWidth(MediaQuery.of(context).size.width);
     return Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
@@ -158,14 +159,17 @@ class _ExploreWidgetState extends State<ExploreWidget> {
 
   Widget imageWidget(ExploreModel model) {
     // I am sure it is working tested on real device ...
-    return FadeInImage.assetNetwork(
-      placeholder: AssPath.APP_LOGO,
-      image: model.photos.isEmpty ? "" : model.photos[0],
-      height: double.infinity,
-      width: imgeWidth,
-      fit: BoxFit.cover,
-      fadeInDuration: new Duration(milliseconds: 100),
-    );
+    // return FadeInImage.assetNetwork(
+    //   placeholder: AssPath.APP_LOGO,
+    //   image: model.photos.isEmpty ? "" : model.photos[0],
+    //   height: double.infinity,
+    //   width: imgeWidth,
+    //   fit: BoxFit.cover,
+    //   fadeInDuration: new Duration(milliseconds: 100),
+    // );
+
+    return exploreImgWidget(
+        imgeWidth, model.photos.isEmpty ? "" : model.photos[0]);
   }
 
   Widget halfExporeWidget(ExploreModel model) {
@@ -238,27 +242,8 @@ class _ExploreWidgetState extends State<ExploreWidget> {
     );
   }
 
-  Widget ratingWidget(double rate) {
-    return Padding(
-      padding: const EdgeInsetsDirectional.fromSTEB(10, 5, 0, 0),
-      child: RatingBarIndicator(
-        rating: rate,
-        itemCount: 5,
-        itemSize: 20,
-        itemPadding: EdgeInsets.all(0),
-        itemBuilder: (ctx, index) {
-          return Icon(
-            Icons.star,
-            color: Coolor.BLUE_APP,
-          );
-        },
-      ),
-    );
-  }
 
-  TextStyle actionStyleItem() {
-    return TextStyle(fontWeight: FontWeight.w700, fontSize: 15);
-  }
+  
 
   void callCategoriesApi() async {
     _progressDialog.show();

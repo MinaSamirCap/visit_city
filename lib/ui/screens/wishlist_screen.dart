@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
+import 'package:visit_city/general/general.dart';
+import 'package:visit_city/res/coolor.dart';
+import 'package:visit_city/ui/widget/explore_cell_widget.dart';
 import '../../apis/api_manager.dart';
 import '../../models/message_model.dart';
 import '../../models/wishlist/wishlist_model.dart';
@@ -10,6 +13,9 @@ import '../../res/sizes.dart';
 import '../../ui/widget/ui.dart';
 import '../../utils/lang/app_localization_keys.dart';
 import '../../utils/lang/app_localization.dart';
+import 'explore_details_screen.dart';
+
+const imgeWidth = Sizes.imgeWidth;
 
 class WishlistScreen extends StatefulWidget {
   static const ROUTE_NAME = '/wishlist';
@@ -27,13 +33,14 @@ class _WishlistScreenState extends State<WishlistScreen> {
   ProgressDialog _progressDialog;
   ApiManager _apiManager;
   bool _isLoadingNow = true;
+  double columnCellWidth = 0;
 
   void initState() {
     Future.delayed(Duration.zero).then((_) {
       _progressDialog = getPlzWaitProgress(context, _appLocal);
       _apiManager = Provider.of<ApiManager>(context, listen: false);
-      clearPaging();
       _progressDialog.show();
+      clearPaging();
       callWishlistApi();
     });
     super.initState();
@@ -47,6 +54,8 @@ class _WishlistScreenState extends State<WishlistScreen> {
   @override
   Widget build(BuildContext context) {
     _appLocal = AppLocalizations.of(context);
+    columnCellWidth = MediaQuery.of(context).size.width - imgeWidth - 30 - 10;
+    //columnCellWidth = Sizes.calculateColumnWidth(MediaQuery.of(context).size.width);
     return Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
@@ -83,9 +92,107 @@ class _WishlistScreenState extends State<WishlistScreen> {
         return Sizes.DIVIDER_HEIGHT_10;
       },
       itemBuilder: (ctx, index) {
-        return /*exploreItemWidget(index)*/ Text("Item$index");
+        return exploreItemWidget(index);
       },
       itemCount: wishlistList.length,
+    );
+  }
+
+  Widget exploreItemWidget(int index) {
+    WishlistModel model = wishlistList[index];
+    return Card(
+        shape: RoundedRectangleBorder(borderRadius: Sizes.BOR_RAD_20),
+        child: ClipRRect(
+          borderRadius: Sizes.BOR_RAD_20,
+          child: InkWell(
+            onTap: () {
+              /// open details screen
+              Navigator.of(context).pushNamed(ExploreDetailsScreen.ROUTE_NAME,
+                  arguments: {ExploreDetailsScreen.MODEL_KEY: model.id});
+            },
+            child: Container(
+              height: 170,
+              decoration: BoxDecoration(
+                  borderRadius: Sizes.BOR_RAD_20,
+                  border: Border.all(color: Coolor.GREY, width: 1)),
+              child: Row(
+                children: <Widget>[imageWidget(model), halfExporeWidget(model)],
+              ),
+            ),
+          ),
+        ));
+  }
+
+  Widget imageWidget(WishlistModel model) {
+    return exploreImgWidget(
+        imgeWidth, model.photos.isEmpty ? "" : model.photos[0]);
+  }
+
+  Widget halfExporeWidget(WishlistModel model) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsetsDirectional.fromSTEB(10, 10, 0, 0),
+          child: Text(
+            model.name,
+            style: TextStyle(fontSize: 18),
+          ),
+        ),
+        Container(
+          width: columnCellWidth,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              ratingWidget(model.rate),
+              Padding(
+                padding: const EdgeInsetsDirectional.fromSTEB(0, 5, 10, 0),
+                child: Text(model.reviews.toString() +
+                    " " +
+                    _appLocal.translate(LocalKeys.REVIEWS)),
+              ),
+            ],
+          ),
+        ),
+        Sizes.DIVIDER_HEIGHT_10,
+        Container(
+          width: columnCellWidth,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsetsDirectional.fromSTEB(0, 5, 10, 0),
+                child: Text(
+                  model.price,
+                  style: TextStyle(color: Coolor.BLUE_APP),
+                ),
+              )
+            ],
+          ),
+        ),
+        Sizes.DIVIDER_HEIGHT_10,
+        lineDividerWidth(columnCellWidth),
+        Sizes.DIVIDER_HEIGHT_10,
+        Container(
+          width: columnCellWidth,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              ExploreCellWidget(
+                  _appLocal.translate(LocalKeys.GO), Icons.near_me, () {
+                if (model.location.isNotEmpty && model.location.length == 2) {
+                  launchMap(model.location[0], model.location[1]);
+                }
+              }),
+              ExploreCellWidget("${model.openHours.from} ${model.openHours.to}",
+                  Icons.access_time, () {}),
+              ExploreCellWidget("",
+                  model.like ? Icons.favorite : Icons.favorite_border, () {}, iconColor: Coolor.RED,),
+            ],
+          ),
+        )
+      ],
     );
   }
 

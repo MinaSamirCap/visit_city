@@ -74,4 +74,34 @@ class WishlistModel {
         updatedAt = json['updatedAt'],
         like = json['like'],
         plan = json['plan'];
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+        'nameAr': nameAr,
+        'nameEn': nameEn,
+        'photos': photos.map((item) {
+          return item;
+        }).toList(),
+        'desc': desc,
+        'descAr': descAr,
+        'descEn': descEn,
+        'rate': rate,
+        'reviews': reviews,
+        'location': location.map((item) {
+          return item;
+        }).toList(),
+        'services': services.map((item) {
+          return item;
+        }).toList(),
+        'openHours': openHours.toJson(),
+        'price': price,
+        'contact': contact,
+        'website': website,
+        'QR': qr,
+        'createdAt': createdAt,
+        'updatedAt': updatedAt,
+        'like':like,
+        'plan':plan
+      };
 }
