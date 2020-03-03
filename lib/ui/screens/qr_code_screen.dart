@@ -2,9 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_qr_reader/qrcode_reader_view.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:visit_city/qr/scanViewDemo.dart';
 import 'package:visit_city/ui/screens/wishlist_screen.dart';
-import '../../ui/widget/qr_reader_widget.dart';
 import '../../ui/widget/ui.dart';
 import '../../res/coolor.dart';
 import '../../res/sizes.dart';
@@ -23,6 +21,7 @@ class _QrCodeScreenState extends State<QrCodeScreen> {
   bool isPermissionGranded = false;
   bool isShowPermissionLayout = false;
   AppLocalizations _appLocal;
+  double width = 0.0;
 
   @override
   void initState() {
@@ -35,6 +34,7 @@ class _QrCodeScreenState extends State<QrCodeScreen> {
   @override
   Widget build(BuildContext context) {
     _appLocal = AppLocalizations.of(context);
+    width = MediaQuery.of(context).size.width;
     return Scaffold(
         appBar: AppBar(
           title: Text(_appLocal.translate(LocalKeys.QR_CODE)),
@@ -55,27 +55,30 @@ class _QrCodeScreenState extends State<QrCodeScreen> {
   }
 
   Widget scanView() {
-    return QrReaderWidget(
-      key: _key,
-      onScan: onScan,
-      helpWidget: Text(_appLocal.translate(LocalKeys.PLZ_ALIGN_QR)),
+    return Stack(
+      children: <Widget>[
+        QrcodeReaderView(key: _key, onScan: onScan, helpWidget: Text("")),
+        Positioned(
+            bottom: 0,
+            child: Container(
+              height: 100,
+              width: width,
+              color: Coolor.BLUE_APP,
+              child: Center(
+                  child: Text(
+                _appLocal.translate(LocalKeys.PLZ_ALIGN_QR),
+                style: TextStyle(fontSize: 25, color: Coolor.WHITE),
+              )),
+            ))
+      ],
     );
   }
 
   Future onScan(String data) async {
-    showToast(data);
-    _key.currentState.stopScan();
+    /// todo navigate to the correct screen;;;
     await Navigator.of(context).pushNamed(WishlistScreen.ROUTE_NAME);
-    showToast("I am back");
+    showToast(data);
     _key.currentState.startScan();
-    
-    // Navigator.of(context).pushNamed(WishlistScreen.ROUTE_NAME).then((_) {
-    //   _key.currentState.startScan();
-    //   showToast("I am back");
-    // });
-
-    //Navigator.pop(context);
-    //setState(() {});
   }
 
   Widget getLoadingView() {
