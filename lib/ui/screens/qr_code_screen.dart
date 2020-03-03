@@ -67,7 +67,8 @@ class _QrCodeScreenState extends State<QrCodeScreen> {
               child: Center(
                   child: Text(
                 _appLocal.translate(LocalKeys.PLZ_ALIGN_QR),
-                style: TextStyle(fontSize: 25, color: Coolor.WHITE),
+                style: TextStyle(fontSize: 20, color: Coolor.WHITE),
+                textAlign: TextAlign.center,
               )),
             ))
       ],
