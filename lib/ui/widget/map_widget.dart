@@ -73,9 +73,9 @@ class _MapWidgetState extends State<MapWidget> {
       case ImageFilter.culture:
         return AssetImage(AssPath.CULTURE_MAP);
 
-        break;
-      default:
+      default: return AssetImage(AssPath.MAP_FULL);
     }
+    
   }
 
   Widget mapFiltersWidget() {
