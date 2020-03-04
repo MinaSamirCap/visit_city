@@ -1,6 +1,9 @@
 import 'dart:io';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http; // to avoid crashing with names ..
+import 'api_keys.dart';
+import '../models/explore/service_wrapper.dart';
 import '../models/itineraries/itineraries_model.dart';
 import '../models/sight/sight_wrapper.dart';
 import '../models/wishlist/like_dislike_wrapper.dart';
@@ -11,8 +14,6 @@ import '../models/category/category_wrapper.dart';
 import '../models/feedback/feedback_wrapper.dart';
 import '../models/message_model.dart';
 import '../models/feedback/feedback_send_model.dart';
-import 'dart:convert';
-import 'api_keys.dart';
 
 class ApiManager with ChangeNotifier {
   List<ItinerariesModel> itinerariesData = [];
@@ -236,16 +237,43 @@ class ApiManager with ChangeNotifier {
 
   void getSightDetails(int sightId, Function success, Function fail) async {
     await http
-        .get(ApiKeys.sightUrl + sightId.toString(),
+        .get(ApiKeys.sightDetailsUrl + sightId.toString(),
             headers: ApiKeys.getHeaders())
         .then((response) {
       Map extractedData = json.decode(response.body);
+      // todo --> do not forget to remove the
       print(extractedData);
       if (extractedData == null) {
         fail(MessageModel.getDecodeError());
         return false;
       } else {
         SightWrapper wrapper = SightWrapper.fromJson(extractedData);
+        if (wrapper.info) {
+          success(wrapper);
+          return true;
+        } else {
+          fail(wrapper.message);
+          return false;
+        }
+      }
+    }).catchError((onError) {
+      fail(checkErrorType(onError));
+    });
+  }
+
+  void getExploreDetails(int serviceId, Function success, Function fail) async {
+    await http
+        .get(ApiKeys.exploreDetailsUrl + serviceId.toString(),
+            headers: ApiKeys.getHeaders())
+        .then((response) {
+      Map extractedData = json.decode(response.body);
+      // todo --> do not forget to remove the
+      print(extractedData);
+      if (extractedData == null) {
+        fail(MessageModel.getDecodeError());
+        return false;
+      } else {
+        ServiceWrapper wrapper = ServiceWrapper.fromJson(extractedData);
         if (wrapper.info) {
           success(wrapper);
           return true;

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
-import 'package:visit_city/apis/api_manager.dart';
-import 'package:visit_city/models/message_model.dart';
-import 'package:visit_city/models/sight/sight_response.dart';
-import 'package:visit_city/models/sight/sight_wrapper.dart';
-import 'package:visit_city/models/wishlist/wishlist_model.dart';
-import 'package:visit_city/ui/widget/ui.dart';
-import 'package:visit_city/utils/lang/app_localization.dart';
+import '../../apis/api_manager.dart';
+import '../../models/message_model.dart';
+import '../../models/sight/sight_response.dart';
+import '../../models/sight/sight_wrapper.dart';
+import '../../models/wishlist/wishlist_model.dart';
+import '../../ui/widget/ui.dart';
+import '../../utils/lang/app_localization.dart';
 
 class SightDetailsScreen extends StatefulWidget {
   static const ROUTE_NAME = '/sight-details';
@@ -47,16 +47,19 @@ class _SightDetailsScreenState extends State<SightDetailsScreen> {
       appBar: AppBar(
         title: Text(getTitle(model.name)),
       ),
-      body: sightModel !=null? bodyWidget(): Center(
-        child: Text(model.desc),
-      ),
+      body: sightModel != null
+          ? bodyWidget()
+          : Center(
+              child: Text(model.desc),
+            ),
     );
   }
 
-  Widget bodyWidget(){
+  Widget bodyWidget() {
     return Center(
-        child: Text(sightModel.desc + " " + sightModel.desc + " " + sightModel.desc),
-      );
+      child:
+          Text(sightModel.desc + " " + sightModel.desc + " " + sightModel.desc),
+    );
   }
 
   void callDetailsApi() async {
