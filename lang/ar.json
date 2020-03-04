@@ -24,6 +24,12 @@
     "profile": "الملف الشخصي",
     "feedback": "رايك يهنا",
     "logout": "نسجيل الخروج",
+    "guide_book" : "الكتاب الارشادي",
+    "mixed_itinerary" : "المسار المختلط",
+    "how_to_use_app" : "كيفية استخدام التطبيق",
+    "intro_about_fayoum" : "مقدمة عن الفيوم",
+    "qr_code" : "بحث بالكود",
+    "useful_contacts" : "ارقام مفيدة",
     "in_3_iti" : "خلال 3 مسارات",
     "nat_itinerary" : "المسار الطبيعي",
     "arch_itinerary" : "المسار الاثري",
@@ -61,5 +67,8 @@
     "no_more_data" : "لا يوجد بيانات اخرى",
     "go" : "اذهب",
     "search" : "بحث",
-    "reviews" : "تقييمات"
+    "reviews" : "تقييمات",
+    "allow_permission" : "السماح بالوصول",
+    "we_need_camera_permission" : "نحتاج الى تصريحك للسماح بالوصول الى الكاميرا لفحص الكود ...",
+    "plz_align_qr" : "من فضلك ضع الكود داخل حدود المربع"
 }

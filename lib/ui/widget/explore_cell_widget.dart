@@ -5,15 +5,19 @@ class ExploreCellWidget extends StatelessWidget {
   final String cellTitle;
   final IconData cellIcon;
   final Function func;
+  final Color iconColor;
 
-  ExploreCellWidget(this.cellTitle, this.cellIcon, this.func);
+  ExploreCellWidget(this.cellTitle, this.cellIcon, this.func, {this.iconColor});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
         InkWell(
-          child: Icon(cellIcon),
+          child: Icon(
+            cellIcon,
+            color: iconColor
+          ),
           onTap: () {
             func();
           },

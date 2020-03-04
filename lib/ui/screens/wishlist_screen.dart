@@ -1,83 +1,67 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
+import '../../models/wishlist/like_dislike_wrapper.dart';
 import '../../general/general.dart';
-import '../../models/explore/explore_response.dart';
-import '../../ui/screens/explore_details_screen.dart';
-import '../../ui/widget/explore_cell_widget.dart';
-import '../../utils/lang/app_localization_keys.dart';
-import '../../models/explore/explore_model.dart';
-import '../../models/explore/explore_wrapper.dart';
-import '../../apis/api_manager.dart';
-import '../../models/category/category_wrapper.dart';
-import '../../models/message_model.dart';
-import '../../res/assets_path.dart';
-import '../../ui/widget/ui.dart';
+import '../../models/wishlist/wishlist_send_model.dart';
 import '../../res/coolor.dart';
+import '../../ui/widget/explore_cell_widget.dart';
+import '../../apis/api_manager.dart';
+import '../../models/message_model.dart';
+import '../../models/wishlist/wishlist_model.dart';
+import '../../models/wishlist/wishlist_response.dart';
+import '../../models/wishlist/wishlist_wrapper.dart';
 import '../../res/sizes.dart';
+import '../../ui/widget/ui.dart';
+import '../../utils/lang/app_localization_keys.dart';
 import '../../utils/lang/app_localization.dart';
-import 'filter_widget.dart';
+import 'explore_details_screen.dart';
 
 const imgeWidth = Sizes.imgeWidth;
 
-class ExploreWidget extends StatefulWidget {
+class WishlistScreen extends StatefulWidget {
+  static const ROUTE_NAME = '/wishlist';
+
   @override
-  _ExploreWidgetState createState() => _ExploreWidgetState();
+  _WishlistScreenState createState() => _WishlistScreenState();
 }
 
-class _ExploreWidgetState extends State<ExploreWidget> {
+class _WishlistScreenState extends State<WishlistScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  final TextEditingController _searchTextController = TextEditingController();
 
-  double columnCellWidth = 0;
-
-  List<FilterItem> filterList = [];
-  List<ExploreModel> exploreList = [];
-  List<ExploreModel> searchList = [];
-  ExploreResponse _pagingInfo;
-
+  List<WishlistModel> wishlistList = [];
+  WishlistResponse _pagingInfo;
   AppLocalizations _appLocal;
   ProgressDialog _progressDialog;
   ApiManager _apiManager;
   bool _isLoadingNow = true;
+  double columnCellWidth = 0;
 
   void initState() {
     Future.delayed(Duration.zero).then((_) {
       _progressDialog = getPlzWaitProgress(context, _appLocal);
       _apiManager = Provider.of<ApiManager>(context, listen: false);
+      _progressDialog.show();
       clearPaging();
-      callCategoriesApi();
+      callWishlistApi();
     });
     super.initState();
   }
 
-  void resetScreen() {
-    clearPaging();
-    clearSearch();
-  }
-
   void clearPaging() {
-    exploreList.clear();
-    _pagingInfo = ExploreResponse.clearPagin();
-  }
-
-  void clearSearch() {
-    _searchTextController.text = "";
-    searchList.clear();
+    wishlistList.clear();
+    _pagingInfo = WishlistResponse.clearPagin();
   }
 
   @override
   Widget build(BuildContext context) {
     _appLocal = AppLocalizations.of(context);
     columnCellWidth = MediaQuery.of(context).size.width - imgeWidth - 30 - 10;
-    //columnCellWidth =Sizes.calculateColumnWidth(MediaQuery.of(context).size.width);
+    //columnCellWidth = Sizes.calculateColumnWidth(MediaQuery.of(context).size.width);
     return Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
-          backgroundColor: Coolor.FEEDBACK_OFF_WHITE,
-          bottom: FilterWidget(filterList, allIsSelected, selectedFilters),
-          title: searchWidget(),
+          title: Text(_appLocal.translate(LocalKeys.WISHLIST)),
         ),
         body: pagingWidget());
   }
@@ -89,7 +73,7 @@ class _ExploreWidgetState extends State<ExploreWidget> {
           child: NotificationListener<ScrollNotification>(
               onNotification: (ScrollNotification scrollInfo) {
                 if (shouldLoadMore(scrollInfo)) {
-                  callExploreApi();
+                  callWishlistApi();
                   setState(() {
                     _isLoadingNow = true;
                   });
@@ -103,22 +87,6 @@ class _ExploreWidgetState extends State<ExploreWidget> {
     );
   }
 
-  Widget searchWidget() {
-    return TextFormField(
-      controller: _searchTextController,
-      keyboardType: TextInputType.text,
-      maxLines: 1,
-      minLines: 1,
-      decoration: InputDecoration(
-          icon: Icon(Icons.search),
-          labelText: _appLocal.translate(LocalKeys.SEARCH)),
-      onChanged: (textChanged) {
-        /// filter current list according to received text.
-        updateSearchList(textChanged);
-      },
-    );
-  }
-
   Widget listWidget() {
     return ListView.separated(
       padding: Sizes.EDEGINSETS_15,
@@ -128,12 +96,12 @@ class _ExploreWidgetState extends State<ExploreWidget> {
       itemBuilder: (ctx, index) {
         return exploreItemWidget(index);
       },
-      itemCount: searchList.length,
+      itemCount: wishlistList.length,
     );
   }
 
   Widget exploreItemWidget(int index) {
-    ExploreModel model = searchList[index];
+    WishlistModel model = wishlistList[index];
     return Card(
         shape: RoundedRectangleBorder(borderRadius: Sizes.BOR_RAD_20),
         child: ClipRRect(
@@ -141,8 +109,7 @@ class _ExploreWidgetState extends State<ExploreWidget> {
           child: InkWell(
             onTap: () {
               /// open details screen
-              Navigator.of(context).pushNamed(ExploreDetailsScreen.ROUTE_NAME,
-                  arguments: {ExploreDetailsScreen.MODEL_KEY: model.toJson()});
+              //openDetialsSightScreen(index);
             },
             child: Container(
               height: 170,
@@ -157,22 +124,12 @@ class _ExploreWidgetState extends State<ExploreWidget> {
         ));
   }
 
-  Widget imageWidget(ExploreModel model) {
-    // I am sure it is working tested on real device ...
-    // return FadeInImage.assetNetwork(
-    //   placeholder: AssPath.APP_LOGO,
-    //   image: model.photos.isEmpty ? "" : model.photos[0],
-    //   height: double.infinity,
-    //   width: imgeWidth,
-    //   fit: BoxFit.cover,
-    //   fadeInDuration: new Duration(milliseconds: 100),
-    // );
-
+  Widget imageWidget(WishlistModel model) {
     return exploreImgWidget(
         imgeWidth, model.photos.isEmpty ? "" : model.photos[0]);
   }
 
-  Widget halfExporeWidget(ExploreModel model) {
+  Widget halfExporeWidget(WishlistModel model) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -231,10 +188,14 @@ class _ExploreWidgetState extends State<ExploreWidget> {
               }),
               ExploreCellWidget("${model.openHours.from} ${model.openHours.to}",
                   Icons.access_time, () {}),
-              // removed favorite icon
-              // ExploreCellWidget("", Icons.favorite_border, () {
-              //
-              // }),
+              ExploreCellWidget(
+                "",
+                model.like ? Icons.favorite : Icons.favorite_border,
+                () {
+                  likeDislikeClicked(model);
+                },
+                iconColor: Coolor.RED,
+              ),
             ],
           ),
         )
@@ -242,29 +203,26 @@ class _ExploreWidgetState extends State<ExploreWidget> {
     );
   }
 
-
-  
-
-  void callCategoriesApi() async {
-    _progressDialog.show();
-    _apiManager.categoriesApi((CategoryWrapper wrapper) {
-      _progressDialog.hide();
-      setState(() {
-        filterList = FilterItem.getFilterList(wrapper.data, _appLocal);
-        callExploreApi();
-      });
-    }, (MessageModel messageModel) {
-      _progressDialog.hide();
-      showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
-    });
+  bool shouldLoadMore(ScrollNotification scrollInfo) {
+    return (!_isLoadingNow &&
+        scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent &&
+        _pagingInfo.hasNextPage);
   }
 
-  void callExploreApi({String query = ""}) async {
-    _apiManager.exploreApi(_pagingInfo.page + 1, query,
-        (ExploreWrapper wrapper) {
+  void openDetialsSightScreen(int index) {
+    Navigator.of(context).pushNamed(ExploreDetailsScreen.ROUTE_NAME,
+        arguments: {ExploreDetailsScreen.MODEL_KEY: wishlistList[index].id});
+  }
+
+  void likeDislikeClicked(WishlistModel model) {
+    callLikeDislikeApi(model, true);
+  }
+
+  void callWishlistApi() async {
+    _apiManager.wishlistApi(_pagingInfo.page + 1, (WishlistWrapper wrapper) {
       setState(() {
-        exploreList.addAll(wrapper.data.docs);
-        adjustSearchList();
+        _progressDialog.hide();
+        wishlistList.addAll(wrapper.data.docs);
         _pagingInfo = wrapper.data;
         _isLoadingNow = false;
         if (!_pagingInfo.hasNextPage) {
@@ -275,40 +233,27 @@ class _ExploreWidgetState extends State<ExploreWidget> {
       });
     }, (MessageModel messageModel) {
       setState(() {
+        _progressDialog.hide();
         showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
         _isLoadingNow = false;
       });
     });
   }
 
-  void allIsSelected() {
-    resetScreen();
-    callExploreApi();
-  }
-
-  void selectedFilters(List<FilterItem> list) {
-    resetScreen();
-    List ids = list.map((item) => item.category.id.toString()).toList();
-    callExploreApi(query: ids.join(","));
-  }
-
-  bool shouldLoadMore(ScrollNotification scrollInfo) {
-    return (!_isLoadingNow &&
-        scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent &&
-        _pagingInfo.hasNextPage);
-  }
-
-  void adjustSearchList() {
-    clearSearch();
-    searchList.addAll(exploreList);
-  }
-
-  void updateSearchList(String changedText) {
-    setState(() {
-      searchList = exploreList
-          .where((element) =>
-              (element.name.toLowerCase().contains(changedText.toLowerCase())))
-          .toList();
+  void callLikeDislikeApi(WishlistModel model, bool isLiked) async {
+    _progressDialog.show();
+    _apiManager.likeDislikeApi(WishlistSendModel([model.id]),
+        (LikeDislikeWrapper wrapper) {
+      setState(() {
+        _progressDialog.hide();
+        wishlistList.remove(model);
+        showSnackBar(createSnackBar(wrapper.message.message), _scaffoldKey);
+      });
+    }, (MessageModel messageModel) {
+      setState(() {
+        _progressDialog.hide();
+        showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
+      });
     });
   }
 }

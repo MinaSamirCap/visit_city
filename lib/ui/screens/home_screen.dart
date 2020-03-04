@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:visit_city/general/general.dart';
+import '../../ui/screens/qr_code_screen.dart';
+import '../../ui/screens/wishlist_screen.dart';
 import '../../ui/widget/explore_widget.dart';
 import '../../ui/widget/home_widget.dart';
 import '../../ui/widget/map_widget.dart';
@@ -42,8 +45,25 @@ class _HomeScreenState extends State<HomeScreen> {
   void onMenuItemSelected(String title) {
     if (title == _appLocal.translate(LocalKeys.FEEDBACK)) {
       Navigator.of(context).pushNamed(FeedbackScreen.ROUTE_NAME);
-    } else {}
-    print(title);
+    } else if (title == _appLocal.translate(LocalKeys.LOGOUT)) {
+      ///
+    } else if (title == _appLocal.translate(LocalKeys.PROFILE)) {
+      ///
+    } else if (title == _appLocal.translate(LocalKeys.WISHLIST)) {
+      Navigator.of(context).pushNamed(WishlistScreen.ROUTE_NAME);
+    } else if (title == _appLocal.translate(LocalKeys.GUIDE_BOOK)) {
+      launchUrl("https://www.google.com");
+    } else if (title == _appLocal.translate(LocalKeys.MIXED_ITE)) {
+      ///
+    } else if (title == _appLocal.translate(LocalKeys.HOW_TO_USE_APP)) {
+      ///
+    } else if (title == _appLocal.translate(LocalKeys.INTRO_ABOUT_FAYOUM)) {
+      ///
+    } else if (title == _appLocal.translate(LocalKeys.USEFUL_CONTACTS)) {
+      ///
+    } else if (title == _appLocal.translate(LocalKeys.QR_CODE)) {
+      Navigator.of(context).pushNamed(QrCodeScreen.ROUTE_NAME);
+    }
   }
 
   void onBottomItemSelected(int index) {

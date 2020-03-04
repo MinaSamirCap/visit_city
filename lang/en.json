@@ -24,6 +24,12 @@
     "profile" : "Profile",
     "feedback" : "Feedback",
     "logout" : "Logout",
+    "guide_book" : "Guide Book",
+    "mixed_itinerary" : "Mixed Itinerary",
+    "how_to_use_app" : "How to use App?",
+    "intro_about_fayoum" : "Intro About Fayoum",
+    "useful_contacts" : "Useful Contacts",
+    "qr_code" : "QR Code",
     "in_3_iti" : "In 3 Itineraries",
     "nat_itinerary" : "Natural Itinerary",
     "arch_itinerary" : "Archeology Itinerary",
@@ -61,5 +67,8 @@
     "no_more_data" : "No more data to load ...",
     "go" : "Go",
     "search" : "Search",
-    "reviews" : "reviews"
+    "reviews" : "reviews",
+    "allow_permission" : "Allow Permission",
+    "we_need_camera_permission" : "We need your permission to scan QR Code with Camera ...",
+    "plz_align_qr" : "Please align QR Code to box border"
 }

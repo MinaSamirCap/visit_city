@@ -31,6 +31,7 @@ class Coolor {
 
   static const WHITE = Colors.white;
   static const BLACK = Colors.black;
+  static const RED = ARC_ITI_COL;
   static const GREY = Colors.grey;
   static const TRANSPARENT = Colors.transparent;
   static const GREY_DARK = Color(0xff3c4043);

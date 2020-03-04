@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'ui/screens/qr_code_screen.dart';
+import 'ui/screens/wishlist_screen.dart';
 import 'res/coolor.dart';
 import 'utils/lang/app_localization.dart';
 import 'apis/api_manager.dart';
@@ -89,6 +91,8 @@ class MyApp extends StatelessWidget {
                 ItineraryDetailsScreen(),
             ExploreDetailsScreen.ROUTE_NAME: (ctx) => ExploreDetailsScreen(),
             MapWidget.ROUTE_NAME: (ctx) => MapWidget(),
+            WishlistScreen.ROUTE_NAME: (ctx) => WishlistScreen(),
+            QrCodeScreen.ROUTE_NAME: (ctx) => QrCodeScreen(),
           },
         ),
       ),

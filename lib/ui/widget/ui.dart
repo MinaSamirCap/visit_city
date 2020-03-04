@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import '../../res/assets_path.dart';
 import '../../res/sizes.dart';
 import '../../utils/lang/app_localization.dart';
 import '../../utils/lang/app_localization_keys.dart';
@@ -83,3 +85,34 @@ Widget pagingLoadingWidget(bool isLoading) {
     duration: Duration(milliseconds: 300),
   );
 }
+
+Widget exploreImgWidget(double width, String url) {
+// I am sure it is working tested on real device ...
+  return FadeInImage.assetNetwork(
+    placeholder: AssPath.APP_LOGO,
+    image: url != null ? "" : url,
+    height: double.infinity,
+    width: width,
+    fit: BoxFit.cover,
+    fadeInDuration: new Duration(milliseconds: 100),
+  );
+}
+
+Widget ratingWidget(double rate) {
+  return Padding(
+    padding: const EdgeInsetsDirectional.fromSTEB(10, 5, 0, 0),
+    child: RatingBarIndicator(
+      rating: rate,
+      itemCount: 5,
+      itemSize: 20,
+      itemPadding: EdgeInsets.all(0),
+      itemBuilder: (ctx, index) {
+        return Icon(
+          Icons.star,
+          color: Coolor.BLUE_APP,
+        );
+      },
+    ),
+  );
+}
+
