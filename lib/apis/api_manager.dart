@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http; // to avoid crashing with names ..
+import 'package:visit_city/models/sight/sight_wrapper.dart';
 import '../models/wishlist/like_dislike_wrapper.dart';
 import '../models/wishlist/wishlist_send_model.dart';
 import '../models/wishlist/wishlist_wrapper.dart';
@@ -152,6 +153,31 @@ class ApiManager with ChangeNotifier {
         return false;
       } else {
         LikeDislikeWrapper wrapper = LikeDislikeWrapper.fromJson(extractedData);
+        if (wrapper.info) {
+          success(wrapper);
+          return true;
+        } else {
+          fail(wrapper.message);
+          return false;
+        }
+      }
+    }).catchError((onError) {
+      fail(checkErrorType(onError));
+    });
+  }
+
+  void getSightDetails(int sightId, Function success, Function fail) async {
+    await http
+        .get(ApiKeys.sightUrl + sightId.toString(),
+            headers: ApiKeys.getHeaders())
+        .then((response) {
+      Map extractedData = json.decode(response.body);
+      print(extractedData);
+      if (extractedData == null) {
+        fail(MessageModel.getDecodeError());
+        return false;
+      } else {
+        SightWrapper wrapper = SightWrapper.fromJson(extractedData);
         if (wrapper.info) {
           success(wrapper);
           return true;

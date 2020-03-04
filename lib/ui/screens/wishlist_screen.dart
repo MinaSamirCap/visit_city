@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
+import 'package:visit_city/ui/screens/sight_details_screen.dart';
 import '../../models/wishlist/like_dislike_wrapper.dart';
 import '../../general/general.dart';
 import '../../models/wishlist/wishlist_send_model.dart';
@@ -15,7 +16,6 @@ import '../../res/sizes.dart';
 import '../../ui/widget/ui.dart';
 import '../../utils/lang/app_localization_keys.dart';
 import '../../utils/lang/app_localization.dart';
-import 'explore_details_screen.dart';
 
 const imgeWidth = Sizes.imgeWidth;
 
@@ -109,7 +109,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
           child: InkWell(
             onTap: () {
               /// open details screen
-              //openDetialsSightScreen(index);
+              openDetialsSightScreen(index);
             },
             child: Container(
               height: 170,
@@ -210,8 +210,8 @@ class _WishlistScreenState extends State<WishlistScreen> {
   }
 
   void openDetialsSightScreen(int index) {
-    Navigator.of(context).pushNamed(ExploreDetailsScreen.ROUTE_NAME,
-        arguments: {ExploreDetailsScreen.MODEL_KEY: wishlistList[index].id});
+    Navigator.of(context).pushNamed(SightDetailsScreen.ROUTE_NAME,
+        arguments: {SightDetailsScreen.MODEL_KEY: wishlistList[index].toJson()});
   }
 
   void likeDislikeClicked(WishlistModel model) {
