@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
-import 'package:visit_city/general/general.dart';
-import 'package:visit_city/res/coolor.dart';
-import 'package:visit_city/ui/widget/explore_cell_widget.dart';
+import '../../models/wishlist/like_dislike_wrapper.dart';
+import '../../general/general.dart';
+import '../../models/wishlist/wishlist_send_model.dart';
+import '../../res/coolor.dart';
+import '../../ui/widget/explore_cell_widget.dart';
 import '../../apis/api_manager.dart';
 import '../../models/message_model.dart';
 import '../../models/wishlist/wishlist_model.dart';
@@ -107,8 +109,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
           child: InkWell(
             onTap: () {
               /// open details screen
-              Navigator.of(context).pushNamed(ExploreDetailsScreen.ROUTE_NAME,
-                  arguments: {ExploreDetailsScreen.MODEL_KEY: model.id});
+              //openDetialsSightScreen(index);
             },
             child: Container(
               height: 170,
@@ -187,13 +188,34 @@ class _WishlistScreenState extends State<WishlistScreen> {
               }),
               ExploreCellWidget("${model.openHours.from} ${model.openHours.to}",
                   Icons.access_time, () {}),
-              ExploreCellWidget("",
-                  model.like ? Icons.favorite : Icons.favorite_border, () {}, iconColor: Coolor.RED,),
+              ExploreCellWidget(
+                "",
+                model.like ? Icons.favorite : Icons.favorite_border,
+                () {
+                  likeDislikeClicked(model);
+                },
+                iconColor: Coolor.RED,
+              ),
             ],
           ),
         )
       ],
     );
+  }
+
+  bool shouldLoadMore(ScrollNotification scrollInfo) {
+    return (!_isLoadingNow &&
+        scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent &&
+        _pagingInfo.hasNextPage);
+  }
+
+  void openDetialsSightScreen(int index) {
+    Navigator.of(context).pushNamed(ExploreDetailsScreen.ROUTE_NAME,
+        arguments: {ExploreDetailsScreen.MODEL_KEY: wishlistList[index].id});
+  }
+
+  void likeDislikeClicked(WishlistModel model) {
+    callLikeDislikeApi(model, true);
   }
 
   void callWishlistApi() async {
@@ -211,15 +233,27 @@ class _WishlistScreenState extends State<WishlistScreen> {
       });
     }, (MessageModel messageModel) {
       setState(() {
+        _progressDialog.hide();
         showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
         _isLoadingNow = false;
       });
     });
   }
 
-  bool shouldLoadMore(ScrollNotification scrollInfo) {
-    return (!_isLoadingNow &&
-        scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent &&
-        _pagingInfo.hasNextPage);
+  void callLikeDislikeApi(WishlistModel model, bool isLiked) async {
+    _progressDialog.show();
+    _apiManager.likeDislikeApi(WishlistSendModel([model.id]),
+        (LikeDislikeWrapper wrapper) {
+      setState(() {
+        _progressDialog.hide();
+        wishlistList.remove(model);
+        showSnackBar(createSnackBar(wrapper.message.message), _scaffoldKey);
+      });
+    }, (MessageModel messageModel) {
+      setState(() {
+        _progressDialog.hide();
+        showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
+      });
+    });
   }
 }

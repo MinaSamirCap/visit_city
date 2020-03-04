@@ -1,8 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http; // to avoid crashing with names ..
-import 'package:visit_city/models/wishlist/wishlist_send_model.dart';
-import 'package:visit_city/models/wishlist/wishlist_wrapper.dart';
+import '../models/wishlist/like_dislike_wrapper.dart';
+import '../models/wishlist/wishlist_send_model.dart';
+import '../models/wishlist/wishlist_wrapper.dart';
 import '../models/explore/explore_wrapper.dart';
 import '../models/category/category_wrapper.dart';
 import '../models/feedback/feedback_wrapper.dart';
@@ -142,16 +143,15 @@ class ApiManager with ChangeNotifier {
   void likeDislikeApi(
       WishlistSendModel model, Function success, Function fail) async {
     await http
-        .post(ApiKeys.wishlistUrl,
-            headers: ApiKeys.getHeaders(), body: model.toJson())
+        .post(ApiKeys.likeDislikeUrl,
+            headers: ApiKeys.getHeaders(), body: json.encode(model.toJson()))
         .then((response) {
       Map extractedData = json.decode(response.body);
-      print(extractedData);
       if (extractedData == null) {
         fail(MessageModel.getDecodeError());
         return false;
       } else {
-        WishlistWrapper wrapper = WishlistWrapper.fromJson(extractedData);
+        LikeDislikeWrapper wrapper = LikeDislikeWrapper.fromJson(extractedData);
         if (wrapper.info) {
           success(wrapper);
           return true;
