@@ -45,6 +45,9 @@ class Sizes {
     height: 200,
   );
 
+  static const DIVIDER_WIDTH_0 = SizedBox(
+    width: 0,
+  );
   static const DIVIDER_WIDTH_5 = SizedBox(
     width: 5,
   );

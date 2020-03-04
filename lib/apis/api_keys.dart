@@ -28,13 +28,14 @@ class ApiKeys {
   }
 
   static String getToken() {
-    return 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyLCJ1c2VyUm9sZSI6Im5vcm1hbCIsImlhdCI6MTU4MzE3OTI5MCwiZXhwIjoxNTg0NDc1MjkwfQ.l0yS_ysHXxrdrF1eRsRoNg1kaCbig5ZxifWlJBj4oTE';
+    return 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyLCJ1c2VyUm9sZSI6Im5vcm1hbCIsImlhdCI6MTU4MzI0NzA1MiwiZXhwIjoxNTg0NTQzMDUyfQ.7ZYfyzMtPQY3RhmUKtzQ32_51tEB7yU2qR11ZXuyTrM';
   }
 
   static final baseUrl = 'https://visit-fayoum.herokuapp.com/api/v1';
   static final feedbackUrl = baseUrl + "/feedbacks";
   static final categoriesUrl = baseUrl + "/categories";
   static final exploreUrl = baseUrl + "/services-explored?";
+  static final itinerariesUrl = baseUrl + '/itineraries';
   static final wishlistUrl = baseUrl + "/wishlist?";
   static final likeDislikeUrl = baseUrl + "/wishlist?";
   static final sightUrl = baseUrl + "/sights/";

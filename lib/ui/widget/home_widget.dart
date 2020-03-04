@@ -96,7 +96,7 @@ class HomeWidget extends StatelessWidget {
     return InkWell(
       onTap: () {
         print(model.title);
-        _navigate.pushNamed(ItineraryDetailsScreen.ROUTE_NAME);
+        _navigate.pushNamed(ItineraryDetailsScreen.ROUTE_NAME,arguments:model.id,);
       },
       child: Card(
         elevation: 5,
@@ -137,8 +137,9 @@ class ItineraryModel {
   final String duration;
   final String imgUrl;
   final Color bgColor;
+  final int id;
 
-  ItineraryModel(this.title, this.duration, this.imgUrl, this.bgColor);
+  ItineraryModel(this.title, this.duration, this.imgUrl, this.bgColor,this.id);
 
   static List<ItineraryModel> getItinerariesList(AppLocalizations appLocale) {
     return [
@@ -146,17 +147,17 @@ class ItineraryModel {
           appLocale.translate(LocalKeys.NATURAL_ITINERARIES),
           appLocale.translate(LocalKeys.ABOUT_3_DAYS),
           AssPath.NATURE_LOGO,
-          Coolor.NAT_ITI_COL),
+          Coolor.NAT_ITI_COL,6,),
       ItineraryModel(
           appLocale.translate(LocalKeys.ARCHEOLOGY_ITINERARIES),
           appLocale.translate(LocalKeys.ABOUT_4_DAYS),
           AssPath.ARCHEOLOGY_LOGO,
-          Coolor.ARC_ITI_COL),
+          Coolor.ARC_ITI_COL,3,),
       ItineraryModel(
           appLocale.translate(LocalKeys.CLUTURE_ITINERARIES),
           appLocale.translate(LocalKeys.ABOUT_2_DAYS),
           AssPath.CULTURE_LOGO,
-          Coolor.CUL_ITI_COL)
+          Coolor.CUL_ITI_COL,2,)
     ];
   }
 }
