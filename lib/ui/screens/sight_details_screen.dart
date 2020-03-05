@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
+import 'package:visit_city/ui/widget/silver_app_bar_delegation.dart';
+import '../../res/sizes.dart';
 import '../../apis/api_manager.dart';
 import '../../models/message_model.dart';
 import '../../models/sight/sight_response.dart';
@@ -43,16 +45,51 @@ class _SightDetailsScreenState extends State<SightDetailsScreen> {
     _appLocal = AppLocalizations.of(context);
 
     return Scaffold(
-      key: _scaffoldKey,
-      appBar: AppBar(
-        title: Text(getTitle(model.name)),
-      ),
-      body: sightModel != null
-          ? bodyWidget()
-          : Center(
-              child: Text(model.desc),
-            ),
-    );
+        key: _scaffoldKey,
+        body: DefaultTabController(
+          length: 2,
+          child: NestedScrollView(
+            headerSliverBuilder:
+                (BuildContext context, bool innerBoxIsScrolled) {
+              return <Widget>[
+                SliverAppBar(
+                  expandedHeight: Sizes.hightDetails,
+                  floating: false,
+                  pinned: true,
+                  flexibleSpace: FlexibleSpaceBar(
+                      centerTitle: true,
+                      title: Text("Collapsing Toolbar",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16.0,
+                          )),
+                      background: Image.network(
+                        "https://images.pexels.com/photos/396547/pexels-photo-396547.jpeg?auto=compress&cs=tinysrgb&h=350",
+                        fit: BoxFit.cover,
+                      )),
+                ),
+                SliverPersistentHeader(
+                  delegate: SliverAppBarDelegate(
+                    TabBar(
+                      labelColor: Colors.black87,
+                      unselectedLabelColor: Colors.grey,
+                      tabs: [
+                        Tab(text: "Tab 1"),
+                        Tab(text: "Tab 2"),
+                      ],
+                    ),
+                  ),
+                  pinned: true,
+                ),
+              ];
+            },
+            body: sightModel != null
+                ? bodyWidget()
+                : Center(
+                    child: Text(model.desc),
+                  ),
+          ),
+        ));
   }
 
   Widget bodyWidget() {

@@ -4,6 +4,7 @@ class Sizes {
   static const paddingColumn = -30 - 10;
   static const imgeWidth =
       110.0; // image width of explore item and wishlist item
+  static const hightDetails = 250.0; // image hight of details screen
   static double calculateColumnWidth(double screenWidth) {
     return screenWidth - imgeWidth - paddingColumn;
   }
