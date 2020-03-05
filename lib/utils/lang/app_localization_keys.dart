@@ -74,4 +74,6 @@ class LocalKeys {
   static const ALLOW_PERMISSION = "allow_permission";
   static const WE_NEED_CAMERA_PERMISSION = "we_need_camera_permission";
   static const PLZ_ALIGN_QR = "plz_align_qr";
+  static const OVERVIEW = "overview";
+  static const SERVICES = "services";
 }
