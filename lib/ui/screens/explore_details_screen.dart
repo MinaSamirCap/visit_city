@@ -27,6 +27,7 @@ class _ExploreDetailsScreenState extends State<ExploreDetailsScreen> {
   ProgressDialog _progressDialog;
   ApiManager _apiManager;
   ExploreModel serviceModel;
+  int _currentTab = 0;
 
   void initState() {
     Future.delayed(Duration.zero).then((_) {
@@ -59,7 +60,7 @@ class _ExploreDetailsScreenState extends State<ExploreDetailsScreen> {
                   pinned: true,
                   flexibleSpace: FlexibleSpaceBar(
                       title: Text(getTitle(serviceModel.name)),
-                      background: CarouselWithIndicator(serviceModel.photos)),
+                      background: getPhotosOrDummyWidget()),
                 ),
                 SliverPersistentHeader(
                   delegate: SliverAppBarDelegate(
@@ -71,6 +72,11 @@ class _ExploreDetailsScreenState extends State<ExploreDetailsScreen> {
                         Tab(text: _appLocal.translate(LocalKeys.OVERVIEW)),
                         Tab(text: _appLocal.translate(LocalKeys.REVIEWS)),
                       ],
+                      onTap: (index) {
+                        setState(() {
+                          _currentTab = index;
+                        });
+                      },
                     ),
                   ),
                   pinned: true,
@@ -87,13 +93,47 @@ class _ExploreDetailsScreenState extends State<ExploreDetailsScreen> {
   }
 
   Widget bodyWidget() {
-    return Center(
-      child: Text(serviceModel.desc +
-          " " +
-          serviceModel.desc +
-          " " +
-          serviceModel.desc),
+    if (_currentTab == 0) {
+      return overviewWidget();
+    } else {
+      return reviewWidget();
+    }
+  }
+
+  Widget overviewWidget() {
+    return Padding(
+      padding: Sizes.EDEGINSETS_15,
+      child: Column(
+        children: <Widget>[
+          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
+              ratingOrangeWidget(5),
+              ratingOrangeWidget(serviceModel.rate),
+          ],),
+          SizedBox(height: 10),
+          Center(
+            child: Text(serviceModel.desc +
+                " " +
+                serviceModel.desc +
+                " " +
+                serviceModel.desc),
+          ),
+        ],
+      ),
     );
+  }
+
+  Widget reviewWidget() {
+    return Center(
+      child: Text(serviceModel.name),
+    );
+  }
+
+  Widget getPhotosOrDummyWidget(){
+    if(serviceModel.photos.length > 0){
+       return CarouselWithIndicator(serviceModel.photos);
+    }else {
+      return Center(child: Text(_appLocal.translate(LocalKeys.NO_PIC)),);
+    }
   }
 
   void callDetailsApi() async {

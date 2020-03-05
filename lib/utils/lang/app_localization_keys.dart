@@ -76,4 +76,5 @@ class LocalKeys {
   static const PLZ_ALIGN_QR = "plz_align_qr";
   static const OVERVIEW = "overview";
   static const SERVICES = "services";
+  static const NO_PIC = "no_pic";
 }

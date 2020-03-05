@@ -72,5 +72,6 @@
     "we_need_camera_permission" : "We need your permission to scan QR Code with Camera ...",
     "plz_align_qr" : "Please align QR Code to box border",
     "overview" : "Overview",
-    "services" : "Services"
+    "services" : "Services",
+    "no_pic" : "No Photos"
 }
