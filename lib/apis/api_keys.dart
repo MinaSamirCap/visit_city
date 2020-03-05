@@ -52,4 +52,7 @@ class ApiKeys {
   static final itinerariesUrl = baseUrl + '/itineraries';
   static final wishlistUrl = baseUrl + "/wishlist?";
   static final likeDislikeUrl = baseUrl + "/wishlist?";
+  static final sightDetailsUrl = baseUrl + "/sights/";
+  static final exploreDetailsUrl = baseUrl + "/services/";
+
 }

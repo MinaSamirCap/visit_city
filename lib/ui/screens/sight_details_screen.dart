@@ -2,32 +2,42 @@ import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
 import '../../res/coolor.dart';
-import '../../res/sizes.dart';
 import '../../ui/widget/carousel_with_indicator_widget.dart';
-import '../../ui/widget/silver_app_bar_delegation.dart';
 import '../../utils/lang/app_localization_keys.dart';
+import '../../ui/widget/silver_app_bar_delegation.dart';
+import '../../res/sizes.dart';
 import '../../apis/api_manager.dart';
-import '../../models/explore/explore_model.dart';
-import '../../models/explore/service_wrapper.dart';
 import '../../models/message_model.dart';
+import '../../models/sight/sight_response.dart';
+import '../../models/sight/sight_wrapper.dart';
+import '../../models/wishlist/wishlist_model.dart';
 import '../../ui/widget/ui.dart';
 import '../../utils/lang/app_localization.dart';
 
-class ExploreDetailsScreen extends StatefulWidget {
-  static const ROUTE_NAME = '/explore-details';
-  static const MODEL_KEY = 'explore_model';
+final List<String> imgList = [
+  'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=94a1e718d89ca60a6337a6008341ca50&auto=format&fit=crop&w=1950&q=80',
+  'https://images.unsplash.com/photo-1522205408450-add114ad53fe?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=368f45b0888aeb0b7b08e3a1084d3ede&auto=format&fit=crop&w=1950&q=80',
+  'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
+  'https://images.unsplash.com/photo-1523205771623-e0faa4d2813d?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=89719a0d55dd05e2deae4120227e6efc&auto=format&fit=crop&w=1953&q=80',
+  'https://images.unsplash.com/photo-1508704019882-f9cf40e475b4?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=8c6e5e3aba713b17aa1fe71ab4f0ae5b&auto=format&fit=crop&w=1352&q=80',
+  'https://images.unsplash.com/photo-1519985176271-adb1088fa94c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a0c8d632e977f94e5d312d9893258f59&auto=format&fit=crop&w=1355&q=80'
+];
+
+class SightDetailsScreen extends StatefulWidget {
+  static const ROUTE_NAME = '/sight-details';
+  static const MODEL_KEY = 'sight_model';
 
   @override
-  _ExploreDetailsScreenState createState() => _ExploreDetailsScreenState();
+  _SightDetailsScreenState createState() => _SightDetailsScreenState();
 }
 
-class _ExploreDetailsScreenState extends State<ExploreDetailsScreen> {
+class _SightDetailsScreenState extends State<SightDetailsScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   AppLocalizations _appLocal;
   ProgressDialog _progressDialog;
   ApiManager _apiManager;
-  ExploreModel serviceModel;
-  int _currentTab = 0;
+  SightResponse sightModel;
+  int sightId = 0;
 
   void initState() {
     Future.delayed(Duration.zero).then((_) {
@@ -42,14 +52,16 @@ class _ExploreDetailsScreenState extends State<ExploreDetailsScreen> {
   Widget build(BuildContext context) {
     final args =
         ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
-    serviceModel =
-        ExploreModel.fromJson(args[ExploreDetailsScreen.MODEL_KEY] as Map);
+    final model =
+        WishlistModel.fromJson(args[SightDetailsScreen.MODEL_KEY] as Map);
+    sightId = model.id;
+
     _appLocal = AppLocalizations.of(context);
 
     return Scaffold(
         key: _scaffoldKey,
         body: DefaultTabController(
-          length: 2,
+          length: 3,
           child: NestedScrollView(
             headerSliverBuilder:
                 (BuildContext context, bool innerBoxIsScrolled) {
@@ -58,90 +70,53 @@ class _ExploreDetailsScreenState extends State<ExploreDetailsScreen> {
                   expandedHeight: Sizes.hightDetails,
                   floating: false,
                   pinned: true,
+                  actions: <Widget>[
+                    Icon(Icons.map),
+                    SizedBox(width: 10),
+                    Icon(Icons.favorite)
+                  ],
                   flexibleSpace: FlexibleSpaceBar(
-                      title: Text(getTitle(serviceModel.name)),
-                      background: getPhotosOrDummyWidget()),
+                      title: Text(getTitle(model.name)),
+                      background: CarouselWithIndicator(imgList)),
                 ),
                 SliverPersistentHeader(
                   delegate: SliverAppBarDelegate(
                     TabBar(
-                      indicator: getTabIndicator(),
                       labelColor: Coolor.BLACK,
                       unselectedLabelColor: Coolor.GREY,
                       tabs: [
                         Tab(text: _appLocal.translate(LocalKeys.OVERVIEW)),
                         Tab(text: _appLocal.translate(LocalKeys.REVIEWS)),
+                        Tab(text: _appLocal.translate(LocalKeys.SERVICES)),
                       ],
-                      onTap: (index) {
-                        setState(() {
-                          _currentTab = index;
-                        });
-                      },
                     ),
                   ),
                   pinned: true,
                 ),
               ];
             },
-            body: serviceModel != null
+            body: sightModel != null
                 ? bodyWidget()
                 : Center(
-                    child: Text(serviceModel.desc),
+                    child: Text(model.desc),
                   ),
           ),
         ));
   }
 
   Widget bodyWidget() {
-    if (_currentTab == 0) {
-      return overviewWidget();
-    } else {
-      return reviewWidget();
-    }
-  }
-
-  Widget overviewWidget() {
-    return Padding(
-      padding: Sizes.EDEGINSETS_15,
-      child: Column(
-        children: <Widget>[
-          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
-              ratingOrangeWidget(5),
-              ratingOrangeWidget(serviceModel.rate),
-          ],),
-          SizedBox(height: 10),
-          Center(
-            child: Text(serviceModel.desc +
-                " " +
-                serviceModel.desc +
-                " " +
-                serviceModel.desc),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget reviewWidget() {
     return Center(
-      child: Text(serviceModel.name),
+      child:
+          Text(sightModel.desc + " " + sightModel.desc + " " + sightModel.desc),
     );
-  }
-
-  Widget getPhotosOrDummyWidget(){
-    if(serviceModel.photos.length > 0){
-       return CarouselWithIndicator(serviceModel.photos);
-    }else {
-      return Center(child: Text(_appLocal.translate(LocalKeys.NO_PIC)),);
-    }
   }
 
   void callDetailsApi() async {
     _progressDialog.show();
-    _apiManager.getExploreDetails(serviceModel.id, (ServiceWrapper wrapper) {
+    _apiManager.getSightDetails(sightId, (SightWrapper wrapper) {
       setState(() {
         _progressDialog.hide();
-        serviceModel = wrapper.data;
+        sightModel = wrapper.data;
       });
     }, (MessageModel messageModel) {
       setState(() {
@@ -152,8 +127,8 @@ class _ExploreDetailsScreenState extends State<ExploreDetailsScreen> {
   }
 
   String getTitle(String title) {
-    if (serviceModel != null) {
-      return serviceModel.name;
+    if (sightModel != null) {
+      return sightModel.name;
     } else if (title != null) {
       return title;
     } else {

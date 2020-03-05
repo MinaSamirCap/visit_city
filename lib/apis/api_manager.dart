@@ -1,8 +1,13 @@
 import 'dart:io';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http; // to avoid crashing with names ..
 import 'package:visit_city/models/itineraries/day_model.dart';
 import 'package:visit_city/models/itineraries/itineraries_model.dart';
+import 'api_keys.dart';
+import '../models/explore/service_wrapper.dart';
+import '../models/itineraries/itineraries_model.dart';
+import '../models/sight/sight_wrapper.dart';
 import '../models/wishlist/like_dislike_wrapper.dart';
 import '../models/wishlist/wishlist_send_model.dart';
 import '../models/wishlist/wishlist_wrapper.dart';
@@ -21,6 +26,9 @@ class ApiManager with ChangeNotifier {
   List<ItinerariesModel> itinerariesData = [];
   List<DayModel> daysList = [];
   List<SightDetails> sightDetails = [];
+
+class ApiManager with ChangeNotifier {
+  List<ItinerariesModel> itinerariesData = [];
   Map<String, dynamic> extractedData;
   void feedbackApi(
       FeedbackSendModel feedbackModel, Function success, Function fail) async {
@@ -240,6 +248,58 @@ class ApiManager with ChangeNotifier {
         return false;
       } else {
         LikeDislikeWrapper wrapper = LikeDislikeWrapper.fromJson(extractedData);
+        if (wrapper.info) {
+          success(wrapper);
+          return true;
+        } else {
+          fail(wrapper.message);
+          return false;
+        }
+      }
+    }).catchError((onError) {
+      fail(checkErrorType(onError));
+    });
+  }
+
+  void getSightDetails(int sightId, Function success, Function fail) async {
+    await http
+        .get(ApiKeys.sightDetailsUrl + sightId.toString(),
+            headers: ApiKeys.getHeaders())
+        .then((response) {
+      Map extractedData = json.decode(response.body);
+      // todo --> do not forget to remove the
+      print(extractedData);
+      if (extractedData == null) {
+        fail(MessageModel.getDecodeError());
+        return false;
+      } else {
+        SightWrapper wrapper = SightWrapper.fromJson(extractedData);
+        if (wrapper.info) {
+          success(wrapper);
+          return true;
+        } else {
+          fail(wrapper.message);
+          return false;
+        }
+      }
+    }).catchError((onError) {
+      fail(checkErrorType(onError));
+    });
+  }
+
+  void getExploreDetails(int serviceId, Function success, Function fail) async {
+    await http
+        .get(ApiKeys.exploreDetailsUrl + serviceId.toString(),
+            headers: ApiKeys.getHeaders())
+        .then((response) {
+      Map extractedData = json.decode(response.body);
+      // todo --> do not forget to remove the
+      print(extractedData);
+      if (extractedData == null) {
+        fail(MessageModel.getDecodeError());
+        return false;
+      } else {
+        ServiceWrapper wrapper = ServiceWrapper.fromJson(extractedData);
         if (wrapper.info) {
           success(wrapper);
           return true;

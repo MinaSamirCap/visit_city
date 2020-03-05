@@ -116,3 +116,26 @@ Widget ratingWidget(double rate) {
   );
 }
 
+Widget ratingOrangeWidget(double rate) {
+  return Padding(
+    padding: const EdgeInsetsDirectional.fromSTEB(10, 5, 0, 0),
+    child: RatingBarIndicator(
+      rating: rate,
+      itemCount: 5,
+      itemSize: 20,
+      itemPadding: EdgeInsets.all(0),
+      itemBuilder: (ctx, index) {
+        return Icon(
+          Icons.star,
+          color: Coolor.ORANGE,
+        );
+      },
+    ),
+  );
+}
+
+UnderlineTabIndicator getTabIndicator() {
+  return UnderlineTabIndicator(
+      borderSide: BorderSide(color: Coolor.BLUE_APP, width: 3.0),
+      insets: EdgeInsets.symmetric(horizontal: 60.0));
+}

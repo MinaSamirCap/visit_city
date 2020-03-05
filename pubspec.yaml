@@ -39,6 +39,7 @@ dependencies:
   url_launcher: ^5.4.2
   flutter_qr_reader: ^1.0.3
   permission_handler: '^4.3.0'
+  carousel_slider: ^1.4.1
 
 
   
