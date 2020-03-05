@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
+import '../../res/coolor.dart';
+import '../../res/sizes.dart';
+import '../../ui/widget/carousel_with_indicator_widget.dart';
+import '../../ui/widget/silver_app_bar_delegation.dart';
+import '../../utils/lang/app_localization_keys.dart';
 import '../../apis/api_manager.dart';
 import '../../models/explore/explore_model.dart';
 import '../../models/explore/service_wrapper.dart';
@@ -41,16 +46,44 @@ class _ExploreDetailsScreenState extends State<ExploreDetailsScreen> {
     _appLocal = AppLocalizations.of(context);
 
     return Scaffold(
-      key: _scaffoldKey,
-      appBar: AppBar(
-        title: Text(getTitle(serviceModel.name)),
-      ),
-      body: serviceModel != null
-          ? bodyWidget()
-          : Center(
-              child: Text(serviceModel.desc),
-            ),
-    );
+        key: _scaffoldKey,
+        body: DefaultTabController(
+          length: 2,
+          child: NestedScrollView(
+            headerSliverBuilder:
+                (BuildContext context, bool innerBoxIsScrolled) {
+              return <Widget>[
+                SliverAppBar(
+                  expandedHeight: Sizes.hightDetails,
+                  floating: false,
+                  pinned: true,
+                  flexibleSpace: FlexibleSpaceBar(
+                      title: Text(getTitle(serviceModel.name)),
+                      background: CarouselWithIndicator(serviceModel.photos)),
+                ),
+                SliverPersistentHeader(
+                  delegate: SliverAppBarDelegate(
+                    TabBar(
+                      indicator: getTabIndicator(),
+                      labelColor: Coolor.BLACK,
+                      unselectedLabelColor: Coolor.GREY,
+                      tabs: [
+                        Tab(text: _appLocal.translate(LocalKeys.OVERVIEW)),
+                        Tab(text: _appLocal.translate(LocalKeys.REVIEWS)),
+                      ],
+                    ),
+                  ),
+                  pinned: true,
+                ),
+              ];
+            },
+            body: serviceModel != null
+                ? bodyWidget()
+                : Center(
+                    child: Text(serviceModel.desc),
+                  ),
+          ),
+        ));
   }
 
   Widget bodyWidget() {

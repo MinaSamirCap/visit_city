@@ -116,3 +116,8 @@ Widget ratingWidget(double rate) {
   );
 }
 
+UnderlineTabIndicator getTabIndicator() {
+  return UnderlineTabIndicator(
+      borderSide: BorderSide(color: Coolor.BLUE_APP, width: 3.0),
+      insets: EdgeInsets.symmetric(horizontal: 60.0));
+}

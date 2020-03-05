@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
-import 'package:visit_city/res/coolor.dart';
-import 'package:visit_city/ui/widget/carousel_with_indicator_widget.dart';
-import 'package:visit_city/utils/lang/app_localization_keys.dart';
+import '../../res/coolor.dart';
+import '../../ui/widget/carousel_with_indicator_widget.dart';
+import '../../utils/lang/app_localization_keys.dart';
 import '../../ui/widget/silver_app_bar_delegation.dart';
 import '../../res/sizes.dart';
 import '../../apis/api_manager.dart';
