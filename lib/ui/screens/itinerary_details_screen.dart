@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 
 import '../../utils/lang/app_localization.dart';
 import '../../utils/lang/app_localization_keys.dart';
@@ -9,6 +10,11 @@ import '../../res/coolor.dart';
 import '../../ui/widget/ui.dart';
 import '../../ui/widget/map_widget.dart';
 import '../../apis/api_manager.dart';
+import '../../models/itineraries/itineraries_wrapper.dart';
+import '../../models/itineraries/itineraries_model.dart';
+import '../../models/message_model.dart';
+import '../../models/itineraries/sight_details.dart';
+import '../../models/itineraries/day_model.dart';
 
 class ItineraryDetailsScreen extends StatefulWidget {
   static const ROUTE_NAME = '/itinerary-details-screen';
@@ -23,7 +29,9 @@ class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
   bool _isLoadingNow = false;
   var _isInit = true;
   List<DayItem> _daysList;
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
+  
   @override
   void didChangeDependencies() {
     final argsId = ModalRoute.of(context).settings.arguments as int;
@@ -66,11 +74,13 @@ class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
 
     return _isLoadingNow
         ? Scaffold(
+            key: _scaffoldKey,
             body: Center(child: CircularProgressIndicator()),
           )
         : DefaultTabController(
-            length: _itinerariesData['data']['sights'][0]['sights'].length,
+            length: _itinerariesData['data']['sights'].length,
             child: Scaffold(
+              key: _scaffoldKey,
               appBar: PreferredSize(
                 preferredSize: Size.fromHeight(130),
                 child: AppBar(
@@ -107,7 +117,7 @@ class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
       itemBuilder: (ctx, index) {
         return sightItemWidget(index);
       },
-      itemCount: _itinerariesData['data']['sights'][_value]['sights'].length,
+      itemCount: _itinerariesData['data']['sights'].length,
     );
   }
 
@@ -143,8 +153,7 @@ class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Text(
-                            _itinerariesData['data']['sights'][_value]['sights']
-                                [index]['name'],
+                            _itinerariesData['data']['sights'][_value]['sights'][index]['name'],
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                           IconButton(
@@ -156,8 +165,7 @@ class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
                       SizedBox(
                         height: 65,
                         child: Text(
-                          _itinerariesData['data']['sights'][_value]['sights']
-                              [index]['name'],
+                         _itinerariesData['data']['sights'][_value]['sights'][index]['desc'],
                         ),
                       ),
                       Sizes.DIVIDER_HEIGHT_10,
@@ -231,8 +239,7 @@ class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
   Widget circleAvatarWidget(int index) {
     return CircleAvatar(
       maxRadius: Sizes.SIZE_30,
-      backgroundImage: NetworkImage(_itinerariesData['data']['sights'][_value]
-          ['sights'][index]['photos'][0]),
+      backgroundImage: NetworkImage(_itinerariesData['data']['sights'][_value]['sights'][index]['photos'][0]),
       backgroundColor: Colors.transparent,
     );
   }
@@ -285,7 +292,7 @@ class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
             child: ListView.separated(
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
-              itemCount: _itinerariesData['data']['days'],
+              itemCount: _itinerariesData['data']['sights'].length,
               itemBuilder: (ctx, index) {
                 // return;
                 return appBarDaysItemWidget(_daysList[index], index);
@@ -325,6 +332,7 @@ class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
       ],
     );
   }
+
 }
 
 class DayItem {

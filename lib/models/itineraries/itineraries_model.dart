@@ -1,4 +1,4 @@
-import 'sights_model.dart';
+
 
 class ItinerariesModel {
   final int id;
@@ -12,8 +12,7 @@ class ItinerariesModel {
   final String type;
   final String createdAt;
   final String updatedAt;
-  List<SightsModel> sights;
-  // List<dynamic> sights;
+  List<dynamic> sights;
 
   ItinerariesModel({
     this.id,
@@ -30,24 +29,24 @@ class ItinerariesModel {
     this.sights,
   });
 
-  factory ItinerariesModel.fromJson(Map<String, dynamic> json) {
-    return new ItinerariesModel(
-      id : json['id'],
-      name : json['name'],
-      nameAr : json['nameAr'],
-      nameEn : json['nameEn'],
-      desc : json['desc'],
-      descAr : json['descAr'],
-      descEn : json['descEn'],
-      days : json['days'],
-      type : json['type'],
-      createdAt : json['createdAt'],
-      updatedAt : json['updatedAt'],
-      sights : (json['sights'] as List).map((item) {
-        return item as SightsModel;
-      }).toList(),
-    );
-  }
+  
+  ItinerariesModel.fromJson(Map<String, dynamic> json) 
+    : id = json['id'],
+      name = json['name'],
+      nameAr = json['nameAr'],
+      nameEn = json['nameEn'],
+      desc = json['desc'],
+      descAr = json['descAr'],
+      descEn = json['descEn'],
+      days = json['days'],
+      type = json['type'],
+      createdAt = json['createdAt'],
+      updatedAt = json['updatedAt'],
+      sights = (json['sights'] as List).map((item) {
+        return item as List;
+      }).toList();
+    
+  
 
   Map<String, dynamic> toJson() => {
         'id': id,

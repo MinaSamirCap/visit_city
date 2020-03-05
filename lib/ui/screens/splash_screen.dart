@@ -39,7 +39,7 @@ class _SplashScreenState extends State<SplashScreen> {
   /// time to switch with dummy screen
   startTime() async {
     var _duration = Duration(milliseconds: 1500);
-    return Timer(_duration, navigationPage);
+    return Timer(_duration,navigationPage);
   }
 
   /// navigate with dummy screen

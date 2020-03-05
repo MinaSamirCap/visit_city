@@ -41,7 +41,7 @@ class _SignInScreenState extends State<SignInScreen> {
           currentFocus.unfocus();
         }
       },
-      child: Scaffold(
+      child: _isLoading ? Scaffold(body: Center(child: CircularProgressIndicator(),)) :Scaffold(
         backgroundColor: Coolor.BG_COLOR,
         // backgroundColor: Coolor.WHITE,
         body: Container(
@@ -125,6 +125,7 @@ class _SignInScreenState extends State<SignInScreen> {
           ),
         ),
         keyboardType: TextInputType.emailAddress,
+        autocorrect: false,
         validator: (value) {
           if (value.isEmpty || !EmailValidator.validate(value)) {
             return appLocal.translate(LocalKeys.ERROR_EMAIL);
@@ -273,7 +274,9 @@ class _SignInScreenState extends State<SignInScreen> {
       return;
     }
     _formKey.currentState.save();
-
+    setState(() {
+      _isLoading = true;
+    });
     try {
       await Provider.of<Auth>(context, listen: false).signIn(
         _authData['email'],
@@ -288,5 +291,8 @@ class _SignInScreenState extends State<SignInScreen> {
     catch (error) {
       _showErrorDialog(error.toString());
     }
+    setState(() {
+      _isLoading = false;
+    });
   }
 }

@@ -147,17 +147,17 @@ class ItineraryModel {
           appLocale.translate(LocalKeys.NATURAL_ITINERARIES),
           appLocale.translate(LocalKeys.ABOUT_3_DAYS),
           AssPath.NATURE_LOGO,
-          Coolor.NAT_ITI_COL,6,),
+          Coolor.NAT_ITI_COL,9,),
       ItineraryModel(
           appLocale.translate(LocalKeys.ARCHEOLOGY_ITINERARIES),
           appLocale.translate(LocalKeys.ABOUT_4_DAYS),
           AssPath.ARCHEOLOGY_LOGO,
-          Coolor.ARC_ITI_COL,3,),
+          Coolor.ARC_ITI_COL,10,),
       ItineraryModel(
           appLocale.translate(LocalKeys.CLUTURE_ITINERARIES),
           appLocale.translate(LocalKeys.ABOUT_2_DAYS),
           AssPath.CULTURE_LOGO,
-          Coolor.CUL_ITI_COL,2,)
+          Coolor.CUL_ITI_COL,8,)
     ];
   }
 }

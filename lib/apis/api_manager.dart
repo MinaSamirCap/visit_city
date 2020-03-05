@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http; // to avoid crashing with names ..
+import 'package:visit_city/models/itineraries/day_model.dart';
 import 'package:visit_city/models/itineraries/itineraries_model.dart';
-import 'package:visit_city/models/itineraries/sights_model.dart';
 import '../models/wishlist/like_dislike_wrapper.dart';
 import '../models/wishlist/wishlist_send_model.dart';
 import '../models/wishlist/wishlist_wrapper.dart';
@@ -11,13 +11,17 @@ import '../models/category/category_wrapper.dart';
 import '../models/feedback/feedback_wrapper.dart';
 import '../models/message_model.dart';
 import '../models/feedback/feedback_send_model.dart';
+import '../models/itineraries/itineraries_wrapper.dart';
+import '../models/itineraries/day_model.dart';
+import '../models/itineraries/sight_details.dart';
 import 'dart:convert';
 import 'api_keys.dart';
-import '../models/itineraries/itineraries_wrapper.dart';
 
 class ApiManager with ChangeNotifier {
   List<ItinerariesModel> itinerariesData = [];
-  Map<String,dynamic> extractedData;
+  List<DayModel> daysList = [];
+  List<SightDetails> sightDetails = [];
+  Map<String, dynamic> extractedData;
   void feedbackApi(
       FeedbackSendModel feedbackModel, Function success, Function fail) async {
     await http
@@ -110,53 +114,66 @@ class ApiManager with ChangeNotifier {
   }
 
   Future<void> itinerariesApi(int id) async {
-    List<ItinerariesModel> loadedData = [];
-
     try {
       final response = await http.get(ApiKeys.itinerariesUrl + "/$id",
           headers: ApiKeys.getHeaders());
       // print(json.decode(response.body));
       extractedData = json.decode(response.body) as Map<String, dynamic>;
-      // print(extractedData);
+      print(extractedData);
       if (extractedData == null) {
-        return;
+        MessageModel.getDecodeError();
+        return false;
       }
-      int sightsLength = extractedData['data']['sights'].length;
-      // print(index);
-      extractedData.forEach((key, data) {
-        print(data);
-        loadedData.add(
-          ItinerariesModel(
-            id: extractedData['data']['id'],
-            name: extractedData['data']['name'],
-            nameAr: extractedData['data']['nameAr'],
-            nameEn: extractedData['data']['nameEn'],
-            desc: extractedData['data']['desc'],
-            descAr: extractedData['data']['descAr'],
-            descEn: extractedData['data']['descEn'],
-            days: extractedData['data']['days'],
-            type: extractedData['data']['type'],
-            createdAt: extractedData['data']['createdAt'],
-            updatedAt: extractedData['data']['updatedAt'],
-            // sights: da,
-          ),
-        );
-      });
-      // print(loadedData[0].sights[0]);
-      itinerariesData = loadedData;
       notifyListeners();
     } catch (error) {
-      print(error.toString() + " catch");
-      // throw error;
+      checkErrorType(error);
     }
-    loadedData = [];
   }
 
-  // void itinerariesApi(int id,Function success, Function fail) async {
+  // void itinerariesApi(int id, Function success, Function fail) async {
   //   await http
-  //       .get(ApiKeys.itinerariesUrl+"/$id", headers: ApiKeys.getHeaders())
+  //       .get(ApiKeys.itinerariesUrl + "/$id", headers: ApiKeys.getHeaders())
   //       .then((response) {
-  //     Map extractedData = json.decode(response.body);
+  //     extractedData = json.decode(response.body);
+  //     print(extractedData);
+  //     Map data = json.decode(extractedData['data']);
+  //     final days = json.decode(data['sights']) as List<dynamic>;
+  //     List<DayModel> _loadedDaysList = [];
+  //     List<SightDetails> _loadedsightDetails = [];
+  //     days.forEach((data) {
+  //       _loadedDaysList
+  //           .add(DayModel(id: data['id'], sightsDay: data['sights']));
+  //     });
+  //     daysList = _loadedDaysList;
+  //     for (var i = 0; i < daysList.length; i++) {
+  //       daysList[i].sightsDay.forEach((data) {
+  //         _loadedsightDetails.add(SightDetails(
+  //           id: data['id'],
+  //           name: data['name'],
+  //           photos: data['photos'],
+  //           desc: data['desc'],
+  //           descAr: data['descAr'],
+  //           descEn: data['descEn'],
+  //           rate: data['rate'],
+  //           reviews: data['reviews'],
+  //           location: data['location'],
+  //           services: data['services'],
+  //           price: data['price'],
+  //           contact: data['contact'],
+  //           website: data['website'],
+  //           qr: data['QR'],
+  //           createdAt: data['createdAt'],
+  //           updatedAt: data['updatedAt'],
+  //           way: data['way'],
+  //           how: data['how'],
+  //         ));
+  //       });
+  //     }
+  //     print(_loadedDaysList);
+  //     sightDetails = _loadedsightDetails;
+  //     _loadedDaysList = [];
+  //     _loadedsightDetails = [];
+
   //     if (extractedData == null) {
   //       fail(MessageModel.getDecodeError());
   //       return false;
@@ -174,6 +191,7 @@ class ApiManager with ChangeNotifier {
   //     fail(checkErrorType(onError));
   //   });
   // }
+
   String generateWishlistUrl(int pageNum) {
     /// /wishlist? + limit=15 + &page=1 +"category=1,2&page=2"
     return ApiKeys.wishlistUrl +

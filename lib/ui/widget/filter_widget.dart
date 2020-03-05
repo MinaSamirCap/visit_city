@@ -15,7 +15,7 @@ class FilterWidget extends StatefulWidget implements PreferredSizeWidget {
   _FilterWidgetState createState() => _FilterWidgetState();
 
   @override
-  Size get preferredSize => Size.fromHeight(50);
+  Size get preferredSize => Size.fromHeight(60);
 }
 
 class _FilterWidgetState extends State<FilterWidget> {

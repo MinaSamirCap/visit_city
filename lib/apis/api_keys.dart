@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:shared_preferences/shared_preferences.dart';
+
 class ApiKeys {
   static Map<String, String> _headers = {
     authorization: '$keyBearer ${getToken()}',
@@ -17,7 +21,6 @@ class ApiKeys {
   static final arLang = "ar";
   static final enLang = "en";
 
-
   static final limitKey = "limit";
   static final limitValue = "15";
   static final pageKey = "page";
@@ -27,9 +30,20 @@ class ApiKeys {
     return enLang;
   }
 
-  static String getToken() {
-    return 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyLCJ1c2VyUm9sZSI6Im5vcm1hbCIsImlhdCI6MTU4MzI0NzA1MiwiZXhwIjoxNTg0NTQzMDUyfQ.7ZYfyzMtPQY3RhmUKtzQ32_51tEB7yU2qR11ZXuyTrM';
+  static String getToken(){
+    
+    return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyLCJ1c2VyUm9sZSI6Im5vcm1hbCIsImlhdCI6MTU4MzQwOTQ3MywiZXhwIjoxNTg0NzA1NDczfQ.zZZaVsOhh9mRnzByTSnbQ6Sp2nOushqyCYgsQ89btCw";
   }
+  // static Future<String> getToken() async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //   if (!prefs.containsKey('userData')) {
+  //     return "";
+  //   }
+  //   final extractedUserData =
+  //       json.decode(prefs.getString('userData')) as Map<String, dynamic>;
+  //       final String token = extractedUserData['token'];
+  //   return token;
+  // }
 
   static final baseUrl = 'https://visit-fayoum.herokuapp.com/api/v1';
   static final feedbackUrl = baseUrl + "/feedbacks";
@@ -38,5 +52,4 @@ class ApiKeys {
   static final itinerariesUrl = baseUrl + '/itineraries';
   static final wishlistUrl = baseUrl + "/wishlist?";
   static final likeDislikeUrl = baseUrl + "/wishlist?";
-
 }

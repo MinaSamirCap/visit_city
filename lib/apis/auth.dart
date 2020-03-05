@@ -9,8 +9,8 @@ import '../utils/lang/http_exception.dart';
 
 class Auth with ChangeNotifier {
   String _token;
-  DateTime _expiryDate;
-  String _userId;
+  int _userId;
+  bool _info;
   Timer _authTimer;
   final header = {'Content-Type': 'application/json'};
   final baseUrl = 'https://visit-fayoum.herokuapp.com/api/v1/';
@@ -20,16 +20,18 @@ class Auth with ChangeNotifier {
   }
 
   String get token {
-    if (_expiryDate != null &&
-        _expiryDate.isAfter(DateTime.now()) &&
-        _token != null) {
+    if (_token != null) {
       return _token;
     }
     return null;
   }
 
-  String get userId {
+  int get userId {
     return _userId;
+  }
+
+  bool get info {
+    return _info;
   }
 
   Future<bool> tryAutoLogin() async {
@@ -38,14 +40,13 @@ class Auth with ChangeNotifier {
       return false;
     }
     final extractedUserData =
-        json.encode(prefs.getString('userData')) as Map<String, Object>;
-    final expiryDate = DateTime.parse(extractedUserData['expiryDate']);
-    if (expiryDate.isBefore(DateTime.now())) {
-      return false;
-    }
+        json.decode(prefs.getString('userData')) as Map<String, dynamic>;
+    _info = extractedUserData['info'];
     _token = extractedUserData['token'];
     _userId = extractedUserData['userId'];
-    _expiryDate = expiryDate;
+    if (info == false) {
+      return false;
+    }
     notifyListeners();
     _autoLogout();
     return true;
@@ -69,27 +70,20 @@ class Auth with ChangeNotifier {
       if (responseData['errors'] != null) {
         throw HttpException(responseData['errors']['message']);
       }
-      _token = responseData['token'];
-      // _userId = responseData['user']['id'];
-      // _expiryDate = DateTime.now().add(
-      //   Duration(
-      //     days: int.parse(responseData['user']['expiresIn']),
-      //   ),
-      // );
-      // _autoLogout();
+      _token = responseData['data']['token'];
+      _userId = responseData['data']['user']['id'];
+      _info = responseData['info'];
+
+      final prefs = await SharedPreferences.getInstance();
+      final userData = json.encode({
+        'token': _token,
+        'userId': _userId,
+        'info': _info,
+      });
+      prefs.setString('userData', userData);
+      print(_token);
+      print(isAuth.toString());
       notifyListeners();
-
-      // final prefs = await SharedPreferences.getInstance();
-      // final userData = json.encode([
-      //   {
-      //     'token': _token,
-      //     'userId': _userId,
-      //     'expiryDate': _expiryDate.toIso8601String()
-      //   }
-      // ]);
-      // prefs.setString('userData', userData);
-
-      print(json.decode(response.body));
     } catch (error) {
       throw error;
     }
@@ -104,11 +98,9 @@ class Auth with ChangeNotifier {
         headers: header,
         body: json.encode(
           {
-            // 'signupType': 'normal',
             'email': email,
             'password': password,
             'name': name,
-            // 'phone': "01210626602",
           },
         ),
       );
@@ -117,25 +109,8 @@ class Auth with ChangeNotifier {
         throw HttpException(responseData['errors']['message']);
       }
       _token = responseData['token'];
-      // _userId = responseData['user']['id'];
-      // _expiryDate = DateTime.now().add(
-      //   Duration(
-      //     days: int.parse(responseData['user']['expiresIn']),
-      //   ),
-      // );
-      // _autoLogout();
+      _autoLogout();
       notifyListeners();
-
-      // final prefs = await SharedPreferences.getInstance();
-      // final userData = json.encode([
-      //   {
-      //     'token': _token,
-      //     'userId': _userId,
-      //     'expiryDate': _expiryDate.toIso8601String()
-      //   }
-      // ]);
-      // prefs.setString('userData', userData);
-
       print(json.decode(response.body));
     } catch (error) {
       throw error;
@@ -145,7 +120,6 @@ class Auth with ChangeNotifier {
   Future<void> logout() async {
     _token = null;
     _userId = null;
-    _expiryDate = null;
     if (_authTimer != null) {
       _authTimer.cancel();
       _authTimer = null;
@@ -159,10 +133,8 @@ class Auth with ChangeNotifier {
   }
 
   void _autoLogout() {
-    if (_authTimer != null) {
-      _authTimer.cancel();
+    if (info == false) {
+      logout();
     }
-    final timeToExpiry = _expiryDate.difference(DateTime.now()).inDays;
-    _authTimer = Timer(Duration(days: timeToExpiry), logout);
   }
 }
