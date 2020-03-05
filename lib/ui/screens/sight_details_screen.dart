@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
-import 'package:visit_city/ui/widget/silver_app_bar_delegation.dart';
+import 'package:visit_city/ui/widget/carousel_with_indicator_widget.dart';
+import '../../ui/widget/silver_app_bar_delegation.dart';
 import '../../res/sizes.dart';
 import '../../apis/api_manager.dart';
 import '../../models/message_model.dart';
@@ -10,6 +11,15 @@ import '../../models/sight/sight_wrapper.dart';
 import '../../models/wishlist/wishlist_model.dart';
 import '../../ui/widget/ui.dart';
 import '../../utils/lang/app_localization.dart';
+
+final List<String> imgList = [
+  'https://images.unsplash.com/photo-1522205408450-add114ad53fe?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=368f45b0888aeb0b7b08e3a1084d3ede&auto=format&fit=crop&w=1950&q=80',
+  'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
+  'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=94a1e718d89ca60a6337a6008341ca50&auto=format&fit=crop&w=1950&q=80',
+  'https://images.unsplash.com/photo-1523205771623-e0faa4d2813d?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=89719a0d55dd05e2deae4120227e6efc&auto=format&fit=crop&w=1953&q=80',
+  'https://images.unsplash.com/photo-1508704019882-f9cf40e475b4?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=8c6e5e3aba713b17aa1fe71ab4f0ae5b&auto=format&fit=crop&w=1352&q=80',
+  'https://images.unsplash.com/photo-1519985176271-adb1088fa94c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a0c8d632e977f94e5d312d9893258f59&auto=format&fit=crop&w=1355&q=80'
+];
 
 class SightDetailsScreen extends StatefulWidget {
   static const ROUTE_NAME = '/sight-details';
@@ -25,6 +35,7 @@ class _SightDetailsScreenState extends State<SightDetailsScreen> {
   ProgressDialog _progressDialog;
   ApiManager _apiManager;
   SightResponse sightModel;
+  int sightId = 0;
 
   void initState() {
     Future.delayed(Duration.zero).then((_) {
@@ -41,6 +52,7 @@ class _SightDetailsScreenState extends State<SightDetailsScreen> {
         ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
     final model =
         WishlistModel.fromJson(args[SightDetailsScreen.MODEL_KEY] as Map);
+    sightId = model.id;
 
     _appLocal = AppLocalizations.of(context);
 
@@ -57,16 +69,8 @@ class _SightDetailsScreenState extends State<SightDetailsScreen> {
                   floating: false,
                   pinned: true,
                   flexibleSpace: FlexibleSpaceBar(
-                      centerTitle: true,
-                      title: Text("Collapsing Toolbar",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16.0,
-                          )),
-                      background: Image.network(
-                        "https://images.pexels.com/photos/396547/pexels-photo-396547.jpeg?auto=compress&cs=tinysrgb&h=350",
-                        fit: BoxFit.cover,
-                      )),
+                      title: Text(getTitle(model.name)),
+                      background: CarouselWithIndicator(imgList)),
                 ),
                 SliverPersistentHeader(
                   delegate: SliverAppBarDelegate(
@@ -101,7 +105,7 @@ class _SightDetailsScreenState extends State<SightDetailsScreen> {
 
   void callDetailsApi() async {
     _progressDialog.show();
-    _apiManager.getSightDetails(2, (SightWrapper wrapper) {
+    _apiManager.getSightDetails(sightId, (SightWrapper wrapper) {
       setState(() {
         _progressDialog.hide();
         sightModel = wrapper.data;
