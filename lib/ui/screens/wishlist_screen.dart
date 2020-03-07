@@ -3,7 +3,7 @@ import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
 import '../../ui/screens/sight_details_screen.dart';
 import '../../models/wishlist/like_dislike_wrapper.dart';
-import '../../general/general.dart';
+import '../../general/url_launchers.dart';
 import '../../models/wishlist/wishlist_send_model.dart';
 import '../../res/coolor.dart';
 import '../../ui/widget/explore_cell_widget.dart';

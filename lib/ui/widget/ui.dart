@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:progress_dialog/progress_dialog.dart';
-import 'package:visit_city/general/general.dart';
-import 'package:visit_city/models/explore/open_hour_model.dart';
+import '../../general/validation.dart';
+import '../../general/url_launchers.dart';
+import '../../models/explore/open_hour_model.dart';
 import '../../res/assets_path.dart';
 import '../../res/sizes.dart';
 import '../../utils/lang/app_localization.dart';
@@ -210,8 +211,4 @@ Widget rowTextWithIcon(IconData iconData, String txt) {
       )
     ],
   );
-}
-
-bool isNullOrEmpty(String txt) {
-  return txt != null && txt.isNotEmpty;
 }

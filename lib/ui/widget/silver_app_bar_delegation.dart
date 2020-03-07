@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:visit_city/res/coolor.dart';
+import '../../res/coolor.dart';
 
 class SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   SliverAppBarDelegate(this._tabBar);

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:visit_city/general/general.dart';
+import 'package:visit_city/general/url_launchers.dart';
 import 'package:visit_city/ui/screens/profile_screen.dart';
 import '../../ui/screens/qr_code_screen.dart';
 import '../../ui/screens/wishlist_screen.dart';
