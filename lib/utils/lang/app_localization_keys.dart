@@ -77,4 +77,5 @@ class LocalKeys {
   static const OVERVIEW = "overview";
   static const SERVICES = "services";
   static const NO_PIC = "no_pic";
+  static const CAN_NOT_OPEN_DIAL = "can_not_open_dial";
 }

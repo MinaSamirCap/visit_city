@@ -187,12 +187,20 @@ Widget overviewWidget(
           }.toList(),
         if (isNullOrEmpty(contact))
           ...{
-            rowTextWithIcon(Icons.contact_phone, contact),
+            rowTextWithIcon(Icons.contact_phone, contact, func: () {
+              launchPhone(contact).then((value) {
+                if (!value) {
+                  showToast(appLocale.translate(LocalKeys.CAN_NOT_OPEN_DIAL));
+                }
+              });
+            }),
             Sizes.DIVIDER_HEIGHT_10
           }.toList(),
         if (isNullOrEmpty(website))
           ...{
-            rowTextWithIcon(Icons.web, website),
+            rowTextWithIcon(Icons.web, website, func: () {
+              launchUrlWithHttp(website);
+            }),
             Sizes.DIVIDER_HEIGHT_10,
           }.toList(),
       ],
@@ -200,14 +208,17 @@ Widget overviewWidget(
   );
 }
 
-Widget rowTextWithIcon(IconData iconData, String txt) {
+Widget rowTextWithIcon(IconData iconData, String txt, {Function func}) {
   return Row(
     children: <Widget>[
       Icon(iconData, color: Coolor.BLUE_APP),
       Sizes.DIVIDER_WIDTH_10,
-      Text(
-        txt,
-        style: TextStyle(fontSize: 18),
+      InkWell(
+        onTap: func,
+        child: Text(
+          txt,
+          style: TextStyle(fontSize: 18),
+        ),
       )
     ],
   );
