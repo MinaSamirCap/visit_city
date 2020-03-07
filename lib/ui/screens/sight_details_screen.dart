@@ -73,6 +73,7 @@ class _SightDetailsScreenState extends State<SightDetailsScreen> {
                 SliverPersistentHeader(
                   delegate: SliverAppBarDelegate(
                     TabBar(
+                      indicator: getTabIndicator(),
                       labelColor: Coolor.BLACK,
                       unselectedLabelColor: Coolor.GREY,
                       tabs: [
