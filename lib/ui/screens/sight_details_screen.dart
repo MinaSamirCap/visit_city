@@ -10,7 +10,6 @@ import '../../apis/api_manager.dart';
 import '../../models/message_model.dart';
 import '../../models/sight/sight_response.dart';
 import '../../models/sight/sight_wrapper.dart';
-import '../../models/wishlist/wishlist_model.dart';
 import '../../ui/widget/ui.dart';
 import '../../utils/lang/app_localization.dart';
 
@@ -25,7 +24,7 @@ final List<String> imgList = [
 
 class SightDetailsScreen extends StatefulWidget {
   static const ROUTE_NAME = '/sight-details';
-  static const MODEL_KEY = 'sight_model';
+  static const MODEL_ID_KEY = 'sight_id';
 
   @override
   _SightDetailsScreenState createState() => _SightDetailsScreenState();
@@ -52,9 +51,7 @@ class _SightDetailsScreenState extends State<SightDetailsScreen> {
   Widget build(BuildContext context) {
     final args =
         ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
-    final model =
-        WishlistModel.fromJson(args[SightDetailsScreen.MODEL_KEY] as Map);
-    sightId = model.id;
+    sightId = args[SightDetailsScreen.MODEL_ID_KEY];
 
     _appLocal = AppLocalizations.of(context);
 
@@ -76,7 +73,7 @@ class _SightDetailsScreenState extends State<SightDetailsScreen> {
                     Icon(Icons.favorite)
                   ],
                   flexibleSpace: FlexibleSpaceBar(
-                      title: Text(getTitle(model.name)),
+                      title: Text(getTitle()),
                       background: CarouselWithIndicator(imgList)),
                 ),
                 SliverPersistentHeader(
@@ -95,11 +92,8 @@ class _SightDetailsScreenState extends State<SightDetailsScreen> {
                 ),
               ];
             },
-            body: sightModel != null
-                ? bodyWidget()
-                : Center(
-                    child: Text(model.desc),
-                  ),
+            body:
+                sightModel != null ? bodyWidget() : getCenterCircularProgress(),
           ),
         ));
   }
@@ -126,11 +120,9 @@ class _SightDetailsScreenState extends State<SightDetailsScreen> {
     });
   }
 
-  String getTitle(String title) {
+  String getTitle() {
     if (sightModel != null) {
       return sightModel.name;
-    } else if (title != null) {
-      return title;
     } else {
       return "";
     }

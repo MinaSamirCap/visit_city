@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
-import 'package:visit_city/ui/screens/sight_details_screen.dart';
+import '../../ui/screens/sight_details_screen.dart';
 import '../../models/wishlist/like_dislike_wrapper.dart';
 import '../../general/general.dart';
 import '../../models/wishlist/wishlist_send_model.dart';
@@ -211,7 +211,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
 
   void openDetialsSightScreen(int index) {
     Navigator.of(context).pushNamed(SightDetailsScreen.ROUTE_NAME,
-        arguments: {SightDetailsScreen.MODEL_KEY: wishlistList[index].toJson()});
+        arguments: {SightDetailsScreen.MODEL_ID_KEY: wishlistList[index].id});
   }
 
   void likeDislikeClicked(WishlistModel model) {
