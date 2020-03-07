@@ -16,13 +16,12 @@ import '../models/category/category_wrapper.dart';
 import '../models/feedback/feedback_wrapper.dart';
 import '../models/message_model.dart';
 import '../models/feedback/feedback_send_model.dart';
-import '../models/itineraries/itineraries_wrapper.dart';
 import '../models/itineraries/day_model.dart';
 import '../models/itineraries/sight_details.dart';
-import 'dart:convert';
-import 'api_keys.dart';
+import '../models/profile/profile_model.dart';
 
 class ApiManager with ChangeNotifier {
+  List<ProfileModel> profileData = [];
   List<ItinerariesModel> itinerariesData = [];
   List<DayModel> daysList = [];
   List<SightDetails> sightDetails = [];
@@ -133,6 +132,34 @@ class ApiManager with ChangeNotifier {
     } catch (error) {
       checkErrorType(error);
     }
+  }
+  Future<void> profileApi() async {
+    List<ProfileModel> _loadedProfile = [];
+    try {
+      final response = await http.get(ApiKeys.profileUrl,
+          headers: ApiKeys.getHeaders());
+      // print(json.decode(response.body));
+      extractedData = json.decode(response.body) as Map<String, dynamic>;
+      print(extractedData);
+      if (extractedData == null) {
+        MessageModel.getDecodeError();
+        return false;
+      }
+    extractedData.forEach((key,data){
+      _loadedProfile.add(ProfileModel(
+        id: extractedData['data']['id'],
+        name: extractedData['data']['name'],
+        email: extractedData['data']['email'],
+        phone: extractedData['data']['phone'],
+        photo: extractedData['data']['photo'],
+      ));
+    });
+      profileData = _loadedProfile;
+      notifyListeners();
+    } catch (error) {
+      checkErrorType(error);
+    }
+    _loadedProfile = [];
   }
 
   // void itinerariesApi(int id, Function success, Function fail) async {

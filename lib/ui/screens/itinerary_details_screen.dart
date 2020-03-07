@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:progress_dialog/progress_dialog.dart';
 
 import '../../utils/lang/app_localization.dart';
 import '../../utils/lang/app_localization_keys.dart';
@@ -10,11 +9,6 @@ import '../../res/coolor.dart';
 import '../../ui/widget/ui.dart';
 import '../../ui/widget/map_widget.dart';
 import '../../apis/api_manager.dart';
-import '../../models/itineraries/itineraries_wrapper.dart';
-import '../../models/itineraries/itineraries_model.dart';
-import '../../models/message_model.dart';
-import '../../models/itineraries/sight_details.dart';
-import '../../models/itineraries/day_model.dart';
 
 class ItineraryDetailsScreen extends StatefulWidget {
   static const ROUTE_NAME = '/itinerary-details-screen';
@@ -101,7 +95,6 @@ class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
                     child: backgroundImageWidget(),
                   ),
                   listWidget(),
-                  // _isLoadingNow ? loadingWidget() : listWidget(),
                 ],
               ),
             ),
@@ -117,7 +110,7 @@ class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
       itemBuilder: (ctx, index) {
         return sightItemWidget(index);
       },
-      itemCount: _itinerariesData['data']['sights'].length,
+      itemCount: _itinerariesData['data']['sights'][_value]['sights'].length,
     );
   }
 
@@ -173,22 +166,6 @@ class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          // ListView.separated(
-                          //     separatorBuilder: (_, __) {
-                          //       return Sizes.DIVIDER_WIDTH_0;
-                          //     },
-                          //     scrollDirection: Axis.horizontal,
-                          //     shrinkWrap: true,
-                          //     itemBuilder: (ctx, index) {
-                          //       return Tab(
-                          //         icon: Image.network(_itinerariesData['data']
-                          //                 ['sights'][_value]['sights'][index]
-                          //             ['services'][0]),
-                          //       );
-                          //     },
-                          //     itemCount: _itinerariesData['data']['sights']
-                          //             [_value]['sights'][index]['services']
-                          //         .length),
                           Row(
                             children: <Widget>[
                               Tab(
