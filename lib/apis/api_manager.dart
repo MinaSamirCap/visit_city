@@ -26,10 +26,8 @@ class ApiManager with ChangeNotifier {
   List<ItinerariesModel> itinerariesData = [];
   List<DayModel> daysList = [];
   List<SightDetails> sightDetails = [];
-
-class ApiManager with ChangeNotifier {
-  List<ItinerariesModel> itinerariesData = [];
   Map<String, dynamic> extractedData;
+
   void feedbackApi(
       FeedbackSendModel feedbackModel, Function success, Function fail) async {
     await http
