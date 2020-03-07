@@ -3,11 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:visit_city/general/general.dart';
+import 'package:visit_city/models/explore/open_hour_model.dart';
 import '../../res/assets_path.dart';
 import '../../res/sizes.dart';
 import '../../utils/lang/app_localization.dart';
 import '../../utils/lang/app_localization_keys.dart';
 import '../../res/coolor.dart';
+import 'explore_cell_widget.dart';
 
 Widget lineDivider() {
   return Container(
@@ -117,20 +120,17 @@ Widget ratingWidget(double rate) {
 }
 
 Widget ratingOrangeWidget(double rate) {
-  return Padding(
-    padding: const EdgeInsetsDirectional.fromSTEB(10, 5, 0, 0),
-    child: RatingBarIndicator(
-      rating: rate,
-      itemCount: 5,
-      itemSize: 20,
-      itemPadding: EdgeInsets.all(0),
-      itemBuilder: (ctx, index) {
-        return Icon(
-          Icons.star,
-          color: Coolor.ORANGE,
-        );
-      },
-    ),
+  return RatingBarIndicator(
+    rating: rate,
+    itemCount: 5,
+    itemSize: 20,
+    itemPadding: EdgeInsets.all(0),
+    itemBuilder: (ctx, index) {
+      return Icon(
+        Icons.star,
+        color: Coolor.ORANGE,
+      );
+    },
   );
 }
 
@@ -144,4 +144,74 @@ Widget getCenterCircularProgress() {
   return Center(
     child: CircularProgressIndicator(),
   );
+}
+
+Widget overviewWidget(
+    AppLocalizations appLocale,
+    double rate,
+    List<double> location,
+    String desc,
+    OpenHourModel openHours,
+    String price,
+    String contact,
+    String website) {
+  return Padding(
+    padding: Sizes.EDEGINSETS_15,
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            ratingOrangeWidget(rate),
+            ExploreCellWidget(appLocale.translate(LocalKeys.GO), Icons.near_me,
+                () {
+              if (location.isNotEmpty && location.length == 2) {
+                launchMap(location[0], location[1]);
+              }
+            }),
+          ],
+        ),
+        if (isNullOrEmpty(desc))
+          ...{
+            Text(desc, style: TextStyle(fontSize: 20)),
+            Sizes.DIVIDER_HEIGHT_20,
+          }.toList(),
+        rowTextWithIcon(Icons.access_time, "${openHours.from} ${openHours.to}"),
+        Sizes.DIVIDER_HEIGHT_10,
+        if (isNullOrEmpty(price))
+          ...{
+            rowTextWithIcon(Icons.monetization_on, price),
+            Sizes.DIVIDER_HEIGHT_10
+          }.toList(),
+        if (isNullOrEmpty(contact))
+          ...{
+            rowTextWithIcon(Icons.contact_phone, contact),
+            Sizes.DIVIDER_HEIGHT_10
+          }.toList(),
+        if (isNullOrEmpty(website))
+          ...{
+            rowTextWithIcon(Icons.web, website),
+            Sizes.DIVIDER_HEIGHT_10,
+          }.toList(),
+      ],
+    ),
+  );
+}
+
+Widget rowTextWithIcon(IconData iconData, String txt) {
+  return Row(
+    children: <Widget>[
+      Icon(iconData, color: Coolor.BLUE_APP),
+      Sizes.DIVIDER_WIDTH_10,
+      Text(
+        txt,
+        style: TextStyle(fontSize: 18),
+      )
+    ],
+  );
+}
+
+bool isNullOrEmpty(String txt) {
+  return txt != null && txt.isNotEmpty;
 }

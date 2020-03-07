@@ -37,6 +37,7 @@ class _SightDetailsScreenState extends State<SightDetailsScreen> {
   ApiManager _apiManager;
   SightResponse sightModel;
   int sightId = 0;
+  int _currentTab = 0;
 
   void initState() {
     Future.delayed(Duration.zero).then((_) {
@@ -86,6 +87,11 @@ class _SightDetailsScreenState extends State<SightDetailsScreen> {
                         Tab(text: _appLocal.translate(LocalKeys.REVIEWS)),
                         Tab(text: _appLocal.translate(LocalKeys.SERVICES)),
                       ],
+                      onTap: (index) {
+                        setState(() {
+                          _currentTab = index;
+                        });
+                      },
                     ),
                   ),
                   pinned: true,
@@ -99,9 +105,24 @@ class _SightDetailsScreenState extends State<SightDetailsScreen> {
   }
 
   Widget bodyWidget() {
+    if (_currentTab == 0) {
+      return overviewWidget(
+          _appLocal,
+          sightModel.rate,
+          sightModel.location,
+          sightModel.desc,
+          sightModel.openHours,
+          sightModel.price,
+          sightModel.contact,
+          sightModel.website);
+    } else {
+      return reviewWidget();
+    }
+  }
+
+  Widget reviewWidget() {
     return Center(
-      child:
-          Text(sightModel.desc + " " + sightModel.desc + " " + sightModel.desc),
+      child: Text(sightModel.name),
     );
   }
 

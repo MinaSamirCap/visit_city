@@ -94,32 +94,11 @@ class _ExploreDetailsScreenState extends State<ExploreDetailsScreen> {
 
   Widget bodyWidget() {
     if (_currentTab == 0) {
-      return overviewWidget();
+      return overviewWidget(_appLocal, serviceModel.rate, serviceModel.location,
+          serviceModel.desc, serviceModel.openHours, serviceModel.price, null, null);
     } else {
       return reviewWidget();
     }
-  }
-
-  Widget overviewWidget() {
-    return Padding(
-      padding: Sizes.EDEGINSETS_15,
-      child: Column(
-        children: <Widget>[
-          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
-              ratingOrangeWidget(5),
-              ratingOrangeWidget(serviceModel.rate),
-          ],),
-          SizedBox(height: 10),
-          Center(
-            child: Text(serviceModel.desc +
-                " " +
-                serviceModel.desc +
-                " " +
-                serviceModel.desc),
-          ),
-        ],
-      ),
-    );
   }
 
   Widget reviewWidget() {
@@ -128,11 +107,13 @@ class _ExploreDetailsScreenState extends State<ExploreDetailsScreen> {
     );
   }
 
-  Widget getPhotosOrDummyWidget(){
-    if(serviceModel.photos.length > 0){
-       return CarouselWithIndicator(serviceModel.photos);
-    }else {
-      return Center(child: Text(_appLocal.translate(LocalKeys.NO_PIC)),);
+  Widget getPhotosOrDummyWidget() {
+    if (serviceModel.photos.length > 0) {
+      return CarouselWithIndicator(serviceModel.photos);
+    } else {
+      return Center(
+        child: Text(_appLocal.translate(LocalKeys.NO_PIC)),
+      );
     }
   }
 
