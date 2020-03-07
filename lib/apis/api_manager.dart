@@ -27,7 +27,6 @@ class ApiManager with ChangeNotifier {
   List<DayModel> daysList = [];
   List<SightDetails> sightDetails = [];
   Map<String, dynamic> extractedData;
-  
   void feedbackApi(
       FeedbackSendModel feedbackModel, Function success, Function fail) async {
     await http

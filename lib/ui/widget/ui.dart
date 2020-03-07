@@ -139,3 +139,9 @@ UnderlineTabIndicator getTabIndicator() {
       borderSide: BorderSide(color: Coolor.BLUE_APP, width: 3.0),
       insets: EdgeInsets.symmetric(horizontal: 60.0));
 }
+
+Widget getCenterCircularProgress() {
+  return Center(
+    child: CircularProgressIndicator(),
+  );
+}

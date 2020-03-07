@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_qr_reader/qrcode_reader_view.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:visit_city/ui/screens/sight_details_screen.dart';
 import 'package:visit_city/ui/screens/wishlist_screen.dart';
 import '../../ui/widget/ui.dart';
 import '../../res/coolor.dart';
@@ -76,9 +77,8 @@ class _QrCodeScreenState extends State<QrCodeScreen> {
   }
 
   Future onScan(String data) async {
-    /// todo navigate to the correct screen;;;
-    await Navigator.of(context).pushNamed(WishlistScreen.ROUTE_NAME);
-    showToast(data);
+    await Navigator.of(context).pushNamed(SightDetailsScreen.ROUTE_NAME,
+        arguments: {SightDetailsScreen.MODEL_ID_KEY: int.parse(data)});
     _key.currentState.startScan();
   }
 
