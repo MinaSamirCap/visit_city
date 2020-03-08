@@ -13,11 +13,11 @@ import '../../utils/lang/app_localization_keys.dart';
 import '../../res/coolor.dart';
 import 'explore_cell_widget.dart';
 
-Widget lineDivider() {
+Widget lineDivider({double height}) {
   return Container(
     color: Coolor.GREY,
     width: double.infinity,
-    height: 2,
+    height: height == null ? 2 : height,
   );
 }
 
@@ -292,5 +292,31 @@ Widget getNotPicWidget(AppLocalizations appLocale) {
   return Text(
     appLocale.translate(LocalKeys.NO_PIC),
     style: TextStyle(color: Coolor.WHITE),
+  );
+}
+
+Widget userReview(
+    String picUrl, String userName, double rate, String description) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: <Widget>[
+      Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          CircleAvatar(
+            radius: 33,
+            backgroundColor: Coolor.GREY,
+            backgroundImage: NetworkImage(picUrl),
+          ),
+          Sizes.DIVIDER_WIDTH_10,
+          Text(
+            userName,
+            style: TextStyle(fontSize: 20),
+          )
+        ],
+      ),
+      ratingOrangeWidget(rate),
+      Text(description)
+    ],
   );
 }

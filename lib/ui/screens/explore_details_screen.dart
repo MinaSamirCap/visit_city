@@ -140,7 +140,23 @@ class _ExploreDetailsScreenState extends State<ExploreDetailsScreen> {
   }
 
   Widget getReviewList() {
-    return Text("Mina");
+    return ListView.separated(
+        physics: ScrollPhysics(),
+        shrinkWrap: true,
+        itemBuilder: (ctx, index) {
+          return userReview(
+              "https://keenthemes.com/preview/metronic/theme/assets/pages/media/profile/people19.png",
+              'MinaSamir',
+              3.0,
+              "lkdsjklaf kljfsdkljfklsadkfj lkdj lj lj kldsjfklasdjkflj kldjsklfjlksdjfakl klj lkj kljd kljdklfjklsdjfkljakljdfskljklf lkj klajsfdkljasdkl");
+        },
+        separatorBuilder: (ctx, index) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30.0),
+            child: lineDivider(height: 1),
+          );
+        },
+        itemCount: 30);
   }
 
   Widget getPhotosOrDummyWidget() {
