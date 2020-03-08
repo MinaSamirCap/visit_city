@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../res/coolor.dart';
 
 class SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   SliverAppBarDelegate(this._tabBar);
@@ -14,6 +15,7 @@ class SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return new Container(
+      color: Coolor.WHITE,
       child: _tabBar,
     );
   }

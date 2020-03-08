@@ -74,5 +74,6 @@
     "overview": "معلومات",
     "services": "خدمات",
     "no_pic" : "لا يوجد صور",
-    "mixed_itineraries" : "مسار مختلط"
+    "mixed_itineraries" : "مسار مختلط",
+    "can_not_open_dial": "لا نستطيع فتح الاتصال"
 }

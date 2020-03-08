@@ -18,54 +18,22 @@ class Sizes {
     height: 3,
   );
 
-  static const DIVIDER_HEIGHT_10 = SizedBox(
-    height: 10,
-  );
+  static const DIVIDER_HEIGHT_10 = SizedBox(height: 10);
+  static const DIVIDER_HEIGHT_15 = SizedBox(height: 15);
+  static const DIVIDER_HEIGHT_20 = SizedBox(height: 20);
+  static const DIVIDER_HEIGHT_30 = SizedBox(height: 30);
+  static const DIVIDER_HEIGHT_60 = SizedBox(height: 60);
+  static const DIVIDER_HEIGHT_100 = SizedBox(height: 100);
+  static const DIVIDER_HEIGHT_130 = SizedBox(height: 130);
+  static const DIVIDER_HEIGHT_150 = SizedBox(height: 150);
+  static const DIVIDER_HEIGHT_200 = SizedBox(height: 200);
 
-  static const DIVIDER_HEIGHT_15 = SizedBox(
-    height: 15,
-  );
-
-  static const DIVIDER_HEIGHT_30 = SizedBox(
-    height: 30,
-  );
-  static const DIVIDER_HEIGHT_60 = SizedBox(
-    height: 60,
-  );
-  static const DIVIDER_HEIGHT_100 = SizedBox(
-    height: 100,
-  );
-  static const DIVIDER_HEIGHT_130 = SizedBox(
-    height: 130,
-  );
-  static const DIVIDER_HEIGHT_150 = SizedBox(
-    height: 150,
-  );
-
-  static const DIVIDER_HEIGHT_200 = SizedBox(
-    height: 200,
-  );
-
-  static const DIVIDER_WIDTH_0 = SizedBox(
-    width: 0,
-  );
-  static const DIVIDER_WIDTH_5 = SizedBox(
-    width: 5,
-  );
-
-  static const DIVIDER_WIDTH_10 = SizedBox(
-    width: 10,
-  );
-
-  static const DIVIDER_WIDTH_15 = SizedBox(
-    width: 15,
-  );
-  static const DIVIDER_WIDTH_20 = SizedBox(
-    width: 20,
-  );
-  static const DIVIDER_WIDTH_50 = SizedBox(
-    width: 50,
-  );
+  static const DIVIDER_WIDTH_0 = SizedBox(width: 0);
+  static const DIVIDER_WIDTH_5 = SizedBox(width: 5);
+  static const DIVIDER_WIDTH_10 = SizedBox(width: 10);
+  static const DIVIDER_WIDTH_15 = SizedBox(width: 15);
+  static const DIVIDER_WIDTH_20 = SizedBox(width: 20);
+  static const DIVIDER_WIDTH_50 = SizedBox(width: 50);
 
   static final BOR_RAD_35 = BorderRadius.circular(35);
   static final BOR_RAD_25 = BorderRadius.circular(25);

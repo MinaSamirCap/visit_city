@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
-import '../../general/general.dart';
+import '../../general/url_launchers.dart';
 import '../../models/explore/explore_response.dart';
 import '../../ui/screens/explore_details_screen.dart';
 import '../../ui/widget/explore_cell_widget.dart';
@@ -12,7 +11,6 @@ import '../../models/explore/explore_wrapper.dart';
 import '../../apis/api_manager.dart';
 import '../../models/category/category_wrapper.dart';
 import '../../models/message_model.dart';
-import '../../res/assets_path.dart';
 import '../../ui/widget/ui.dart';
 import '../../res/coolor.dart';
 import '../../res/sizes.dart';
@@ -231,19 +229,12 @@ class _ExploreWidgetState extends State<ExploreWidget> {
               }),
               ExploreCellWidget("${model.openHours.from} ${model.openHours.to}",
                   Icons.access_time, () {}),
-              // removed favorite icon
-              // ExploreCellWidget("", Icons.favorite_border, () {
-              //
-              // }),
             ],
           ),
         )
       ],
     );
   }
-
-
-  
 
   void callCategoriesApi() async {
     _progressDialog.show();
