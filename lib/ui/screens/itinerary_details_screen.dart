@@ -199,8 +199,21 @@ class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          // Text(_itinerariesData['data']['sights'][_value]
-                          //     ['sights'][index]['']),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 5, right: 5),
+                            child: Text(
+                              'From: ' +
+                                 _itinerariesData['data']['sights']
+                                                    [_value]['sights'][index]['openHours']['from'] +
+                                  ' to ' +
+                                 _itinerariesData['data']['sights']
+                                                    [_value]['sights'][index]['openHours']['to'],
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
                           Column(
                             children: <Widget>[
                               IconButton(
