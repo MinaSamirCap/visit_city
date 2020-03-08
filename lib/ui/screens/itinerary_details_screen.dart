@@ -11,6 +11,8 @@ import '../../ui/widget/map_widget.dart';
 import '../../apis/api_manager.dart';
 import '../../general/url_launchers.dart';
 import '../../ui/screens/sight_details_screen.dart';
+import 'package:dio/dio.dart';
+import '../../apis/api_keys.dart';
 
 class ItineraryDetailsScreen extends StatefulWidget {
   static const ROUTE_NAME = '/itinerary-details-screen';
@@ -26,6 +28,22 @@ class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
   var _isInit = true;
   List<DayItem> _daysList;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final dio = new Dio();
+
+  void _addSight(int sightId) async {
+    final response = await dio.post(
+        'https://visit-fayoum.herokuapp.com/api/v1/plan-sights',
+        options: Options(headers: ApiKeys.getHeaders()),
+        data: {
+          'sights': [sightId]
+        });
+  }
+  void _setAsMyPlan() async {
+      print('https://visit-fayoum.herokuapp.com/api/v1/plan-itinerary/${_itinerariesData['data']['id']}');
+    final response = await dio.post(
+        'https://visit-fayoum.herokuapp.com/api/v1/plan-itinerary/${_itinerariesData['data']['id']}',
+        options: Options(headers: ApiKeys.getHeaders()),);
+  }
 
   @override
   void didChangeDependencies() {
@@ -67,7 +85,7 @@ class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
     _appLocal = AppLocalizations.of(context);
     _daysList = DayItem.getDaysList(_appLocal);
 
-    return _isLoadingNow
+    return _isLoadingNow || _itinerariesData ==null
         ? Scaffold(
             key: _scaffoldKey,
             body: Center(child: CircularProgressIndicator()),
@@ -132,10 +150,12 @@ class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
             child: InkWell(
               onTap: () {
                 print("object$index");
-                Map<String,dynamic> sightId = {"sight_id":_itinerariesData['data']['sights'][_value]['sights']
-                                [index]['id']};
-                Navigator.of(context).pushNamed(SightDetailsScreen.ROUTE_NAME,arguments:sightId );
-
+                Map<String, dynamic> sightId = {
+                  "sight_id": _itinerariesData['data']['sights'][_value]
+                      ['sights'][index]['id']
+                };
+                Navigator.of(context).pushNamed(SightDetailsScreen.ROUTE_NAME,
+                    arguments: sightId);
               },
               child: Container(
                 height: 215,
@@ -157,7 +177,13 @@ class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
                           ),
                           IconButton(
                             icon: Icon(Icons.add),
-                            onPressed: () {},
+                            onPressed: () {
+                              setState(() {
+                                
+                              _addSight(_itinerariesData['data']['sights']
+                                  [_value]['sights'][index]['id']);
+                              });
+                            },
                           ),
                         ],
                       ),
@@ -251,7 +277,11 @@ class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
     return Padding(
       padding: Sizes.EDEGINSETS_10,
       child: MaterialButton(
-        onPressed: () {},
+        onPressed: () {
+          setState(() {
+            _setAsMyPlan();
+          });
+        },
         shape: RoundedRectangleBorder(
           borderRadius: Sizes.BOR_RAD_35,
           side: BorderSide(

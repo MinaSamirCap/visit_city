@@ -75,5 +75,7 @@
     "services": "خدمات",
     "no_pic" : "لا يوجد صور",
     "mixed_itineraries" : "مسار مختلط",
-    "can_not_open_dial": "لا نستطيع فتح الاتصال"
+    "can_not_open_dial": "لا نستطيع فتح الاتصال",
+    "mobile" : "رقم المحمول",
+    "country": "البلد"
 }

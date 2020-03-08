@@ -74,6 +74,8 @@
     "overview" : "Overview",
     "services" : "Services",
     "no_pic" : "No Photos",
-    "mixed_itineraries" : "Mixed Itinerary"
+    "mixed_itineraries" : "Mixed Itinerary",
+    "mobile" : "Mobile Number",
+    "country": "Country"
     
 }

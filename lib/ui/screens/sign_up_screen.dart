@@ -9,6 +9,7 @@ import '../../utils/lang/app_localization.dart';
 import '../../utils/lang/app_localization_keys.dart';
 import '../../apis/auth.dart';
 import '../../ui/screens/sign_in_screen.dart';
+import '../../utils/lang/http_exception.dart';
 
 class SignUpScreen extends StatefulWidget {
   static const ROUTE_NAME = '/signup';
@@ -21,6 +22,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
     'name': '',
     'email': '',
     'password': "",
+    'mobile': "",
+    'country': '',
   };
   final GlobalKey<FormState> _formKey = GlobalKey();
   var appLocal;
@@ -61,10 +64,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
         _authData['name'],
         _authData['email'],
         _authData['password'],
+        _authData['mobile'],
+        _authData['country'],
       );
-    } catch (error) {
+    } on HttpException catch (error) {
       _showErrorDialog(error.toString());
-      print(error.toString());
+    } catch (error) {
+      const errorMessage =
+          'Could not authenticate you. Please try again later.';
+      _showErrorDialog(errorMessage);
     }
   }
 
@@ -102,6 +110,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   emailTextField(),
                   passwordTextField(),
                   passwordConfirmTextField(),
+                  countryTextField(),
+                  mobileTextField(),
                   SizedBox(
                     height: 30,
                   ),
@@ -130,12 +140,51 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
+  Widget mobileTextField() {
+    return Padding(
+      padding: Sizes.EDEGINSETS_8,
+      child: TextFormField(
+        keyboardType: TextInputType.number,
+        decoration: InputDecoration(
+          labelText: appLocal.translate(LocalKeys.MOBILE),
+          contentPadding: Sizes.EDEGINSETS_20,
+          border: OutlineInputBorder(
+            gapPadding: 3.3,
+            borderRadius: Sizes.BOR_RAD_25,
+          ),
+        ),
+        onSaved: (value) {
+          _authData['mobile'] = value;
+        },
+      ),
+    );
+  }
+
+  Widget countryTextField() {
+    return Padding(
+      padding: Sizes.EDEGINSETS_8,
+      child: TextFormField(
+        decoration: InputDecoration(
+          labelText: appLocal.translate(LocalKeys.COUNTRY),
+          contentPadding: Sizes.EDEGINSETS_20,
+          border: OutlineInputBorder(
+            gapPadding: 3.3,
+            borderRadius: Sizes.BOR_RAD_25,
+          ),
+        ),
+        onSaved: (value) {
+          _authData['country'] = value;
+        },
+      ),
+    );
+  }
+
   Widget nameTextField() {
     return Padding(
       padding: Sizes.EDEGINSETS_8,
       child: TextFormField(
         decoration: InputDecoration(
-          labelText: "${appLocal.translate(LocalKeys.NAME)}",
+          labelText: appLocal.translate(LocalKeys.NAME),
           contentPadding: Sizes.EDEGINSETS_20,
           border: OutlineInputBorder(
             gapPadding: 3.3,
@@ -144,8 +193,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ),
         validator: (value) {
           if (value.isEmpty) {
-            return "${appLocal.translate(LocalKeys.ERROR_NAME)}";
+            return appLocal.translate(LocalKeys.ERROR_NAME);
           }
+          return null;
         },
         onSaved: (value) {
           _authData['name'] = value;
@@ -159,7 +209,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       padding: Sizes.EDEGINSETS_8,
       child: TextFormField(
         decoration: InputDecoration(
-          labelText: "${appLocal.translate(LocalKeys.EMAIL)}",
+          labelText: appLocal.translate(LocalKeys.EMAIL),
           contentPadding: Sizes.EDEGINSETS_20,
           border: OutlineInputBorder(
             gapPadding: 3.3,
@@ -169,8 +219,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
         keyboardType: TextInputType.emailAddress,
         validator: (value) {
           if (value.isEmpty || !EmailValidator.validate(value)) {
-            return "${appLocal.translate(LocalKeys.ERROR_EMAIL)}";
+            return appLocal.translate(LocalKeys.ERROR_EMAIL);
           }
+          return null;
         },
         onSaved: (value) {
           _authData['email'] = value;
@@ -186,7 +237,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         obscureText: true,
         controller: _passwordController,
         decoration: InputDecoration(
-          labelText: "${appLocal.translate(LocalKeys.PASSWORD)}",
+          labelText: appLocal.translate(LocalKeys.PASSWORD),
           contentPadding: Sizes.EDEGINSETS_20,
           border: OutlineInputBorder(
             gapPadding: 3.3,
@@ -195,8 +246,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ),
         validator: (value) {
           if (value.isEmpty || value.length < 8) {
-            return "${appLocal.translate(LocalKeys.ERROR_PASSWORD)}";
+            return appLocal.translate(LocalKeys.ERROR_PASSWORD);
           }
+          return null;
         },
         onSaved: (value) {
           _authData['password'] = value;
@@ -210,7 +262,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       padding: Sizes.EDEGINSETS_8,
       child: TextFormField(
           decoration: InputDecoration(
-            labelText: "${appLocal.translate(LocalKeys.CONFIRM_PASSWORD)}",
+            labelText: appLocal.translate(LocalKeys.CONFIRM_PASSWORD),
             contentPadding: Sizes.EDEGINSETS_20,
             border: OutlineInputBorder(
               gapPadding: 3.3,
@@ -220,8 +272,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
           obscureText: true,
           validator: (value) {
             if (value != _passwordController.text) {
-              return "${appLocal.translate(LocalKeys.PASS_DONT_MATCH)}";
+              return appLocal.translate(LocalKeys.PASS_DONT_MATCH);
             }
+            return null;
           }),
     );
   }
@@ -239,7 +292,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         // Navigator.of(context).pushReplacementNamed(SignInScreen.ROUTE_NAME);
       },
       child: Text(
-        "${appLocal.translate(LocalKeys.SIGN_UP)}",
+        appLocal.translate(LocalKeys.SIGN_UP),
         textAlign: TextAlign.center,
         style: TextStyle(
           color: Coolor.WHITE,
@@ -253,7 +306,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget haveAccount() {
     return FlatButton(
       child: Text(
-        "${appLocal.translate(LocalKeys.HAVE_ACCOUNT)}",
+        appLocal.translate(LocalKeys.HAVE_ACCOUNT),
         style: TextStyle(
           color: Coolor.GREY,
           fontSize: 15,

@@ -84,4 +84,7 @@ class LocalKeys {
   static const PUBLIC_TRANS = "public_trans";
   static const MIXED_ITINERARIES = "mixed_itineraries";
   static const CAN_NOT_OPEN_DIAL = "can_not_open_dial";
+  static const COUNTRY = "country";
+  static const MOBILE = "mobile";
+  
 }

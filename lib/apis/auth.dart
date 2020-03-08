@@ -89,7 +89,7 @@ class Auth with ChangeNotifier {
     }
   }
 
-  Future<void> signUp(String name, String email, String password) async {
+  Future<void> signUp(String name, String email, String password,String mobile,String country) async {
     final url = 'https://visit-fayoum.herokuapp.com/api/v1/signup';
     try {
       print('okay');
@@ -101,12 +101,14 @@ class Auth with ChangeNotifier {
             'email': email,
             'password': password,
             'name': name,
+            'phone':mobile,
+            'country':country,
           },
         ),
       );
       final responseData = json.decode(response.body);
       if (responseData['errors'] != null) {
-        throw HttpException(responseData['errors']['message']);
+        throw HttpException(responseData['message'][0]['message']);
       }
       _token = responseData['token'];
       _autoLogout();
