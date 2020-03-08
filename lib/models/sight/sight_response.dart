@@ -1,4 +1,5 @@
-import '../../models/explore/explore_model.dart';
+import 'package:visit_city/models/sight/category_model.dart';
+
 import '../../models/explore/open_hour_model.dart';
 
 class SightResponse {
@@ -13,7 +14,6 @@ class SightResponse {
   final double rate;
   final int reviews;
   List<double> location;
-  List<ExploreModel> services;
   final OpenHourModel openHours;
   final String price;
   final String contact;
@@ -23,6 +23,7 @@ class SightResponse {
   final String updatedAt;
   final bool like;
   final bool plan;
+  List<CategoryModel> categories;
 
   SightResponse(
       this.id,
@@ -36,7 +37,6 @@ class SightResponse {
       this.rate,
       this.reviews,
       this.location,
-      this.services,
       this.openHours,
       this.price,
       this.contact,
@@ -45,7 +45,8 @@ class SightResponse {
       this.createdAt,
       this.updatedAt,
       this.like,
-      this.plan);
+      this.plan,
+      this.categories);
 
   SightResponse.fromJson(Map<String, dynamic> json)
       : id = json['id'],
@@ -63,9 +64,6 @@ class SightResponse {
         location = (json['location'] as List).map((item) {
           return item as double;
         }).toList(),
-        services = (json['services'] as List).map((item) {
-          return ExploreModel.fromJson(item);
-        }).toList(),
         openHours = OpenHourModel.fromJson(json['openHours']),
         price = json['price'],
         contact = json['contact'],
@@ -74,7 +72,10 @@ class SightResponse {
         createdAt = json['createdAt'],
         updatedAt = json['updatedAt'],
         like = json['like'],
-        plan = json['plan'];
+        plan = json['plan'],
+        categories = (json['categories'] as List).map((item) {
+          return CategoryModel.fromJson(item);
+        }).toList();
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -92,9 +93,6 @@ class SightResponse {
         'location': location.map((item) {
           return item;
         }).toList(),
-        'services': services.map((item) {
-          return item.toJson();
-        }).toList(),
         'openHours': openHours.toJson(),
         'price': price,
         'contact': contact,
@@ -103,6 +101,9 @@ class SightResponse {
         'createdAt': createdAt,
         'updatedAt': updatedAt,
         'like': like,
-        'plan': plan
+        'plan': plan,
+        'categories': categories.map((item) {
+          return item.toJson();
+        }).toList()
       };
 }
