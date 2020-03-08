@@ -22,25 +22,23 @@ class _FilterWidgetState extends State<FilterWidget> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: <Widget>[filterListWidget(), Sizes.DIVIDER_HEIGHT_10],
+      children: <Widget>[filterListWidget(), Sizes.DIVIDER_HEIGHT_15],
     );
   }
 
   Widget filterListWidget() {
     return Container(
       height: 40,
-      padding: EdgeInsets.symmetric(horizontal: 20),
-      child: Center(
-        child: ListView.separated(
-          scrollDirection: Axis.horizontal,
-          itemCount: widget._filterList.length,
-          itemBuilder: (ctx, index) {
-            return filterItemWidget(widget._filterList[index]);
-          },
-          separatorBuilder: (_, __) {
-            return Sizes.DIVIDER_WIDTH_10;
-          },
-        ),
+      child: ListView.separated(
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        scrollDirection: Axis.horizontal,
+        itemCount: widget._filterList.length,
+        itemBuilder: (ctx, index) {
+          return filterItemWidget(widget._filterList[index]);
+        },
+        separatorBuilder: (_, __) {
+          return Sizes.DIVIDER_WIDTH_10;
+        },
       ),
     );
   }
