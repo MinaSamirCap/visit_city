@@ -32,6 +32,7 @@ class _ExploreDetailsScreenState extends State<ExploreDetailsScreen> {
   ExploreModel serviceModel;
   int _currentTab = 0;
   double initRate = 0.0;
+  bool firstTimeToLoad = true;
 
   void initState() {
     Future.delayed(Duration.zero).then((_) {
@@ -130,12 +131,16 @@ class _ExploreDetailsScreenState extends State<ExploreDetailsScreen> {
               }),
           Sizes.DIVIDER_HEIGHT_10,
           postReviewWidget(_appLocal, _controller, null),
-          Center(
-            child: Text(serviceModel.name),
-          ),
+          if (firstTimeToLoad)
+            ...{Sizes.DIVIDER_HEIGHT_60, getCenterCircularProgress()}.toList(),
+          getReviewList()
         ],
       ),
     );
+  }
+
+  Widget getReviewList() {
+    return Text("Mina");
   }
 
   Widget getPhotosOrDummyWidget() {
