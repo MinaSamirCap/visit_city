@@ -31,6 +31,7 @@ class _MapWidgetState extends State<MapWidget> {
     return Scaffold(
       appBar: AppBar(
         title: Text(_appLocal.translate(LocalKeys.MAP)),
+        centerTitle: true,
       ),
       body: Column(
         children: <Widget>[

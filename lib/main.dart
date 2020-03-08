@@ -18,6 +18,8 @@ import 'ui/screens/forget_password_screen.dart';
 import 'ui/screens/feedback_screen.dart';
 import 'ui/widget/map_widget.dart';
 import 'ui/screens/profile_screen.dart';
+import 'ui/screens/useful_contacts_screen.dart';
+import 'ui/screens/mixed_itineraries_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -97,6 +99,8 @@ class MyApp extends StatelessWidget {
             WishlistScreen.ROUTE_NAME: (ctx) => WishlistScreen(),
             QrCodeScreen.ROUTE_NAME: (ctx) => QrCodeScreen(),
             ProfileScreen.ROUTE_NAME: (ctx) => ProfileScreen(),
+            UsefulContactsScreen.ROUTE_NAME: (ctx) => UsefulContactsScreen(),
+            MixedItinerariesScreen.ROUTE_NAME: (ctx) => MixedItinerariesScreen(),
           },
         ),
       ),

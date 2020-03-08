@@ -41,63 +41,132 @@ class _SignInScreenState extends State<SignInScreen> {
           currentFocus.unfocus();
         }
       },
-      child: _isLoading ? Scaffold(body: Center(child: CircularProgressIndicator(),)) :Scaffold(
-        backgroundColor: Coolor.BG_COLOR,
-        // backgroundColor: Coolor.WHITE,
-        body: Container(
-          height: double.infinity,
-          width: double.infinity,
-          child: SingleChildScrollView(
-            padding: Sizes.EDEGINSETS_20,
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(
-                    height: 85,
+      child: _isLoading
+          ? Scaffold(
+              body: Center(
+              child: CircularProgressIndicator(),
+            ))
+          : Scaffold(
+              backgroundColor: Coolor.BG_COLOR,
+              // backgroundColor: Coolor.WHITE,
+              body: Container(
+                height: double.infinity,
+                width: double.infinity,
+                child: SingleChildScrollView(
+                  padding: Sizes.EDEGINSETS_20,
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        SizedBox(
+                          height: 85,
+                        ),
+                        logoImage(),
+                        SizedBox(
+                          height: 50,
+                        ),
+                        emailTextField(),
+                        passwordTextField(),
+                        forgetPasswordButton(),
+                        SizedBox(
+                          height: 25.0,
+                        ),
+                        loginButton(),
+                        SizedBox(
+                          height: 50,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            fbLogin(),
+                            googleLogin(),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 75,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Text(
+                              "${appLocal.translate(LocalKeys.DONT_HAVE_ACCOUNT)}",
+                            ),
+                            registerButton(),
+                          ],
+                        ),
+                        signInLaterButton(),
+                        Container(
+                          width: double.infinity,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              Container(
+                                height: 50,
+                                width: 50,
+                                child: Image.asset(
+                                  AssPath.SPONS_LOGO1,
+                                  fit: BoxFit.fitWidth,
+                                ),
+                              ),
+                              Container(
+                                height: 50,
+                                width: 50,
+                                child: Image.asset(
+                                  AssPath.SPONS_LOGO2,
+                                  fit: BoxFit.fitWidth,
+                                ),
+                              ),
+                              Container(
+                                height: 50,
+                                width: 50,
+                                child: Image.asset(
+                                  AssPath.SPONS_LOGO3,
+                                  fit: BoxFit.fitWidth,
+                                ),
+                              ),
+                              Container(
+                                height: 50,
+                                width: 50,
+                                child: Image.asset(
+                                  AssPath.SPONS_LOGO4,
+                                  fit: BoxFit.fitWidth,
+                                ),
+                              ),
+                              Container(
+                                height: 50,
+                                width: 50,
+                                child: Image.asset(
+                                  AssPath.SPONS_LOGO5,
+                                  fit: BoxFit.fitWidth,
+                                ),
+                              ),
+                              Container(
+                                height: 50,
+                                width: 50,
+                                child: Image.asset(
+                                  AssPath.SPONS_LOGO6,
+                                  fit: BoxFit.fitWidth,
+                                ),
+                              ),
+                              Container(
+                                height: 50,
+                                width: 50,
+                                child: Image.asset(
+                                  AssPath.SPONS_LOGO7,
+                                  fit: BoxFit.fitWidth,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                  logoImage(),
-                  SizedBox(
-                    height: 50,
-                  ),
-                  emailTextField(),
-                  passwordTextField(),
-                  forgetPasswordButton(),
-                  SizedBox(
-                    height: 25.0,
-                  ),
-                  loginButton(),
-                  SizedBox(
-                    height: 50,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      fbLogin(),
-                      googleLogin(),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 75,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        "${appLocal.translate(LocalKeys.DONT_HAVE_ACCOUNT)}",
-                      ),
-                      registerButton(),
-                    ],
-                  ),
-                  signInLaterButton(),
-                ],
+                ),
               ),
             ),
-          ),
-        ),
-      ),
     );
   }
 
@@ -146,8 +215,7 @@ class _SignInScreenState extends State<SignInScreen> {
         FlatButton(
           child: Text(appLocal.translate(LocalKeys.FORGET_PASSWORD)),
           onPressed: () {
-            Navigator.of(context)
-                .pushNamed(ForgetPasswordScreen.ROUTE_NAME);
+            Navigator.of(context).pushNamed(ForgetPasswordScreen.ROUTE_NAME);
           },
         ),
       ],
@@ -282,13 +350,12 @@ class _SignInScreenState extends State<SignInScreen> {
         _authData['email'],
         _authData['password'],
       );
-    }on HttpException catch (error) {
+    } on HttpException catch (error) {
       var errorMessage = error;
-      
+
       _showErrorDialog(errorMessage.toString());
       print(errorMessage.toString());
-    } 
-    catch (error) {
+    } catch (error) {
       _showErrorDialog(error.toString());
     }
     setState(() {

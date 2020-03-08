@@ -12,6 +12,8 @@ import '../../ui/screens/feedback_screen.dart';
 import '../../utils/lang/app_localization_keys.dart';
 import '../../utils/lang/app_localization.dart';
 import '../../res/coolor.dart';
+import '../../ui/screens/useful_contacts_screen.dart';
+import '../../ui/screens/mixed_itineraries_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   static const ROUTE_NAME = '/home-screen';
@@ -56,13 +58,13 @@ class _HomeScreenState extends State<HomeScreen> {
     } else if (title == _appLocal.translate(LocalKeys.GUIDE_BOOK)) {
       launchUrl("https://www.google.com");
     } else if (title == _appLocal.translate(LocalKeys.MIXED_ITE)) {
-      ///
+      Navigator.of(context).pushNamed(MixedItinerariesScreen.ROUTE_NAME);
     } else if (title == _appLocal.translate(LocalKeys.HOW_TO_USE_APP)) {
       ///
     } else if (title == _appLocal.translate(LocalKeys.INTRO_ABOUT_FAYOUM)) {
       ///
     } else if (title == _appLocal.translate(LocalKeys.USEFUL_CONTACTS)) {
-      ///
+      Navigator.of(context).pushNamed(UsefulContactsScreen.ROUTE_NAME);
     } else if (title == _appLocal.translate(LocalKeys.QR_CODE)) {
       Navigator.of(context).pushNamed(QrCodeScreen.ROUTE_NAME);
     }
