@@ -9,7 +9,7 @@ import '../../res/coolor.dart';
 import '../../ui/widget/ui.dart';
 import '../../ui/widget/map_widget.dart';
 import '../../apis/api_manager.dart';
-import '../../general/general.dart';
+import '../../general/url_launchers.dart';
 import '../../ui/screens/sight_details_screen.dart';
 
 class ItineraryDetailsScreen extends StatefulWidget {
