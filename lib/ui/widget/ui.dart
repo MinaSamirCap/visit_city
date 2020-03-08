@@ -226,23 +226,20 @@ Widget rowTextWithIcon(IconData iconData, String txt, {Function func}) {
 
 Widget textFormWidget(
     TextEditingController controller, String label, String errorText) {
-  return Padding(
-    padding: const EdgeInsets.only(top: 10, left: 30, right: 30),
-    child: TextFormField(
-      controller: controller,
-      keyboardType: TextInputType.text,
-      maxLines: 4,
-      minLines: 4,
-      decoration: InputDecoration(
-          alignLabelWithHint: true,
-          labelText: label,
-          contentPadding: Sizes.EDEGINSETS_20,
-          border: OutlineInputBorder(
-            gapPadding: 3.3,
-            borderRadius: Sizes.BOR_RAD_25,
-          ),
-          errorText: errorText),
-    ),
+  return TextFormField(
+    controller: controller,
+    keyboardType: TextInputType.text,
+    maxLines: 3,
+    minLines: 3,
+    decoration: InputDecoration(
+        alignLabelWithHint: true,
+        labelText: label,
+        contentPadding: Sizes.EDEGINSETS_20,
+        border: OutlineInputBorder(
+          gapPadding: 3.3,
+          borderRadius: Sizes.BOR_RAD_25,
+        ),
+        errorText: errorText),
   );
 }
 
@@ -253,18 +250,47 @@ Widget postReviewWidget(AppLocalizations appLocale,
 }
 
 Widget postReviewBtnWidget(AppLocalizations appLocale, Function clicked) {
-  return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 35),
-    child: Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
-      RaisedButton(
-        onPressed: clicked,
-        shape: RoundedRectangleBorder(
-          borderRadius: Sizes.BOR_RAD_25,
-        ),
-        color: Coolor.BLUE_APP,
-        textColor: Coolor.WHITE,
-        child: Text(appLocale.translate(LocalKeys.POST)),
-      ),
-    ]),
+  return RaisedButton(
+    onPressed: clicked,
+    shape: RoundedRectangleBorder(
+      borderRadius: Sizes.BOR_RAD_25,
+    ),
+    color: Coolor.BLUE_APP,
+    textColor: Coolor.WHITE,
+    child: Text(appLocale.translate(LocalKeys.POST)),
+  );
+}
+
+Widget postRatingOrangeWidget(Function onRateUpdated, double initRate) {
+  return RatingBar(
+    initialRating: initRate,
+    itemCount: 5,
+    itemSize: 30,
+    itemPadding: EdgeInsets.all(0),
+    itemBuilder: (ctx, index) {
+      return Icon(
+        Icons.star,
+        color: Coolor.ORANGE,
+      );
+    },
+    onRatingUpdate: onRateUpdated,
+  );
+}
+
+Widget postReviewRowWidget(AppLocalizations appLocale, Function onRateUpdated,
+    double initRate, Function clicked) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    children: <Widget>[
+      postRatingOrangeWidget(onRateUpdated, initRate),
+      postReviewBtnWidget(appLocale, clicked)
+    ],
+  );
+}
+
+Widget getNotPicWidget(AppLocalizations appLocale) {
+  return Text(
+    appLocale.translate(LocalKeys.NO_PIC),
+    style: TextStyle(color: Coolor.WHITE),
   );
 }

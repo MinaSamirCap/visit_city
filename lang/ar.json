@@ -77,5 +77,6 @@
     "can_not_open_dial": "لا نستطيع فتح الاتصال",
     "leave_your_review": "اترك لنا رايك...",
     "post": "اضف",
-    "mixed_itineraries": "مسار مختلط"
+    "mixed_itineraries": "مسار مختلط",
+    "rate_error" : "من فضلك اخر التقييم"
 }

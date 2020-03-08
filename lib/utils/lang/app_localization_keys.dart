@@ -86,4 +86,5 @@ class LocalKeys {
   static const CAN_NOT_OPEN_DIAL = "can_not_open_dial";
   static const LEAVE_YOUR_REVIEW = "leave_your_review";
   static const POST = "post";
+  static const RATE_ERROR = "rate_error";
 }

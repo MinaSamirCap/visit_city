@@ -25,13 +25,13 @@ class _ExploreDetailsScreenState extends State<ExploreDetailsScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   TextEditingController _controller = TextEditingController();
-  String _errorText;
 
   AppLocalizations _appLocal;
   ProgressDialog _progressDialog;
   ApiManager _apiManager;
   ExploreModel serviceModel;
   int _currentTab = 0;
+  double initRate = 0.0;
 
   void initState() {
     Future.delayed(Duration.zero).then((_) {
@@ -98,22 +98,43 @@ class _ExploreDetailsScreenState extends State<ExploreDetailsScreen> {
 
   Widget bodyWidget() {
     if (_currentTab == 0) {
-      return overviewWidget(_appLocal, serviceModel.rate, serviceModel.location,
-          serviceModel.desc, serviceModel.openHours, serviceModel.price, null, null);
+      return overviewWidget(
+          _appLocal,
+          serviceModel.rate,
+          serviceModel.location,
+          serviceModel.desc,
+          serviceModel.openHours,
+          serviceModel.price,
+          null,
+          null);
     } else {
       return reviewWidget();
     }
   }
 
   Widget reviewWidget() {
-    return Column(
-      children: <Widget>[
-        postReviewWidget(_appLocal,_controller,_errorText),
-        postReviewBtnWidget(_appLocal, (){}),
-        Center(
-          child: Text(serviceModel.name),
-        ),
-      ],
+    return SingleChildScrollView(
+      padding: Sizes.EDEGINSETS_20,
+      child: Column(
+        children: <Widget>[
+          postReviewRowWidget(
+              _appLocal,
+              (value) {
+                setState(() {
+                  initRate = value;
+                });
+              },
+              initRate,
+              () {
+                postClicked();
+              }),
+          Sizes.DIVIDER_HEIGHT_10,
+          postReviewWidget(_appLocal, _controller, null),
+          Center(
+            child: Text(serviceModel.name),
+          ),
+        ],
+      ),
     );
   }
 
@@ -122,9 +143,28 @@ class _ExploreDetailsScreenState extends State<ExploreDetailsScreen> {
       return CarouselWithIndicator(serviceModel.photos);
     } else {
       return Center(
-        child: Text(_appLocal.translate(LocalKeys.NO_PIC)),
+        child: getNotPicWidget(_appLocal),
       );
     }
+  }
+
+  void postClicked() {
+    if (initRate == 0.0) {
+      showSnackBar(createSnackBar(_appLocal.translate(LocalKeys.RATE_ERROR)),
+          _scaffoldKey);
+    } else {
+      setState(() {
+        /// call api .. :)
+        //callRateServiceApi();
+        print("submit: ${_controller.text} rate: $initRate");
+        resetRate();
+      });
+    }
+  }
+
+  void resetRate() {
+    initRate = 0.0;
+    _controller.text = "";
   }
 
   void callDetailsApi() async {
