@@ -61,14 +61,12 @@ ProgressDialog getProgress(BuildContext context, String message) {
   pr.style(
       message: message,
       progressWidget: Padding(
-        padding: const EdgeInsets.all(4.0),
-        child: CircularProgressIndicator(
-          strokeWidth: 6,
-        ),
+        padding: const EdgeInsets.all(3.0),
+        child: CircularProgressIndicator(),
       ),
       insetAnimCurve: Curves.easeInOut,
       messageTextStyle: TextStyle(
-          color: Coolor.BLACK, fontSize: 18.0, fontWeight: FontWeight.w600));
+          color: Coolor.BLACK, fontSize: 16.0, fontWeight: FontWeight.w500));
   return pr;
 }
 
@@ -94,7 +92,7 @@ Widget exploreImgWidget(double width, String url) {
 // I am sure it is working tested on real device ...
   return FadeInImage.assetNetwork(
     placeholder: AssPath.APP_LOGO,
-    image: url != null ? "" : url,
+    image: url == null ? "" : url,
     height: double.infinity,
     width: width,
     fit: BoxFit.cover,
