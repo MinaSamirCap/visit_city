@@ -14,6 +14,8 @@ import '../../utils/lang/app_localization.dart';
 import '../../res/coolor.dart';
 import '../../ui/screens/useful_contacts_screen.dart';
 import '../../ui/screens/mixed_itineraries_screen.dart';
+import '../../ui/screens/how_to_use_app_screen.dart';
+import '../../ui/screens/fayoum_intro_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   static const ROUTE_NAME = '/home-screen';
@@ -52,7 +54,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ///
     } else if (title == _appLocal.translate(LocalKeys.PROFILE)) {
       Navigator.of(context).pushNamed(ProfileScreen.ROUTE_NAME);
-      ///
     } else if (title == _appLocal.translate(LocalKeys.WISHLIST)) {
       Navigator.of(context).pushNamed(WishlistScreen.ROUTE_NAME);
     } else if (title == _appLocal.translate(LocalKeys.GUIDE_BOOK)) {
@@ -60,9 +61,9 @@ class _HomeScreenState extends State<HomeScreen> {
     } else if (title == _appLocal.translate(LocalKeys.MIXED_ITE)) {
       Navigator.of(context).pushNamed(MixedItinerariesScreen.ROUTE_NAME);
     } else if (title == _appLocal.translate(LocalKeys.HOW_TO_USE_APP)) {
-      ///
+      Navigator.of(context).pushNamed(HowToUseAppScreen.ROUTE_NAME);
     } else if (title == _appLocal.translate(LocalKeys.INTRO_ABOUT_FAYOUM)) {
-      ///
+      Navigator.of(context).pushNamed(FayoumIntroScreen.ROUTE_NAME);
     } else if (title == _appLocal.translate(LocalKeys.USEFUL_CONTACTS)) {
       Navigator.of(context).pushNamed(UsefulContactsScreen.ROUTE_NAME);
     } else if (title == _appLocal.translate(LocalKeys.QR_CODE)) {

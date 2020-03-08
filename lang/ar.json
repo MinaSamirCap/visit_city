@@ -73,10 +73,12 @@
     "plz_align_qr": "من فضلك ضع الكود داخل حدود المربع",
     "overview": "معلومات",
     "services": "خدمات",
-    "no_pic": "لا يوجد صور",
+    "no_pic" : "لا يوجد صور",
+    "mixed_itineraries" : "مسار مختلط",
     "can_not_open_dial": "لا نستطيع فتح الاتصال",
+    "mobile" : "رقم المحمول",
+    "country": "البلد",
     "leave_your_review": "اترك لنا رايك...",
     "post": "اضف",
-    "mixed_itineraries": "مسار مختلط",
     "rate_error" : "من فضلك اخر التقييم"
 }

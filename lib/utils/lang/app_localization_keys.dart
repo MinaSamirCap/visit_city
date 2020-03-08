@@ -87,4 +87,6 @@ class LocalKeys {
   static const LEAVE_YOUR_REVIEW = "leave_your_review";
   static const POST = "post";
   static const RATE_ERROR = "rate_error";
+  static const MOBILE = 'mobile';
+  static const COUNTRY = 'country';
 }

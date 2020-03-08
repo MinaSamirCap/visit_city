@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -7,6 +9,8 @@ import '../../utils/lang/app_localization.dart';
 import '../../utils/lang/app_localization_keys.dart';
 import '../../models/profile/profile_model.dart';
 import '../../apis/api_manager.dart';
+import 'package:image_picker/image_picker.dart';
+import '../../res/assets_path.dart';
 
 class ProfileScreen extends StatefulWidget {
   static const ROUTE_NAME = '/profile-screen';
@@ -20,6 +24,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
   bool _isLoadingNow = false;
   var _isInit = true;
   List<ProfileModel> _profileList = [];
+
+  File _image;
+
+  Future getImage() async {
+    var image = await ImagePicker.pickImage(source: ImageSource.camera);
+
+    setState(() {
+      _image = image;
+    });
+  }
 
   @override
   void didChangeDependencies() {
@@ -80,8 +94,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             height: 20,
                           ),
                           CircleAvatar(
-                            backgroundImage: NetworkImage(
-                                _profileList[0].photo),
+                            backgroundImage:
+                                NetworkImage(_profileList[0].photo),
                             // minRadius: 50,
                             radius: 130,
                           ),
