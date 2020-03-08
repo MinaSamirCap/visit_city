@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_qr_reader/qrcode_reader_view.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:visit_city/ui/screens/sight_details_screen.dart';
-import 'package:visit_city/ui/screens/wishlist_screen.dart';
-import '../../ui/widget/ui.dart';
 import '../../res/coolor.dart';
 import '../../res/sizes.dart';
 import '../../utils/lang/app_localization_keys.dart';
