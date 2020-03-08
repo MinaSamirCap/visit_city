@@ -223,3 +223,48 @@ Widget rowTextWithIcon(IconData iconData, String txt, {Function func}) {
     ],
   );
 }
+
+Widget textFormWidget(
+    TextEditingController controller, String label, String errorText) {
+  return Padding(
+    padding: const EdgeInsets.only(top: 10, left: 30, right: 30),
+    child: TextFormField(
+      controller: controller,
+      keyboardType: TextInputType.text,
+      maxLines: 4,
+      minLines: 4,
+      decoration: InputDecoration(
+          alignLabelWithHint: true,
+          labelText: label,
+          contentPadding: Sizes.EDEGINSETS_20,
+          border: OutlineInputBorder(
+            gapPadding: 3.3,
+            borderRadius: Sizes.BOR_RAD_25,
+          ),
+          errorText: errorText),
+    ),
+  );
+}
+
+Widget postReviewWidget(AppLocalizations appLocale,
+    TextEditingController controller, String errorText) {
+  return textFormWidget(
+      controller, appLocale.translate(LocalKeys.LEAVE_YOUR_REVIEW), errorText);
+}
+
+Widget postReviewBtnWidget(AppLocalizations appLocale, Function clicked) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 35),
+    child: Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
+      RaisedButton(
+        onPressed: clicked,
+        shape: RoundedRectangleBorder(
+          borderRadius: Sizes.BOR_RAD_25,
+        ),
+        color: Coolor.BLUE_APP,
+        textColor: Coolor.WHITE,
+        child: Text(appLocale.translate(LocalKeys.POST)),
+      ),
+    ]),
+  );
+}
