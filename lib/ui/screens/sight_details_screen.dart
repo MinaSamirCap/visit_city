@@ -124,14 +124,14 @@ class _SightDetailsScreenState extends State<SightDetailsScreen> {
 
   Widget servicesWidget() {
     return new GridView.builder(
-        itemCount: sightModel.services.length,
+        itemCount: sightModel.categories.length,
         gridDelegate:
             new SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
         itemBuilder: (BuildContext context, int index) {
           return Column(
             children: <Widget>[
-              Image.network(sightModel.services[index].categoryId.logo),
-              Text("Name")
+              Image.network(sightModel.categories[index].logo),
+              Text(sightModel.categories[index].name)
             ],
           );
         });

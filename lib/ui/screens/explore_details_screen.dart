@@ -23,6 +23,10 @@ class ExploreDetailsScreen extends StatefulWidget {
 
 class _ExploreDetailsScreenState extends State<ExploreDetailsScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
+  TextEditingController _controller = TextEditingController();
+  String _errorText;
+
   AppLocalizations _appLocal;
   ProgressDialog _progressDialog;
   ApiManager _apiManager;
@@ -102,8 +106,14 @@ class _ExploreDetailsScreenState extends State<ExploreDetailsScreen> {
   }
 
   Widget reviewWidget() {
-    return Center(
-      child: Text(serviceModel.name),
+    return Column(
+      children: <Widget>[
+        postReviewWidget(_appLocal,_controller,_errorText),
+        postReviewBtnWidget(_appLocal, (){}),
+        Center(
+          child: Text(serviceModel.name),
+        ),
+      ],
     );
   }
 
