@@ -9,6 +9,8 @@ import '../../res/coolor.dart';
 import '../../ui/widget/ui.dart';
 import '../../ui/widget/map_widget.dart';
 import '../../apis/api_manager.dart';
+import '../../general/general.dart';
+import '../../ui/screens/sight_details_screen.dart';
 
 class ItineraryDetailsScreen extends StatefulWidget {
   static const ROUTE_NAME = '/itinerary-details-screen';
@@ -25,7 +27,6 @@ class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
   List<DayItem> _daysList;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
-  
   @override
   void didChangeDependencies() {
     final argsId = ModalRoute.of(context).settings.arguments as int;
@@ -76,7 +77,7 @@ class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
             child: Scaffold(
               key: _scaffoldKey,
               appBar: PreferredSize(
-                preferredSize: Size.fromHeight(130),
+                preferredSize: Size.fromHeight(140),
                 child: AppBar(
                   iconTheme: IconThemeData(color: Coolor.GREY_DARK),
                   backgroundColor: Coolor.WHITE,
@@ -131,9 +132,13 @@ class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
             child: InkWell(
               onTap: () {
                 print("object$index");
+                Map<String,dynamic> sightId = {"sight_id":_itinerariesData['data']['sights'][_value]['sights']
+                                [index]['id']};
+                Navigator.of(context).pushNamed(SightDetailsScreen.ROUTE_NAME,arguments:sightId );
+
               },
               child: Container(
-                height: 210,
+                height: 215,
                 decoration: BoxDecoration(
                     borderRadius: Sizes.BOR_RAD_20,
                     border: Border.all(color: Coolor.GREY, width: 1)),
@@ -146,7 +151,8 @@ class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Text(
-                            _itinerariesData['data']['sights'][_value]['sights'][index]['name'],
+                            _itinerariesData['data']['sights'][_value]['sights']
+                                [index]['name'],
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                           IconButton(
@@ -158,7 +164,8 @@ class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
                       SizedBox(
                         height: 65,
                         child: Text(
-                         _itinerariesData['data']['sights'][_value]['sights'][index]['desc'],
+                          _itinerariesData['data']['sights'][_value]['sights']
+                              [index]['desc'],
                         ),
                       ),
                       Sizes.DIVIDER_HEIGHT_10,
@@ -166,20 +173,31 @@ class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Row(
-                            children: <Widget>[
-                              Tab(
-                                icon: Image.network(_itinerariesData['data']
-                                    ['sights'][0]['sights'][0]['services'][0]),
-                              ),
-                            ],
-                          ),
+                          // Text(_itinerariesData['data']['sights'][_value]
+                          //     ['sights'][index]['']),
                           Column(
                             children: <Widget>[
                               IconButton(
-                                icon: Icon(Icons.near_me),
-                                onPressed: () {},
-                              ),
+                                  icon: Icon(Icons.near_me),
+                                  onPressed: () {
+                                    if (_itinerariesData['data']['sights']
+                                                    [_value]['sights'][index]
+                                                ['location']
+                                            .isNotEmpty &&
+                                        _itinerariesData['data']['sights']
+                                                        [_value]['sights']
+                                                    [index]['location']
+                                                .length ==
+                                            2) {
+                                      launchMap(
+                                          _itinerariesData['data']['sights']
+                                                  [_value]['sights'][index]
+                                              ['location'][0],
+                                          _itinerariesData['data']['sights']
+                                                  [_value]['sights'][index]
+                                              ['location'][1]);
+                                    }
+                                  }),
                               Text(
                                 _appLocal.translate(LocalKeys.GO),
                                 style: TextStyle(fontWeight: FontWeight.bold),
@@ -216,7 +234,8 @@ class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
   Widget circleAvatarWidget(int index) {
     return CircleAvatar(
       maxRadius: Sizes.SIZE_30,
-      backgroundImage: NetworkImage(_itinerariesData['data']['sights'][_value]['sights'][index]['photos'][0]),
+      backgroundImage: NetworkImage(_itinerariesData['data']['sights'][_value]
+          ['sights'][index]['photos'][0]),
       backgroundColor: Colors.transparent,
     );
   }
@@ -263,7 +282,7 @@ class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
       preferredSize: Size.fromHeight(60),
       child: Column(children: <Widget>[
         Container(
-          height: 70,
+          height: 80,
           padding: EdgeInsets.symmetric(horizontal: 20),
           child: Center(
             child: ListView.separated(
@@ -301,7 +320,7 @@ class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
           selectedColor: Coolor.MENU_SEL_COL,
           onSelected: (selected) {
             setState(() {
-              _value = selected ? index : null;
+              _value = selected ? index : index;
               print(_value);
             });
           },
@@ -309,7 +328,6 @@ class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
       ],
     );
   }
-
 }
 
 class DayItem {

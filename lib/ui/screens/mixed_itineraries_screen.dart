@@ -7,14 +7,15 @@ import '../../res/sizes.dart';
 import '../../ui/widget/ui.dart';
 import '../../res/assets_path.dart';
 
-class PlanWidget extends StatelessWidget {
+class MixedItinerariesScreen extends StatelessWidget {
+  static const ROUTE_NAME = '/mixed-itineraries-screen';
   AppLocalizations _appLocal;
   @override
   Widget build(BuildContext context) {
     _appLocal = AppLocalizations.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text(_appLocal.translate(LocalKeys.MY_PLAN)),
+        title: Text(_appLocal.translate(LocalKeys.MIXED_ITINERARIES)),
         centerTitle: true,
       ),
       body: Stack(

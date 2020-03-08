@@ -19,4 +19,11 @@ class AssPath {
   static const IMOJI3 = 'assets/images/imoji3.png';
   static const IMOJI4 = 'assets/images/imoji4.png';
   static const IMOJI5 = 'assets/images/imoji5.png';
+  static const SPONS_LOGO1 = 'assets/images/EU2.png';
+  static const SPONS_LOGO2 = 'assets/images/JRDP.png';
+  static const SPONS_LOGO3 = 'assets/images/ItalianAgencyforCooperationandDevelopment.png';
+  static const SPONS_LOGO4 = 'assets/images/ItalianCooperation.png';
+  static const SPONS_LOGO5 = 'assets/images/ech.png';
+  static const SPONS_LOGO6 = 'assets/images/FinalETALogo.jpg';
+  static const SPONS_LOGO7 = 'assets/images/Fayoum.png';
 }

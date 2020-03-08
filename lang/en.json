@@ -73,5 +73,6 @@
     "plz_align_qr" : "Please align QR Code to box border",
     "overview" : "Overview",
     "services" : "Services",
-    "no_pic" : "No Photos"
+    "no_pic" : "No Photos",
+    "mixed_itineraries" : "Mixed Itinerary"
 }

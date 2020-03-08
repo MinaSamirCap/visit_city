@@ -77,4 +77,10 @@ class LocalKeys {
   static const OVERVIEW = "overview";
   static const SERVICES = "services";
   static const NO_PIC = "no_pic";
+  static const EMERGENCY_NUM = "emergency_num";
+  static const AMBULANCE = "ambulance";
+  static const POLICE = "police";
+  static const FIRE = "fire";
+  static const PUBLIC_TRANS = "public_trans";
+  static const MIXED_ITINERARIES = "mixed_itineraries";
 }

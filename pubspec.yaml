@@ -89,6 +89,13 @@ flutter:
    - assets/images/archeology_map.png
    - assets/images/nature_map.png
    - assets/images/culture_map.png
+   - 'assets/images/EU2.png'
+   - 'assets/images/JRDP.png'
+   - 'assets/images/ItalianAgencyforCooperationandDevelopment.png'
+   - 'assets/images/ItalianCooperation.png'
+   - 'assets/images/ech.png'
+   - 'assets/images/FinalETALogo.jpg'
+   - 'assets/images/Fayoum.png'
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
