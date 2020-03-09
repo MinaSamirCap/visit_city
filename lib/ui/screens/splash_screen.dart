@@ -1,10 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../res/coolor.dart';
 import '../../res/assets_path.dart';
 import '../../ui/screens/sign_in_screen.dart';
 import '../../res/sizes.dart';
+import '../../ui/screens/home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   static const ROUTE_NAME = '/splash';
@@ -39,11 +41,19 @@ class _SplashScreenState extends State<SplashScreen> {
   /// time to switch with dummy screen
   startTime() async {
     var _duration = Duration(milliseconds: 1500);
-    return Timer(_duration,navigationPage);
+    return Timer(_duration, navigationPage);
   }
 
   /// navigate with dummy screen
   Future navigationPage() async {
-    Navigator.of(context).pushReplacementNamed(SignInScreen.ROUTE_NAME);
+    final prefs = await SharedPreferences.getInstance();
+    final isLogedIn = prefs.getBool('isLogedIn');
+    if (isLogedIn != null) {
+      isLogedIn
+          ? Navigator.of(context).pushReplacementNamed(HomeScreen.ROUTE_NAME)
+          : Navigator.of(context).pushReplacementNamed(SignInScreen.ROUTE_NAME);
+    } else {
+      Navigator.of(context).pushReplacementNamed(SignInScreen.ROUTE_NAME);
+    }
   }
 }
