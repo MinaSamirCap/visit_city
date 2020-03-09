@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
+import 'package:visit_city/models/rate/rate_post_wrapper.dart';
+import 'package:visit_city/models/rate/rate_send_model.dart';
 import 'package:visit_city/models/rate/rate_wrapper.dart';
 import '../../models/rate/rate_model.dart';
 import '../../models/rate/rate_response.dart';
@@ -33,7 +35,7 @@ class _ExploreDetailsScreenState extends State<ExploreDetailsScreen> {
   AppLocalizations _appLocal;
   ProgressDialog _progressDialog;
   ApiManager _apiManager;
-  
+
   ExploreModel serviceModel;
   List<RateModel> rateList = [];
   RateResponse _pagingInfo;
@@ -199,12 +201,8 @@ class _ExploreDetailsScreenState extends State<ExploreDetailsScreen> {
       showSnackBar(createSnackBar(_appLocal.translate(LocalKeys.RATE_ERROR)),
           _scaffoldKey);
     } else {
-      setState(() {
-        /// call api .. :)
-        //callRateServiceApi();
-        print("submit: ${_textController.text} rate: $initRate");
-        resetRate();
-      });
+      /// call api .. :)
+      callRateServiceApi();
     }
   }
 
@@ -248,6 +246,31 @@ class _ExploreDetailsScreenState extends State<ExploreDetailsScreen> {
         showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
         firstTimeToLoad = false;
         _isLoadingNow = false;
+      });
+    });
+  }
+
+  void callRateServiceApi() async {
+    _progressDialog.show();
+    _apiManager.submitServiceReview(
+        RateSendModel(initRate.toInt(), _textController.text),
+        serviceModel.id, (RatePostWrapper wrapper) {
+      setState(() {
+        rateList.insert(
+            0,
+            RateModel.quickRate(
+                "Mina Samir",
+                "https://wuzzuf.s3.eu-west-1.amazonaws.com/files/upload_pic/thumb_444dd8d21eeed67339226f2919ec3246.jpg",
+                initRate,
+                _textController.text));
+        _progressDialog.hide();
+        resetRate();
+        showSnackBar(createSnackBar(wrapper.message.message), _scaffoldKey);
+      });
+    }, (MessageModel messageModel) {
+      setState(() {
+        showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
+        _progressDialog.hide();
       });
     });
   }

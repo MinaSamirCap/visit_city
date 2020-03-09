@@ -26,7 +26,7 @@ class RateModel {
         user = UserModel.fromJson(json['user']),
         subjectType = json['subjectType'],
         subjectId = json['subjectId'],
-        rate =  double.parse(json['rate'].toString()),
+        rate = double.parse(json['rate'].toString()),
         comment = json['comment'],
         createdAt = json['createdAt'],
         updatedAt = json['updatedAt'];
@@ -41,4 +41,10 @@ class RateModel {
         'createdAt': createdAt,
         'updatedAt': updatedAt
       };
+
+  static RateModel quickRate(
+      String userName, String photo, double rate, String comment) {
+    return RateModel(null, UserModel.quickUser(userName, photo), null, null,
+        rate, comment, null, null);
+  }
 }
