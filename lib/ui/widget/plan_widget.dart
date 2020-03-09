@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:progress_dialog/progress_dialog.dart';
+import 'package:provider/provider.dart';
+import 'package:dio/dio.dart';
 
+import '../../apis/api_manager.dart';
+import '../../models/message_model.dart';
+import '../../models/plan/plan_model.dart';
+import '../../models/plan/plan_response.dart';
+import '../../models/plan/plan_wrapper.dart';
 import '../../utils/lang/app_localization.dart';
 import '../../utils/lang/app_localization_keys.dart';
 import '../../res/coolor.dart';
 import '../../res/sizes.dart';
 import '../../ui/widget/ui.dart';
 import '../../res/assets_path.dart';
-import 'package:dio/dio.dart';
 import '../../apis/api_keys.dart';
 import '../../general/url_launchers.dart';
 import '../../ui/screens/sight_details_screen.dart';
@@ -17,70 +24,28 @@ class PlanWidget extends StatefulWidget {
 }
 
 class _PlanWidgetState extends State<PlanWidget> {
-  AppLocalizations _appLocal;
-  String url = "https://visit-fayoum.herokuapp.com/api/v1/my-plan?page=1";
-  ScrollController _scrollController = new ScrollController();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  bool isLoading = false;
-  List data = new List();
-  final dio = new Dio();
+  AppLocalizations _appLocal;
+  List<PlanModel> myPlan = [];
+  PlanResponse _pagingInfo;
+  ProgressDialog _progressDialog;
+  ApiManager _apiManager;
+  bool _isLoadingNow = true;
+  ScrollController _scrollController = new ScrollController();
 
-  @override
   void initState() {
-    this._getMoreData();
-    super.initState();
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent) {
-        _getMoreData();
-      }
+    Future.delayed(Duration.zero).then((_) {
+      _progressDialog = getPlzWaitProgress(context, _appLocal);
+      _apiManager = Provider.of<ApiManager>(context, listen: false);
+      clearPaging();
+      callPlanApi();
     });
+    super.initState();
   }
 
-  void _removeSight(int sightId) async {
-    if (!isLoading) {
-      setState(() {
-        isLoading = true;
-      });
-      final response = await dio.post(
-          'https://visit-fayoum.herokuapp.com/api/v1/unplan-sights',
-          options: Options(headers: ApiKeys.getHeaders()),
-          data: {
-            'sights': [sightId]
-          });
-
-      setState(() {
-        _getMoreData();
-        isLoading = false;
-      });
-    }
-  }
-
-  void _getMoreData() async {
-    if (!isLoading) {
-      setState(() {
-        isLoading = true;
-      });
-      final response =
-          await dio.get(url, options: Options(headers: ApiKeys.getHeaders()));
-      if (response.data['data']['totalDocs'] == data.length) {
-        _scaffoldKey.currentState.showSnackBar(SnackBar(
-          content: Text("No more data to load"),
-        ));
-      }
-      print(response.data['data']['totaldocs']);
-      List tempList = [];
-      url = "https://visit-fayoum.herokuapp.com/api/v1/my-plan?page=" +
-          (response.data['data']['page'] + 1).toString();
-      for (int i = 0; i < response.data['data']['docs'].length; i++) {
-        tempList.add(response.data['data']['docs'][i]);
-      }
-
-      setState(() {
-        isLoading = false;
-        data.addAll(tempList);
-      });
-    }
+  void clearPaging() {
+    myPlan.clear();
+    _pagingInfo = PlanResponse.clearPagin();
   }
 
   @override
@@ -89,21 +54,10 @@ class _PlanWidgetState extends State<PlanWidget> {
     super.dispose();
   }
 
-  Widget _buildProgressIndicator() {
-    return new Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: new Center(
-        child: new Opacity(
-          opacity: isLoading ? 1.0 : 00,
-          child: new CircularProgressIndicator(),
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     _appLocal = AppLocalizations.of(context);
+    print(myPlan.toString()+" here");
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
@@ -124,6 +78,39 @@ class _PlanWidgetState extends State<PlanWidget> {
     );
   }
 
+  Widget _buildProgressIndicator() {
+    return new Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: new Center(
+        child: new Opacity(
+          opacity: _isLoadingNow ? 1.0 : 00,
+          child: new CircularProgressIndicator(),
+        ),
+      ),
+    );
+  }
+
+  // Widget pagingWidget() {
+  //   return Column(
+  //     children: <Widget>[
+  //       Expanded(
+  //         child: NotificationListener<ScrollNotification>(
+  //             onNotification: (ScrollNotification scrollInfo) {
+  //               if (shouldLoadMore(scrollInfo)) {
+  //                 callPlanApi();
+  //                 setState(() {
+  //                   _isLoadingNow = true;
+  //                 });
+  //               }
+  //               return false;
+  //             },
+  //             child: listWidget()),
+  //       ),
+  //       _buildProgressIndicator(),
+  //     ],
+  //   );
+  // }
+
   Widget listWidget() {
     return ListView.separated(
       controller: _scrollController,
@@ -132,25 +119,25 @@ class _PlanWidgetState extends State<PlanWidget> {
         return Sizes.DIVIDER_HEIGHT_10;
       },
       itemBuilder: (ctx, index) {
-        if (index == data.length) {
+        if (index == myPlan.length) {
           return _buildProgressIndicator();
         } else {
           return sightItemWidget(index);
         }
       },
-      itemCount: data.length + 1,
+      itemCount: myPlan.length + 1,
     );
   }
 
   Widget sightItemWidget(int index) {
+    PlanModel model = myPlan[index];
     return ListTile(
-      leading: circleAvatarWidget(index),
-      // verticalDivider(),
-      title: sightCardItem(index),
+      leading: circleAvatarWidget(model),
+      title: sightCardItem(model),
     );
   }
 
-  Widget sightCardItem(int index) {
+  Widget sightCardItem(PlanModel model) {
     return Column(
       children: <Widget>[
         Card(
@@ -158,9 +145,8 @@ class _PlanWidgetState extends State<PlanWidget> {
           child: ClipRRect(
             child: InkWell(
               onTap: () {
-                print("object$index");
                 Map<String, dynamic> sightId = {
-                  "sight_id": data[index]['id'],
+                  "sight_id": model.id,
                 };
                 Navigator.of(context).pushNamed(SightDetailsScreen.ROUTE_NAME,
                     arguments: sightId);
@@ -179,15 +165,15 @@ class _PlanWidgetState extends State<PlanWidget> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Text(
-                            data[index]['name'],
+                            model.name,
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                           IconButton(
                             icon: Icon(Icons.delete),
                             onPressed: () {
                               setState(() {
-                                _removeSight(data[index]['id']);
-                                data.removeAt(index);
+                                // _removeSight(data[index]['id']);
+                                // data.removeAt(index);
                               });
                             },
                           ),
@@ -196,7 +182,7 @@ class _PlanWidgetState extends State<PlanWidget> {
                       SizedBox(
                         height: 65,
                         child: Text(
-                          data[index]['desc'],
+                          model.desc,
                         ),
                       ),
                       Sizes.DIVIDER_HEIGHT_10,
@@ -207,10 +193,13 @@ class _PlanWidgetState extends State<PlanWidget> {
                           Padding(
                             padding: const EdgeInsets.only(left: 5, right: 5),
                             child: Text(
-                              'From: ' +
-                                  data[index]['openHours']['from'] +
-                                  ' to ' +
-                                  data[index]['openHours']['to'],
+                              _appLocal.translate(LocalKeys.FROM) +
+                                  " " +
+                                  model.openHours.from +
+                                  " " +
+                                  _appLocal.translate(LocalKeys.TO) +
+                                  " " +
+                                  model.openHours.to,
                               style: TextStyle(
                                 fontSize: 15,
                                 fontWeight: FontWeight.bold,
@@ -222,10 +211,10 @@ class _PlanWidgetState extends State<PlanWidget> {
                               IconButton(
                                   icon: Icon(Icons.near_me),
                                   onPressed: () {
-                                    if (data[index]['location'].isNotEmpty &&
-                                        data[index]['location'].length == 2) {
-                                      launchMap(data[index]['location'][0],
-                                          data[index]['location'][1]);
+                                    if (model.location.isNotEmpty &&
+                                        model.location.length == 2) {
+                                      launchMap(
+                                          model.location[0], model.location[1]);
                                     }
                                   }),
                               Text(
@@ -257,10 +246,10 @@ class _PlanWidgetState extends State<PlanWidget> {
     );
   }
 
-  Widget circleAvatarWidget(int index) {
+  Widget circleAvatarWidget(PlanModel model) {
     return CircleAvatar(
       maxRadius: Sizes.SIZE_30,
-      backgroundImage: NetworkImage(data[index]['photos'][0]),
+      backgroundImage: NetworkImage(model.photos[0]),
       backgroundColor: Colors.transparent,
     );
   }
@@ -270,5 +259,31 @@ class _PlanWidgetState extends State<PlanWidget> {
       AssPath.NATURE_BACKGROUND,
       fit: BoxFit.cover,
     );
+  }
+
+  void callPlanApi() async {
+    _apiManager.getMyPlan(_pagingInfo.page + 1, (PlanWrapper wrapper) {
+      setState(() {
+        myPlan.addAll(wrapper.data.docs);
+        _pagingInfo = wrapper.data;
+        _isLoadingNow = false;
+        if (!_pagingInfo.hasNextPage) {
+          showSnackBar(
+              createSnackBar(_appLocal.translate(LocalKeys.NO_MORE_DATA)),
+              _scaffoldKey);
+        }
+      });
+    }, (MessageModel messageModel) {
+      setState(() {
+        showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
+        _isLoadingNow = false;
+      });
+    });
+  }
+
+  bool shouldLoadMore(ScrollNotification scrollInfo) {
+    return (!_isLoadingNow &&
+        scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent &&
+        _pagingInfo.hasNextPage);
   }
 }

@@ -3,10 +3,11 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http; // to avoid crashing with names ..
+import 'api_keys.dart';
+
 import '../models/rate/rate_post_wrapper.dart';
 import '../models/rate/rate_send_model.dart';
-
-import 'api_keys.dart';
+import '../models/plan/plan_wrapper.dart';
 import '../models/rate/rate_wrapper.dart';
 import '../models/explore/service_wrapper.dart';
 import '../models/sight/sight_wrapper.dart';
@@ -321,5 +322,36 @@ class ApiManager with ChangeNotifier {
     } else {
       return MessageModel.getUnknownError();
     }
+  }
+
+  String generatePlanUrl(int pageNum) {
+    /// /my-plan? + page=pageNum"
+
+    return ApiKeys.getPlanUrl + ApiKeys.pageKey + "=" + pageNum.toString();
+  }
+
+  void getMyPlan(int pageNum, Function success, Function fail) async {
+    await http
+        .get(generatePlanUrl(pageNum), headers: ApiKeys.getHeaders())
+        .then((response) {
+      Map extractedData = json.decode(response.body);
+      // todo --> do not forget to remove the
+      // print(extractedData);
+      if (extractedData == null) {
+        fail(MessageModel.getDecodeError());
+        return false;
+      } else {
+        PlanWrapper wrapper = PlanWrapper.fromJson(extractedData);
+        if (wrapper.info) {
+          success(wrapper);
+          return true;
+        } else {
+          fail(wrapper.message);
+          return false;
+        }
+      }
+    }).catchError((onError) {
+      fail(checkErrorType(onError));
+    });
   }
 }
