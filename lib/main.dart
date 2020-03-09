@@ -101,7 +101,7 @@ class MyApp extends StatelessWidget {
             MapWidget.ROUTE_NAME: (ctx) => MapWidget(),
             WishlistScreen.ROUTE_NAME: (ctx) => WishlistScreen(),
             QrCodeScreen.ROUTE_NAME: (ctx) => QrCodeScreen(),
-            // ProfileScreen.ROUTE_NAME: (ctx) => ProfileScreen(),
+            ProfileScreen.ROUTE_NAME: (ctx) => ProfileScreen(),
             UsefulContactsScreen.ROUTE_NAME: (ctx) => UsefulContactsScreen(),
             MixedItinerariesScreen.ROUTE_NAME: (ctx) => MixedItinerariesScreen(),
             FayoumIntroScreen.ROUTE_NAME: (ctx) => FayoumIntroScreen(),

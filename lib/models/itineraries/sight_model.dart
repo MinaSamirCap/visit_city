@@ -1,4 +1,4 @@
-import '../../models/itineraries/open_hours_model.dart';
+import '../../models/explore/open_hour_model.dart';
 
 class SightModel {
   final int id;

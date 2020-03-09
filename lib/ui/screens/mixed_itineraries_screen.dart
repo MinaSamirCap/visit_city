@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
-import 'package:visit_city/models/unplan_sight_model.dart/unplan_sight_wrapper.dart';
 
 import '../../apis/api_manager.dart';
 import '../../models/message_model.dart';
-import '../../models/plan/plan_model.dart';
-import '../../models/plan/plan_response.dart';
-import '../../models/plan/plan_wrapper.dart';
+import '../../models/sights_list/sights_list_model.dart';
+import '../../models/sights_list/sights_list_response.dart';
+import '../../models/sights_list/sights_list_wrapper.dart';
 import '../../utils/lang/app_localization.dart';
 import '../../utils/lang/app_localization_keys.dart';
 import '../../res/coolor.dart';
@@ -27,8 +26,8 @@ class MixedItinerariesScreen extends StatefulWidget {
 class _MixedItinerariesScreenState extends State<MixedItinerariesScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   AppLocalizations _appLocal;
-  List<PlanModel> mixedList = [];
-  PlanResponse _pagingInfo;
+  List<SightsListModel> mixedList = [];
+  SightsListResponse _pagingInfo;
   ProgressDialog _progressDialog;
   ApiManager _apiManager;
   bool _isLoadingNow = true;
@@ -46,7 +45,7 @@ class _MixedItinerariesScreenState extends State<MixedItinerariesScreen> {
 
   void clearPaging() {
     mixedList.clear();
-    _pagingInfo = PlanResponse.clearPagin();
+    _pagingInfo = SightsListResponse.clearPagin();
   }
 
   @override
@@ -108,7 +107,7 @@ class _MixedItinerariesScreenState extends State<MixedItinerariesScreen> {
   }
 
   Widget sightItemWidget(int index) {
-    PlanModel model = mixedList[index];
+    SightsListModel model = mixedList[index];
     return ListTile(
       leading: circleAvatarWidget(model),
       // verticalDivider(),
@@ -116,7 +115,7 @@ class _MixedItinerariesScreenState extends State<MixedItinerariesScreen> {
     );
   }
 
-  Widget sightCardItem(PlanModel model) {
+  Widget sightCardItem(SightsListModel model) {
     return Column(
       children: <Widget>[
         Card(
@@ -219,7 +218,7 @@ class _MixedItinerariesScreenState extends State<MixedItinerariesScreen> {
     );
   }
 
-  Widget circleAvatarWidget(PlanModel model) {
+  Widget circleAvatarWidget(SightsListModel model) {
     return CircleAvatar(
       maxRadius: Sizes.SIZE_30,
       backgroundImage: NetworkImage(model.photos[0]),
@@ -236,7 +235,7 @@ class _MixedItinerariesScreenState extends State<MixedItinerariesScreen> {
 
   void callMixedItinApi() async {
     _progressDialog.show();
-    _apiManager.getMixedItinerary((PlanWrapper wrapper) {
+    _apiManager.getMixedItinerary((SightsListWrapper wrapper) {
       _progressDialog.hide();
       setState(() {
         mixedList.addAll(wrapper.data.docs);
@@ -258,7 +257,7 @@ class _MixedItinerariesScreenState extends State<MixedItinerariesScreen> {
   }
 
   void callAddSightApi(int sightId) async {
-    _apiManager.addSight(sightId, (PlanWrapper wrapper) {
+    _apiManager.addSight(sightId, (SightsListWrapper wrapper) {
       setState(() {
         _isLoadingNow = false;
       });

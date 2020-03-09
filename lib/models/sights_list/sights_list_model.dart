@@ -1,5 +1,5 @@
-import '../../models/plan/open_hour_model.dart';
-class PlanModel {
+import '../../models/explore/open_hour_model.dart';
+class SightsListModel {
   
   final int id;
   final String name;
@@ -23,7 +23,7 @@ class PlanModel {
   bool plan;
   bool like;
 
- PlanModel(
+ SightsListModel(
       this.id,
       this.name,
       this.nameAr,
@@ -47,7 +47,7 @@ class PlanModel {
       this.like
       );
 
-  PlanModel.fromJson(Map<String, dynamic> json)
+  SightsListModel.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         name = json['name'],
         nameAr = json['nameAr'],

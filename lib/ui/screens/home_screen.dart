@@ -53,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
     } else if (title == _appLocal.translate(LocalKeys.LOGOUT)) {
       ///
     } else if (title == _appLocal.translate(LocalKeys.PROFILE)) {
-      // Navigator.of(context).pushNamed(ProfileScreen.ROUTE_NAME);
+      Navigator.of(context).pushNamed(ProfileScreen.ROUTE_NAME);
     } else if (title == _appLocal.translate(LocalKeys.WISHLIST)) {
       Navigator.of(context).pushNamed(WishlistScreen.ROUTE_NAME);
     } else if (title == _appLocal.translate(LocalKeys.GUIDE_BOOK)) {
