@@ -314,7 +314,14 @@ Widget userReview(
         ],
       ),
       ratingOrangeWidget(rate),
-      Text(isNullOrEmpty(description)? description: "")
+      Text(isNullOrEmpty(description) ? description : "")
     ],
+  );
+}
+
+Widget getReviewSeparator() {
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30.0),
+    child: lineDivider(height: 1),
   );
 }

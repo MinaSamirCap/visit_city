@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
-import 'package:visit_city/models/rate/rate_post_wrapper.dart';
-import 'package:visit_city/models/rate/rate_send_model.dart';
-import 'package:visit_city/models/rate/rate_wrapper.dart';
+import '../../models/rate/rate_post_wrapper.dart';
+import '../../models/rate/rate_send_model.dart';
+import '../../models/rate/rate_wrapper.dart';
 import '../../models/rate/rate_model.dart';
 import '../../models/rate/rate_response.dart';
 import '../../res/coolor.dart';
@@ -70,6 +70,7 @@ class _ExploreDetailsScreenState extends State<ExploreDetailsScreen> {
   Widget nestedScrollingWidget() {
     return Expanded(
       child: NestedScrollView(
+        controller: _scrollController,
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[
             SliverAppBar(
@@ -124,6 +125,7 @@ class _ExploreDetailsScreenState extends State<ExploreDetailsScreen> {
 
   Widget reviewWidget() {
     return SingleChildScrollView(
+      controller: _scrollController,
       padding: Sizes.EDEGINSETS_20,
       child: Column(
         children: <Widget>[
@@ -178,10 +180,7 @@ class _ExploreDetailsScreenState extends State<ExploreDetailsScreen> {
               model.user.photo, model.user.name, model.rate, model.comment);
         },
         separatorBuilder: (ctx, index) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30.0),
-            child: lineDivider(height: 1),
-          );
+          return getReviewSeparator();
         },
         itemCount: rateList.length);
   }
@@ -204,11 +203,6 @@ class _ExploreDetailsScreenState extends State<ExploreDetailsScreen> {
       /// call api .. :)
       callRateServiceApi();
     }
-  }
-
-  void resetRate() {
-    initRate = 0.0;
-    _textController.text = "";
   }
 
   void callDetailsApi() async {
@@ -297,5 +291,10 @@ class _ExploreDetailsScreenState extends State<ExploreDetailsScreen> {
   void clearPaging() {
     rateList.clear();
     _pagingInfo = RateResponse.clearPagin();
+  }
+
+  void resetRate() {
+    initRate = 0.0;
+    _textController.text = "";
   }
 }

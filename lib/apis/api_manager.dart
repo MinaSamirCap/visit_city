@@ -316,6 +316,73 @@ class ApiManager with ChangeNotifier {
     });
   }
 
+  String generateSightsReviewUrl(int pageNum, int sightId) {
+    /// /reviews/service/3? +  limit=15 & page=1
+    return ApiKeys.sightsReviewUrl +
+        sightId.toString() +
+        "?" +
+        ApiKeys.limitKey +
+        "=" +
+        ApiKeys.limitValue +
+        "&" +
+        ApiKeys.pageKey +
+        "=" +
+        pageNum.toString();
+  }
+
+  void sightsReviewApi(
+      int pageNum, int sightId, Function success, Function fail) async {
+    await http
+        .get(generateSightsReviewUrl(pageNum, sightId),
+            headers: ApiKeys.getHeaders())
+        .then((response) {
+      Map extractedData = json.decode(response.body);
+      if (extractedData == null) {
+        fail(MessageModel.getDecodeError());
+        return false;
+      } else {
+        RateWrapper wrapper = RateWrapper.fromJson(extractedData);
+        if (wrapper.info) {
+          success(wrapper);
+          return true;
+        } else {
+          fail(wrapper.message);
+          return false;
+        }
+      }
+    }).catchError((onError) {
+      fail(checkErrorType(onError));
+    });
+  }
+
+  void submitSightsReview(RateSendModel rateModel, int sightId,
+      Function success, Function fail) async {
+    final finalUrl = ApiKeys.sightsReviewUrl + sightId.toString();
+    await http
+        .post(finalUrl,
+            headers: ApiKeys.getHeaders(),
+            body: json.encode(rateModel.toJson()))
+        .then((response) {
+      Map extractedData = json.decode(response.body);
+      if (extractedData == null) {
+        // decode error;
+        fail(MessageModel.getDecodeError());
+        return false;
+      } else {
+        RatePostWrapper wrapper = RatePostWrapper.fromJson(extractedData);
+        if (wrapper.info) {
+          success(wrapper);
+          return true;
+        } else {
+          fail(wrapper.message);
+          return false;
+        }
+      }
+    }).catchError((onError) {
+      fail(checkErrorType(onError));
+    });
+  }
+
   MessageModel checkErrorType(Error error) {
     print(error.toString());
     if (error is HttpException) {
