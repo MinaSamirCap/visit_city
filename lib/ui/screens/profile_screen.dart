@@ -24,7 +24,7 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   AppLocalizations _appLocal;
-  ProfileResponse profileInfo;
+  ProfileResponse profileInfo = ProfileResponse();
   ProgressDialog _progressDialog;
   ApiManager _apiManager;
   bool _isLoadingNow = true;
