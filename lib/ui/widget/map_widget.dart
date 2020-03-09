@@ -15,7 +15,7 @@ enum ImageFilter {
 }
 
 class MapWidget extends StatefulWidget {
-  static final ROUTE_NAME = '/maps-widget';
+  static const ROUTE_NAME = '/maps-widget';
   @override
   _MapWidgetState createState() => _MapWidgetState();
 }
@@ -74,9 +74,9 @@ class _MapWidgetState extends State<MapWidget> {
       case ImageFilter.culture:
         return AssetImage(AssPath.CULTURE_MAP);
 
-      default: return AssetImage(AssPath.MAP_FULL);
+      default:
+        return AssetImage(AssPath.MAP_FULL);
     }
-    
   }
 
   Widget mapFiltersWidget() {
