@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
+import 'package:visit_city/models/rate/rate_wrapper.dart';
+import '../../models/rate/rate_model.dart';
+import '../../models/rate/rate_response.dart';
 import '../../res/coolor.dart';
 import '../../res/sizes.dart';
 import '../../ui/widget/carousel_with_indicator_widget.dart';
@@ -24,20 +27,26 @@ class ExploreDetailsScreen extends StatefulWidget {
 class _ExploreDetailsScreenState extends State<ExploreDetailsScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
-  TextEditingController _controller = TextEditingController();
+  TextEditingController _textController = TextEditingController();
+  ScrollController _scrollController = ScrollController();
 
   AppLocalizations _appLocal;
   ProgressDialog _progressDialog;
   ApiManager _apiManager;
+  
   ExploreModel serviceModel;
+  List<RateModel> rateList = [];
+  RateResponse _pagingInfo;
   int _currentTab = 0;
   double initRate = 0.0;
   bool firstTimeToLoad = true;
+  bool _isLoadingNow = true;
 
   void initState() {
     Future.delayed(Duration.zero).then((_) {
       _progressDialog = getPlzWaitProgress(context, _appLocal);
       _apiManager = Provider.of<ApiManager>(context, listen: false);
+      clearPaging();
       callDetailsApi();
     });
     super.initState();
@@ -53,48 +62,46 @@ class _ExploreDetailsScreenState extends State<ExploreDetailsScreen> {
 
     return Scaffold(
         key: _scaffoldKey,
-        body: DefaultTabController(
-          length: 2,
-          child: NestedScrollView(
-            headerSliverBuilder:
-                (BuildContext context, bool innerBoxIsScrolled) {
-              return <Widget>[
-                SliverAppBar(
-                  expandedHeight: Sizes.hightDetails,
-                  floating: false,
-                  pinned: true,
-                  flexibleSpace: FlexibleSpaceBar(
-                      title: Text(getTitle(serviceModel.name)),
-                      background: getPhotosOrDummyWidget()),
+        body: DefaultTabController(length: 2, child: pagingWidget()));
+  }
+
+  Widget nestedScrollingWidget() {
+    return Expanded(
+      child: NestedScrollView(
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return <Widget>[
+            SliverAppBar(
+              expandedHeight: Sizes.hightDetails,
+              floating: false,
+              pinned: true,
+              flexibleSpace: FlexibleSpaceBar(
+                  title: Text(getTitle(serviceModel.name)),
+                  background: getPhotosOrDummyWidget()),
+            ),
+            SliverPersistentHeader(
+              delegate: SliverAppBarDelegate(
+                TabBar(
+                  indicator: getTabIndicator(),
+                  labelColor: Coolor.BLACK,
+                  unselectedLabelColor: Coolor.GREY,
+                  tabs: [
+                    Tab(text: _appLocal.translate(LocalKeys.OVERVIEW)),
+                    Tab(text: _appLocal.translate(LocalKeys.REVIEWS)),
+                  ],
+                  onTap: (index) {
+                    setState(() {
+                      _currentTab = index;
+                    });
+                  },
                 ),
-                SliverPersistentHeader(
-                  delegate: SliverAppBarDelegate(
-                    TabBar(
-                      indicator: getTabIndicator(),
-                      labelColor: Coolor.BLACK,
-                      unselectedLabelColor: Coolor.GREY,
-                      tabs: [
-                        Tab(text: _appLocal.translate(LocalKeys.OVERVIEW)),
-                        Tab(text: _appLocal.translate(LocalKeys.REVIEWS)),
-                      ],
-                      onTap: (index) {
-                        setState(() {
-                          _currentTab = index;
-                        });
-                      },
-                    ),
-                  ),
-                  pinned: true,
-                ),
-              ];
-            },
-            body: serviceModel != null
-                ? bodyWidget()
-                : Center(
-                    child: Text(serviceModel.desc),
-                  ),
-          ),
-        ));
+              ),
+              pinned: true,
+            ),
+          ];
+        },
+        body: serviceModel != null ? bodyWidget() : getCenterCircularProgress(),
+      ),
+    );
   }
 
   Widget bodyWidget() {
@@ -130,7 +137,7 @@ class _ExploreDetailsScreenState extends State<ExploreDetailsScreen> {
                 postClicked();
               }),
           Sizes.DIVIDER_HEIGHT_10,
-          postReviewWidget(_appLocal, _controller, null),
+          postReviewWidget(_appLocal, _textController, null),
           if (firstTimeToLoad)
             ...{Sizes.DIVIDER_HEIGHT_60, getCenterCircularProgress()}.toList(),
           getReviewList()
@@ -139,16 +146,34 @@ class _ExploreDetailsScreenState extends State<ExploreDetailsScreen> {
     );
   }
 
+  Widget pagingWidget() {
+    return Column(
+      children: <Widget>[
+        NotificationListener<ScrollNotification>(
+            onNotification: (ScrollNotification scrollInfo) {
+              if (shouldLoadMore(scrollInfo)) {
+                callReviewApi();
+                setState(() {
+                  _isLoadingNow = true;
+                });
+              }
+              return false;
+            },
+            child: nestedScrollingWidget()),
+        pagingLoadingWidget(_isLoadingNow && !firstTimeToLoad),
+      ],
+    );
+  }
+
   Widget getReviewList() {
     return ListView.separated(
+        controller: _scrollController,
         physics: ScrollPhysics(),
         shrinkWrap: true,
         itemBuilder: (ctx, index) {
+          RateModel model = rateList[index];
           return userReview(
-              "https://keenthemes.com/preview/metronic/theme/assets/pages/media/profile/people19.png",
-              'MinaSamir',
-              3.0,
-              "lkdsjklaf kljfsdkljfklsadkfj lkdj lj lj kldsjfklasdjkflj kldjsklfjlksdjfakl klj lkj kljd kljdklfjklsdjfkljakljdfskljklf lkj klajsfdkljasdkl");
+              model.user.photo, model.user.name, model.rate, model.comment);
         },
         separatorBuilder: (ctx, index) {
           return Padding(
@@ -156,7 +181,7 @@ class _ExploreDetailsScreenState extends State<ExploreDetailsScreen> {
             child: lineDivider(height: 1),
           );
         },
-        itemCount: 30);
+        itemCount: rateList.length);
   }
 
   Widget getPhotosOrDummyWidget() {
@@ -177,7 +202,7 @@ class _ExploreDetailsScreenState extends State<ExploreDetailsScreen> {
       setState(() {
         /// call api .. :)
         //callRateServiceApi();
-        print("submit: ${_controller.text} rate: $initRate");
+        print("submit: ${_textController.text} rate: $initRate");
         resetRate();
       });
     }
@@ -185,7 +210,7 @@ class _ExploreDetailsScreenState extends State<ExploreDetailsScreen> {
 
   void resetRate() {
     initRate = 0.0;
-    _controller.text = "";
+    _textController.text = "";
   }
 
   void callDetailsApi() async {
@@ -195,10 +220,34 @@ class _ExploreDetailsScreenState extends State<ExploreDetailsScreen> {
         _progressDialog.hide();
         serviceModel = wrapper.data;
       });
+      callReviewApi();
     }, (MessageModel messageModel) {
       setState(() {
         _progressDialog.hide();
         showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
+      });
+    });
+  }
+
+  void callReviewApi() async {
+    _apiManager.servicesReviewApi(_pagingInfo.page + 1, serviceModel.id,
+        (RateWrapper wrapper) {
+      setState(() {
+        firstTimeToLoad = false;
+        _isLoadingNow = false;
+        rateList.addAll(wrapper.data.docs);
+        _pagingInfo = wrapper.data;
+        if (!_pagingInfo.hasNextPage) {
+          showSnackBar(
+              createSnackBar(_appLocal.translate(LocalKeys.NO_MORE_DATA)),
+              _scaffoldKey);
+        }
+      });
+    }, (MessageModel messageModel) {
+      setState(() {
+        showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
+        firstTimeToLoad = false;
+        _isLoadingNow = false;
       });
     });
   }
@@ -211,5 +260,17 @@ class _ExploreDetailsScreenState extends State<ExploreDetailsScreen> {
     } else {
       return "";
     }
+  }
+
+  bool shouldLoadMore(ScrollNotification scrollInfo) {
+    return (_currentTab == 1 &&
+        !_isLoadingNow &&
+        scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent &&
+        _pagingInfo.hasNextPage);
+  }
+
+  void clearPaging() {
+    rateList.clear();
+    _pagingInfo = RateResponse.clearPagin();
   }
 }

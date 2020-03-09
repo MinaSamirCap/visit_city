@@ -314,7 +314,7 @@ Widget userReview(
         ],
       ),
       ratingOrangeWidget(rate),
-      Text(description)
+      Text(isNullOrEmpty(description)? description: "")
     ],
   );
 }

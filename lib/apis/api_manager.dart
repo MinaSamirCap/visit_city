@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http; // to avoid crashing with names ..
 import 'package:visit_city/models/plan/plan_wrapper.dart';
 
 import 'api_keys.dart';
+import '../models/rate/rate_wrapper.dart';
 import '../models/explore/service_wrapper.dart';
 import '../models/sight/sight_wrapper.dart';
 import '../models/wishlist/like_dislike_wrapper.dart';
@@ -201,8 +202,6 @@ class ApiManager with ChangeNotifier {
             headers: ApiKeys.getHeaders())
         .then((response) {
       Map extractedData = json.decode(response.body);
-      // todo --> do not forget to remove the
-      print(extractedData);
       if (extractedData == null) {
         fail(MessageModel.getDecodeError());
         return false;
@@ -227,13 +226,50 @@ class ApiManager with ChangeNotifier {
             headers: ApiKeys.getHeaders())
         .then((response) {
       Map extractedData = json.decode(response.body);
-      // todo --> do not forget to remove the
-      print(extractedData);
       if (extractedData == null) {
         fail(MessageModel.getDecodeError());
         return false;
       } else {
         ServiceWrapper wrapper = ServiceWrapper.fromJson(extractedData);
+        if (wrapper.info) {
+          success(wrapper);
+          return true;
+        } else {
+          fail(wrapper.message);
+          return false;
+        }
+      }
+    }).catchError((onError) {
+      fail(checkErrorType(onError));
+    });
+  }
+
+  String generateServicesReviewUrl(int pageNum, int serviceId) {
+    /// /reviews/service/3? +  limit=15 & page=1
+    return ApiKeys.servicesReviewUrl +
+        serviceId.toString() +
+        "?" +
+        ApiKeys.limitKey +
+        "=" +
+        ApiKeys.limitValue +
+        "&" +
+        ApiKeys.pageKey +
+        "=" +
+        pageNum.toString();
+  }
+
+  void servicesReviewApi(
+      int pageNum, int serviceId, Function success, Function fail) async {
+    await http
+        .get(generateServicesReviewUrl(pageNum, serviceId),
+            headers: ApiKeys.getHeaders())
+        .then((response) {
+      Map extractedData = json.decode(response.body);
+      if (extractedData == null) {
+        fail(MessageModel.getDecodeError());
+        return false;
+      } else {
+        RateWrapper wrapper = RateWrapper.fromJson(extractedData);
         if (wrapper.info) {
           success(wrapper);
           return true;

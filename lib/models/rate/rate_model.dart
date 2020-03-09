@@ -23,17 +23,17 @@ class RateModel {
 
   RateModel.fromJson(Map<String, dynamic> json)
       : id = json['id'],
-        user = UserModel.fromJson(json['openHours']),
+        user = UserModel.fromJson(json['user']),
         subjectType = json['subjectType'],
         subjectId = json['subjectId'],
-        rate = json['rate'],
+        rate =  double.parse(json['rate'].toString()),
         comment = json['comment'],
         createdAt = json['createdAt'],
         updatedAt = json['updatedAt'];
 
   Map<String, dynamic> toJson() => {
         'id': id,
-        'openHours': user.toJson(),
+        'user': user.toJson(),
         'subjectType': subjectType,
         'subjectId': subjectId,
         'rate': rate,
