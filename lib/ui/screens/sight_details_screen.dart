@@ -130,7 +130,10 @@ class _SightDetailsScreenState extends State<SightDetailsScreen> {
         itemBuilder: (BuildContext context, int index) {
           return Column(
             children: <Widget>[
-              Image.network(sightModel.categories[index].logo),
+              Image.network(
+                sightModel.categories[index].logo,
+                height: 90,
+              ),
               Text(sightModel.categories[index].name)
             ],
           );
