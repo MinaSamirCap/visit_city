@@ -60,7 +60,7 @@ class _SightDetailsScreenState extends State<SightDetailsScreen> {
                   expandedHeight: Sizes.hightDetails,
                   floating: false,
                   pinned: true,
-                  actions: <Widget>[favIcon(), Sizes.DIVIDER_WIDTH_15],
+                  actions: <Widget>[favIcon()],
                   flexibleSpace: FlexibleSpaceBar(
                       title: Text(getTitle()),
                       background: sightModel != null
@@ -136,11 +136,14 @@ class _SightDetailsScreenState extends State<SightDetailsScreen> {
 
   Widget favIcon() {
     return InkWell(
-      child: Icon(
-        sightModel != null
-            ? sightModel.like ? Icons.favorite : Icons.favorite_border
-            : Icons.favorite_border,
-        color: Coolor.RED,
+      child: Padding(
+        padding: Sizes.EDEGINSETS_15,
+        child: Icon(
+          sightModel != null
+              ? sightModel.like ? Icons.favorite : Icons.favorite_border
+              : Icons.favorite_border,
+          color: Coolor.RED,
+        ),
       ),
       onTap: () {
         //likeDislikeClicked(model);
