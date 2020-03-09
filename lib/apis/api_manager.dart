@@ -502,4 +502,27 @@ class ApiManager with ChangeNotifier {
       fail(checkErrorType(onError));
     });
   }
+  void getMixedItinerary( Function success, Function fail) async {
+    await http
+        .get(ApiKeys.mixedItinerary, headers: ApiKeys.getHeaders())
+        .then((response) {
+      Map extractedData = json.decode(response.body);
+      
+      if (extractedData == null) {
+        fail(MessageModel.getDecodeError());
+        return false;
+      } else {
+        PlanWrapper wrapper = PlanWrapper.fromJson(extractedData);
+        if (wrapper.info) {
+          success(wrapper);
+          return true;
+        } else {
+          fail(wrapper.message);
+          return false;
+        }
+      }
+    }).catchError((onError) {
+      fail(checkErrorType(onError));
+    });
+  }
 }

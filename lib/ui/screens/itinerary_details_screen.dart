@@ -35,7 +35,7 @@ class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
   ApiManager _apiManager;
   ProgressDialog _progressDialog;
   int itineraryId = 0;
-  int _itinId=0;
+  int _itinId = 0;
 
   void initState() {
     Future.delayed(Duration.zero).then((_) {
@@ -101,11 +101,11 @@ class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
 
   Widget sightItemWidget(int index, DayModel model) {
     return ListTile(
-      // leading: CustomPaint(
-      //   painter: LinePainter(),
-      //   child: circleAvatarWidget(model, index),
-      // ),
-      leading: circleAvatarWidget(model, index),
+      leading: CustomPaint(
+        painter: LinePainter(),
+        child: circleAvatarWidget(model, index),
+      ),
+      // leading: circleAvatarWidget(model, index),
       title: sightCardItem(model, index),
     );
   }
@@ -144,9 +144,7 @@ class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
                           IconButton(
                             icon: Icon(Icons.add),
                             onPressed: () {
-                              setState(() {
-                                callAddSightApi(model.sightsDay[index].id);
-                              });
+                              callAddSightApi(model.sightsDay[index].id);
                             },
                           ),
                         ],
@@ -248,9 +246,7 @@ class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
       padding: Sizes.EDEGINSETS_10,
       child: MaterialButton(
         onPressed: () {
-          setState(() {
-            callAddItineraryApi();
-          });
+          callAddItineraryApi();
         },
         shape: RoundedRectangleBorder(
           borderRadius: Sizes.BOR_RAD_35,
@@ -358,6 +354,7 @@ class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
       });
     });
   }
+
   void callAddItineraryApi() async {
     print(itineraryId);
     _apiManager.addItinerary(_itinId, (AddSightWrapper wrapper) {

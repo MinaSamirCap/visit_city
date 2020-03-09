@@ -27,7 +27,6 @@ class _PlanWidgetState extends State<PlanWidget> {
   AppLocalizations _appLocal;
   List<PlanModel> myPlan = [];
   PlanResponse _pagingInfo;
-  // todo --> if you do not use the progressDialog delete it
   ProgressDialog _progressDialog;
   ApiManager _apiManager;
   bool _isLoadingNow = true;
@@ -57,13 +56,11 @@ class _PlanWidgetState extends State<PlanWidget> {
   @override
   Widget build(BuildContext context) {
     _appLocal = AppLocalizations.of(context);
-    // todo --> remove all print statements;
     print(myPlan.toString() + " here");
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
         title: Text(_appLocal.translate(LocalKeys.MY_PLAN)),
-        centerTitle: true,
       ),
       body: Stack(
         children: <Widget>[
@@ -117,7 +114,6 @@ class _PlanWidgetState extends State<PlanWidget> {
     );
   }
 
-  // todo --> try to reduce this widget a little bit ...
   Widget sightCardItem(PlanModel model, int index) {
     return Column(
       children: <Widget>[
@@ -126,7 +122,6 @@ class _PlanWidgetState extends State<PlanWidget> {
           child: ClipRRect(
             child: InkWell(
               onTap: () {
-                // todo --> kindly use this value SightDetailsScreen.MODEL_ID_KEY from the class instead of adding it like this "sight_id"
                 Navigator.of(context).pushNamed(SightDetailsScreen.ROUTE_NAME,
                     arguments: SightDetailsScreen.MODEL_ID_KEY);
               },
@@ -274,12 +269,5 @@ class _PlanWidgetState extends State<PlanWidget> {
         _isLoadingNow = false;
       });
     });
-  }
-
-  // todo --> if you do not use this function delete it
-  bool shouldLoadMore(ScrollNotification scrollInfo) {
-    return (!_isLoadingNow &&
-        scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent &&
-        _pagingInfo.hasNextPage);
   }
 }

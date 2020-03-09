@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:dio/dio.dart';
+import 'package:progress_dialog/progress_dialog.dart';
+import 'package:provider/provider.dart';
+import 'package:visit_city/models/unplan_sight_model.dart/unplan_sight_wrapper.dart';
 
+import '../../apis/api_manager.dart';
+import '../../models/message_model.dart';
+import '../../models/plan/plan_model.dart';
+import '../../models/plan/plan_response.dart';
+import '../../models/plan/plan_wrapper.dart';
 import '../../utils/lang/app_localization.dart';
 import '../../utils/lang/app_localization_keys.dart';
 import '../../res/coolor.dart';
 import '../../res/sizes.dart';
 import '../../ui/widget/ui.dart';
 import '../../res/assets_path.dart';
-import '../../apis/api_keys.dart';
 import '../../general/url_launchers.dart';
 import '../../ui/screens/sight_details_screen.dart';
 
@@ -19,60 +25,28 @@ class MixedItinerariesScreen extends StatefulWidget {
 }
 
 class _MixedItinerariesScreenState extends State<MixedItinerariesScreen> {
-  AppLocalizations _appLocal;
-  String url = "https://visit-fayoum.herokuapp.com/api/v1/itineraries-mixed?page=1";
-  ScrollController _scrollController = new ScrollController();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  bool isLoading = false;
-  List data = new List();
-  final dio = new Dio();
+  AppLocalizations _appLocal;
+  List<PlanModel> mixedList = [];
+  PlanResponse _pagingInfo;
+  ProgressDialog _progressDialog;
+  ApiManager _apiManager;
+  bool _isLoadingNow = true;
+  ScrollController _scrollController = new ScrollController();
 
-  @override
   void initState() {
-    this._getMoreData();
-    super.initState();
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent) {
-        _getMoreData();
-      }
+    Future.delayed(Duration.zero).then((_) {
+      _progressDialog = getPlzWaitProgress(context, _appLocal);
+      _apiManager = Provider.of<ApiManager>(context, listen: false);
+      clearPaging();
+      callMixedItinApi();
     });
-  }
-  void _addSight(int sightId) async {
-    final response = await dio.post(
-        'https://visit-fayoum.herokuapp.com/api/v1/plan-sights',
-        options: Options(headers: ApiKeys.getHeaders()),
-        data: {
-          'sights': [sightId]
-        });
+    super.initState();
   }
 
-  void _getMoreData() async {
-    if (!isLoading) {
-      setState(() {
-        isLoading = true;
-      });
-      final response =
-          await dio.get(url, options: Options(headers: ApiKeys.getHeaders()));
-      if (response.data['data']['totalDocs'] == data.length) {
-        _scaffoldKey.currentState.showSnackBar(SnackBar(
-          content: Text("No more data to load"),
-        ));
-      }
-      print(response.data['data']['totaldocs']);
-      List tempList = [];
-      url = "https://visit-fayoum.herokuapp.com/api/v1/itineraries-mixed?page=" +
-          (response.data['data']['page'] + 1).toString();
-      for (int i = 0; i < response.data['data']['docs'].length; i++) {
-        tempList.add(response.data['data']['docs'][i]);
-      }
-
-      setState(() {
-        isLoading = false;
-        data.addAll(tempList);
-        print(tempList.length);
-      });
-    }
+  void clearPaging() {
+    mixedList.clear();
+    _pagingInfo = PlanResponse.clearPagin();
   }
 
   @override
@@ -86,7 +60,7 @@ class _MixedItinerariesScreenState extends State<MixedItinerariesScreen> {
       padding: const EdgeInsets.all(8.0),
       child: new Center(
         child: new Opacity(
-          opacity: isLoading ? 1.0 : 00,
+          opacity: _isLoadingNow ? 1.0 : 00,
           child: new CircularProgressIndicator(),
         ),
       ),
@@ -100,7 +74,6 @@ class _MixedItinerariesScreenState extends State<MixedItinerariesScreen> {
       key: _scaffoldKey,
       appBar: AppBar(
         title: Text(_appLocal.translate(LocalKeys.MIXED_ITINERARIES)),
-        centerTitle: true,
       ),
       body: Stack(
         children: <Widget>[
@@ -124,25 +97,26 @@ class _MixedItinerariesScreenState extends State<MixedItinerariesScreen> {
         return Sizes.DIVIDER_HEIGHT_10;
       },
       itemBuilder: (ctx, index) {
-        if (index == data.length) {
+        if (index == mixedList.length) {
           return _buildProgressIndicator();
         } else {
           return sightItemWidget(index);
         }
       },
-      itemCount: data.length + 1,
+      itemCount: mixedList.length + 1,
     );
   }
 
   Widget sightItemWidget(int index) {
+    PlanModel model = mixedList[index];
     return ListTile(
-      leading: circleAvatarWidget(index),
+      leading: circleAvatarWidget(model),
       // verticalDivider(),
-      title: sightCardItem(index),
+      title: sightCardItem(model),
     );
   }
 
-  Widget sightCardItem(int index) {
+  Widget sightCardItem(PlanModel model) {
     return Column(
       children: <Widget>[
         Card(
@@ -150,12 +124,8 @@ class _MixedItinerariesScreenState extends State<MixedItinerariesScreen> {
           child: ClipRRect(
             child: InkWell(
               onTap: () {
-                print("object$index");
-                Map<String, dynamic> sightId = {
-                  "sight_id": data[index]['id'],
-                };
                 Navigator.of(context).pushNamed(SightDetailsScreen.ROUTE_NAME,
-                    arguments: sightId);
+                    arguments: SightDetailsScreen.MODEL_ID_KEY);
               },
               child: Container(
                 height: 215,
@@ -171,15 +141,13 @@ class _MixedItinerariesScreenState extends State<MixedItinerariesScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Text(
-                            data[index]['name'],
+                            model.name,
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                           IconButton(
                             icon: Icon(Icons.add),
                             onPressed: () {
-                              setState(() {
-                                _addSight(data[index]['id']);
-                              });
+                              callAddSightApi(model.id);
                             },
                           ),
                         ],
@@ -187,7 +155,7 @@ class _MixedItinerariesScreenState extends State<MixedItinerariesScreen> {
                       SizedBox(
                         height: 65,
                         child: Text(
-                          data[index]['desc'],
+                          model.desc,
                         ),
                       ),
                       Sizes.DIVIDER_HEIGHT_10,
@@ -198,10 +166,13 @@ class _MixedItinerariesScreenState extends State<MixedItinerariesScreen> {
                           Padding(
                             padding: const EdgeInsets.only(left: 5, right: 5),
                             child: Text(
-                              'From: ' +
-                                  data[index]['openHours']['from'] +
-                                  ' to ' +
-                                  data[index]['openHours']['to'],
+                              _appLocal.translate(LocalKeys.FROM) +
+                                  " " +
+                                  model.openHours.from +
+                                  " " +
+                                  _appLocal.translate(LocalKeys.TO) +
+                                  " " +
+                                  model.openHours.to,
                               style: TextStyle(
                                 fontSize: 15,
                                 fontWeight: FontWeight.bold,
@@ -213,10 +184,10 @@ class _MixedItinerariesScreenState extends State<MixedItinerariesScreen> {
                               IconButton(
                                   icon: Icon(Icons.near_me),
                                   onPressed: () {
-                                    if (data[index]['location'].isNotEmpty &&
-                                        data[index]['location'].length == 2) {
-                                      launchMap(data[index]['location'][0],
-                                          data[index]['location'][1]);
+                                    if (model.location.isNotEmpty &&
+                                        model.location.length == 2) {
+                                      launchMap(
+                                          model.location[0], model.location[1]);
                                     }
                                   }),
                               Text(
@@ -248,10 +219,10 @@ class _MixedItinerariesScreenState extends State<MixedItinerariesScreen> {
     );
   }
 
-  Widget circleAvatarWidget(int index) {
+  Widget circleAvatarWidget(PlanModel model) {
     return CircleAvatar(
       maxRadius: Sizes.SIZE_30,
-      backgroundImage: NetworkImage(data[index]['photos'][0]),
+      backgroundImage: NetworkImage(model.photos[0]),
       backgroundColor: Colors.transparent,
     );
   }
@@ -261,5 +232,41 @@ class _MixedItinerariesScreenState extends State<MixedItinerariesScreen> {
       AssPath.NATURE_BACKGROUND,
       fit: BoxFit.cover,
     );
+  }
+
+  void callMixedItinApi() async {
+    _progressDialog.show();
+    _apiManager.getMixedItinerary((PlanWrapper wrapper) {
+      _progressDialog.hide();
+      setState(() {
+        mixedList.addAll(wrapper.data.docs);
+        _pagingInfo = wrapper.data;
+        _isLoadingNow = false;
+        if (!_pagingInfo.hasNextPage) {
+          showSnackBar(
+              createSnackBar(_appLocal.translate(LocalKeys.NO_MORE_DATA)),
+              _scaffoldKey);
+        }
+      });
+    }, (MessageModel messageModel) {
+      _progressDialog.hide();
+      setState(() {
+        showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
+        _isLoadingNow = false;
+      });
+    });
+  }
+
+  void callAddSightApi(int sightId) async {
+    _apiManager.addSight(sightId, (PlanWrapper wrapper) {
+      setState(() {
+        _isLoadingNow = false;
+      });
+    }, (MessageModel messageModel) {
+      setState(() {
+        showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
+        _isLoadingNow = false;
+      });
+    });
   }
 }
