@@ -58,4 +58,5 @@ class ApiKeys {
   static final addPlan = baseUrl + "/plan-itinerary/";
   static final addSight = baseUrl + "/plan-sights/";
   static final servicesReviewUrl = baseUrl + "/reviews/service/";
+  static final sightsReviewUrl = baseUrl + "/reviews/sight/";
 }

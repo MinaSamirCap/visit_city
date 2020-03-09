@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
-import 'package:visit_city/models/rate/rate_post_wrapper.dart';
-import 'package:visit_city/models/rate/rate_send_model.dart';
-import 'package:visit_city/models/rate/rate_wrapper.dart';
+import '../../models/rate/rate_post_wrapper.dart';
+import '../../models/rate/rate_send_model.dart';
+import '../../models/rate/rate_wrapper.dart';
 import '../../models/rate/rate_model.dart';
 import '../../models/rate/rate_response.dart';
 import '../../res/coolor.dart';
@@ -178,10 +178,7 @@ class _ExploreDetailsScreenState extends State<ExploreDetailsScreen> {
               model.user.photo, model.user.name, model.rate, model.comment);
         },
         separatorBuilder: (ctx, index) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30.0),
-            child: lineDivider(height: 1),
-          );
+          return getReviewSeparator();
         },
         itemCount: rateList.length);
   }
@@ -204,11 +201,6 @@ class _ExploreDetailsScreenState extends State<ExploreDetailsScreen> {
       /// call api .. :)
       callRateServiceApi();
     }
-  }
-
-  void resetRate() {
-    initRate = 0.0;
-    _textController.text = "";
   }
 
   void callDetailsApi() async {
@@ -297,5 +289,10 @@ class _ExploreDetailsScreenState extends State<ExploreDetailsScreen> {
   void clearPaging() {
     rateList.clear();
     _pagingInfo = RateResponse.clearPagin();
+  }
+
+  void resetRate() {
+    initRate = 0.0;
+    _textController.text = "";
   }
 }
