@@ -534,12 +534,12 @@ class ApiManager with ChangeNotifier {
         .get(ApiKeys.profileUrl, headers: ApiKeys.getHeaders())
         .then((response) {
       Map extractedData = json.decode(response.body);
-
+      print(extractedData);
       if (extractedData == null) {
         fail(MessageModel.getDecodeError());
         return false;
       } else {
-        SightsListWrapper wrapper = SightsListWrapper.fromJson(extractedData);
+        ProfileWrapper wrapper = ProfileWrapper.fromJson(extractedData);
         if (wrapper.info) {
           success(wrapper);
           return true;

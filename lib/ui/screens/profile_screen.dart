@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:visit_city/models/rate/user_model.dart';
+import 'package:visit_city/res/assets_path.dart';
 
 import '../../res/coolor.dart';
 import '../../utils/lang/app_localization.dart';
@@ -14,6 +16,7 @@ import '../../models/profile/profile_wrapper.dart';
 import '../../models/profile/profile_response.dart';
 import '../../models/message_model.dart';
 import '../../ui/widget/ui.dart';
+import '../../res/sizes.dart';
 
 class ProfileScreen extends StatefulWidget {
   static const ROUTE_NAME = '/profile-screen';
@@ -24,7 +27,7 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   AppLocalizations _appLocal;
-  ProfileResponse profileInfo;
+  UserModel profileInfo;
   ProgressDialog _progressDialog;
   ApiManager _apiManager;
   bool _isLoadingNow = true;
@@ -55,13 +58,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
       appBar: AppBar(
         title: Text(_appLocal.translate(LocalKeys.PROFILE)),
         centerTitle: true,
-        actions: <Widget>[
-          IconButton(
-              icon: Icon(Icons.edit),
-              onPressed: () {
-                // Navigator.of(context).pushNamed(ProfileUpdateScreen.ROUTE_NAME);
-              })
-        ],
+        // actions: <Widget>[
+        //   IconButton(
+        //       icon: Icon(Icons.edit),
+        //       onPressed: () {
+        //         Navigator.of(context).pushNamed(ProfileUpdateScreen.ROUTE_NAME);
+        //       })
+        // ],
       ),
       body: _isLoadingNow
           ? Center(child: CircularProgressIndicator())
@@ -74,6 +77,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   Container(
                     width: double.infinity,
+                    margin: const EdgeInsets.only(left: 10,right:10),
                     child: Card(
                       elevation: 5,
                       shape: RoundedRectangleBorder(
@@ -86,7 +90,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                             CircleAvatar(
                               backgroundImage:
-                                  NetworkImage(profileInfo.photo),
+                                  profileInfo.photo == null ? AssetImage(AssPath.APP_LOGO) :NetworkImage(profileInfo.photo),
                               // minRadius: 50,
                               radius: 130,
                             ),
@@ -137,15 +141,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   void callGetProfileApi() async {
-    _progressDialog.show();
+    // _progressDialog.show();
     _apiManager.getProfile((ProfileWrapper wrapper) {
-      _progressDialog.hide();
+      // _progressDialog.hide();
       setState(() {
         profileInfo = wrapper.data;
         _isLoadingNow = false;
       });
     }, (MessageModel messageModel) {
-      _progressDialog.hide();
+      // _progressDialog.hide();
       setState(() {
         _isLoadingNow = false;
       });

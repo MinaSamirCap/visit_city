@@ -330,18 +330,24 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   void _submit() async {
-    String token;
     if (!_formKey.currentState.validate()) {
       return;
     }
     _formKey.currentState.save();
+    callloginApi();
+    
+  }
+
+  void callloginApi() {
+    _progressDialog.show();
     _apiAuthManager.loginApis(model, (LoginWrapper wrapper) {
-      token = wrapper.data.token;
-      saveUsertoken(token);
+      _progressDialog.hide();
+      saveUsertoken(wrapper.data.token);
       setState(() {
         _isLoadingNow = false;
       });
     }, (MessageModel messageModel) {
+      _progressDialog.hide();
       setState(() {
         showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
         _isLoadingNow = false;

@@ -1,15 +1,16 @@
-import '../../models/profile/profile_response.dart';
+
+import '../../models/rate/user_model.dart';
 import '../base_wrapper.dart';
 import '../message_model.dart';
 
 class ProfileWrapper extends BaseWrapper {
-  final ProfileResponse data;
+  final UserModel data;
 
   ProfileWrapper(this.data, bool info, MessageModel messageModel)
       : super(info, messageModel);
 
   ProfileWrapper.fromJson(Map<String, dynamic> json)
-      : data = ProfileResponse.fromJson(json['data']),
+      : data = UserModel.fromJson(json['data']),
         super.fromJson(json);
 
   Map<String, dynamic> toJson() =>
