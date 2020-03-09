@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
-import 'package:dio/dio.dart';
+import 'package:visit_city/models/unplan_sight_model.dart/unplan_sight_wrapper.dart';
 
 import '../../apis/api_manager.dart';
 import '../../models/message_model.dart';
@@ -14,7 +14,6 @@ import '../../res/coolor.dart';
 import '../../res/sizes.dart';
 import '../../ui/widget/ui.dart';
 import '../../res/assets_path.dart';
-import '../../apis/api_keys.dart';
 import '../../general/url_launchers.dart';
 import '../../ui/screens/sight_details_screen.dart';
 
@@ -92,29 +91,6 @@ class _PlanWidgetState extends State<PlanWidget> {
     );
   }
 
-  // todo --> why you do not use the paging widget
-
-  // Widget pagingWidget() {
-  //   return Column(
-  //     children: <Widget>[
-  //       Expanded(
-  //         child: NotificationListener<ScrollNotification>(
-  //             onNotification: (ScrollNotification scrollInfo) {
-  //               if (shouldLoadMore(scrollInfo)) {
-  //                 callPlanApi();
-  //                 setState(() {
-  //                   _isLoadingNow = true;
-  //                 });
-  //               }
-  //               return false;
-  //             },
-  //             child: listWidget()),
-  //       ),
-  //       _buildProgressIndicator(),
-  //     ],
-  //   );
-  // }
-
   Widget listWidget() {
     return ListView.separated(
       controller: _scrollController,
@@ -137,12 +113,12 @@ class _PlanWidgetState extends State<PlanWidget> {
     PlanModel model = myPlan[index];
     return ListTile(
       leading: circleAvatarWidget(model),
-      title: sightCardItem(model),
+      title: sightCardItem(model, index),
     );
   }
 
   // todo --> try to reduce this widget a little bit ...
-  Widget sightCardItem(PlanModel model) {
+  Widget sightCardItem(PlanModel model, int index) {
     return Column(
       children: <Widget>[
         Card(
@@ -151,11 +127,8 @@ class _PlanWidgetState extends State<PlanWidget> {
             child: InkWell(
               onTap: () {
                 // todo --> kindly use this value SightDetailsScreen.MODEL_ID_KEY from the class instead of adding it like this "sight_id"
-                Map<String, dynamic> sightId = {
-                  "sight_id": model.id,
-                };
                 Navigator.of(context).pushNamed(SightDetailsScreen.ROUTE_NAME,
-                    arguments: sightId);
+                    arguments: SightDetailsScreen.MODEL_ID_KEY);
               },
               child: Container(
                 height: 215,
@@ -178,8 +151,8 @@ class _PlanWidgetState extends State<PlanWidget> {
                             icon: Icon(Icons.delete),
                             onPressed: () {
                               setState(() {
-                                // _removeSight(data[index]['id']);
-                                // data.removeAt(index);
+                                callRemoveSightApi(model.id);
+                                myPlan.removeAt(index);
                               });
                             },
                           ),
@@ -268,7 +241,9 @@ class _PlanWidgetState extends State<PlanWidget> {
   }
 
   void callPlanApi() async {
+    _progressDialog.show();
     _apiManager.getMyPlan(_pagingInfo.page + 1, (PlanWrapper wrapper) {
+      _progressDialog.hide();
       setState(() {
         myPlan.addAll(wrapper.data.docs);
         _pagingInfo = wrapper.data;
@@ -278,6 +253,20 @@ class _PlanWidgetState extends State<PlanWidget> {
               createSnackBar(_appLocal.translate(LocalKeys.NO_MORE_DATA)),
               _scaffoldKey);
         }
+      });
+    }, (MessageModel messageModel) {
+      _progressDialog.hide();
+      setState(() {
+        showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
+        _isLoadingNow = false;
+      });
+    });
+  }
+
+  void callRemoveSightApi(int sightId) async {
+    _apiManager.removeSight(sightId, (UnplanSightWrapper wrapper) {
+      setState(() {
+        _isLoadingNow = false;
       });
     }, (MessageModel messageModel) {
       setState(() {
