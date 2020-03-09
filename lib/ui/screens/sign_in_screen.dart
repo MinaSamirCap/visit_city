@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../models/auth/login_send_model.dart';
+import '../../models/auth/login_wrapper.dart';
+import '../../models/message_model.dart';
 import '../../res/coolor.dart';
 import '../../utils/lang/app_localization.dart';
 import '../../utils/lang/app_localization_keys.dart';
 import '../../res/assets_path.dart';
-import '../../utils/lang/http_exception.dart';
 import '../../res/sizes.dart';
-import '../../apis/auth.dart';
 import '../../ui/screens/home_screen.dart';
 import '../../ui/screens/sign_up_screen.dart';
 import '../../ui/screens/forget_password_screen.dart';
+import 'package:progress_dialog/progress_dialog.dart';
+import '../../apis/auth_api_manager.dart';
+import '../../ui/widget/ui.dart';
 
 class SignInScreen extends StatefulWidget {
   static const ROUTE_NAME = '/signin';
@@ -22,17 +27,24 @@ class SignInScreen extends StatefulWidget {
 
 class _SignInScreenState extends State<SignInScreen> {
   final _formKey = GlobalKey<FormState>();
-  var appLocal;
-  Map<String, String> _authData = {
-    'email': '',
-    'password': '',
-  };
-  var _isLoading = false;
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  AppLocalizations _appLocal;
+  bool _isLoadingNow = false;
+  ProgressDialog _progressDialog;
+  AuthApiManager _apiAuthManager;
+  LoginSendModel model = LoginSendModel();
+
+  void initState() {
+    Future.delayed(Duration.zero).then((_) {
+      _progressDialog = getPlzWaitProgress(context, _appLocal);
+      _apiAuthManager = Provider.of<AuthApiManager>(context, listen: false);
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final deviceSize = MediaQuery.of(context).size;
-    appLocal = AppLocalizations.of(context);
+    _appLocal = AppLocalizations.of(context);
 
     return GestureDetector(
       onTap: () {
@@ -41,14 +53,14 @@ class _SignInScreenState extends State<SignInScreen> {
           currentFocus.unfocus();
         }
       },
-      child: _isLoading
+      child: _isLoadingNow
           ? Scaffold(
               body: Center(
               child: CircularProgressIndicator(),
             ))
           : Scaffold(
+              key: _scaffoldKey,
               backgroundColor: Coolor.BG_COLOR,
-              // backgroundColor: Coolor.WHITE,
               body: Container(
                 height: double.infinity,
                 width: double.infinity,
@@ -91,7 +103,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Text(
-                              "${appLocal.translate(LocalKeys.DONT_HAVE_ACCOUNT)}",
+                              _appLocal.translate(LocalKeys.DONT_HAVE_ACCOUNT),
                             ),
                             registerButton(),
                           ],
@@ -186,7 +198,7 @@ class _SignInScreenState extends State<SignInScreen> {
       padding: Sizes.EDEGINSETS_8,
       child: TextFormField(
         decoration: InputDecoration(
-          labelText: appLocal.translate(LocalKeys.EMAIL),
+          labelText: _appLocal.translate(LocalKeys.EMAIL),
           contentPadding: Sizes.EDEGINSETS_20,
           border: OutlineInputBorder(
             gapPadding: 3.3,
@@ -197,12 +209,12 @@ class _SignInScreenState extends State<SignInScreen> {
         autocorrect: false,
         validator: (value) {
           if (value.isEmpty || !EmailValidator.validate(value)) {
-            return appLocal.translate(LocalKeys.ERROR_EMAIL);
+            return _appLocal.translate(LocalKeys.ERROR_EMAIL);
           }
-          // return "";
+          return null;
         },
         onSaved: (value) {
-          _authData['email'] = value;
+          model.username = value;
         },
       ),
     );
@@ -213,7 +225,7 @@ class _SignInScreenState extends State<SignInScreen> {
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
         FlatButton(
-          child: Text(appLocal.translate(LocalKeys.FORGET_PASSWORD)),
+          child: Text(_appLocal.translate(LocalKeys.FORGET_PASSWORD)),
           onPressed: () {
             Navigator.of(context).pushNamed(ForgetPasswordScreen.ROUTE_NAME);
           },
@@ -228,7 +240,7 @@ class _SignInScreenState extends State<SignInScreen> {
       child: TextFormField(
         obscureText: true,
         decoration: InputDecoration(
-          labelText: appLocal.translate(LocalKeys.PASSWORD),
+          labelText: _appLocal.translate(LocalKeys.PASSWORD),
           contentPadding: Sizes.EDEGINSETS_20,
           border: OutlineInputBorder(
             gapPadding: 3.3,
@@ -237,11 +249,12 @@ class _SignInScreenState extends State<SignInScreen> {
         ),
         validator: (value) {
           if (value.isEmpty || value.length < 8) {
-            return appLocal.translate(LocalKeys.ERROR_PASSWORD);
+            return _appLocal.translate(LocalKeys.ERROR_PASSWORD);
           }
+          return null;
         },
         onSaved: (value) {
-          _authData['password'] = value;
+          model.password = value;
         },
       ),
     );
@@ -250,17 +263,15 @@ class _SignInScreenState extends State<SignInScreen> {
   Widget loginButton() {
     return RaisedButton(
       color: Coolor.PRIMARYSWATCH,
-      // minWidth: MediaQuery.of(context).size.width,
       padding: EdgeInsets.symmetric(vertical: 17.0, horizontal: 70.0),
       shape: RoundedRectangleBorder(
         borderRadius: Sizes.BOR_RAD_25,
       ),
       onPressed: () {
         _submit();
-        // Navigator.of(context).pushReplacementNamed(HomeScreen.ROUTE_NAME);
       },
       child: Text(
-        appLocal.translate(LocalKeys.LOG_IN),
+        _appLocal.translate(LocalKeys.LOG_IN),
         textAlign: TextAlign.center,
         style: TextStyle(color: Coolor.WHITE),
       ),
@@ -298,7 +309,7 @@ class _SignInScreenState extends State<SignInScreen> {
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
         FlatButton(
-          child: Text(appLocal.translate(LocalKeys.REGISTER)),
+          child: Text(_appLocal.translate(LocalKeys.REGISTER)),
           onPressed: () {
             Navigator.of(context).pushReplacementNamed(SignUpScreen.ROUTE_NAME);
           },
@@ -310,7 +321,7 @@ class _SignInScreenState extends State<SignInScreen> {
   Widget signInLaterButton() {
     return Center(
       child: FlatButton(
-        child: Text("${appLocal.translate(LocalKeys.SIGN_IN_LATER)}"),
+        child: Text(_appLocal.translate(LocalKeys.SIGN_IN_LATER)),
         onPressed: () {
           Navigator.of(context).pushReplacementNamed(HomeScreen.ROUTE_NAME);
         },
@@ -318,48 +329,36 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 
-  void _showErrorDialog(String message) {
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: Text(appLocal.translate(LocalKeys.DIALOG_ERROR)),
-        content: Text(message),
-        actions: <Widget>[
-          FlatButton(
-            child: Text('OK'),
-            onPressed: () {
-              Navigator.of(ctx).pop();
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  Future<void> _submit() async {
+  void _submit() async {
     if (!_formKey.currentState.validate()) {
-      // Invalid!
       return;
     }
     _formKey.currentState.save();
-    setState(() {
-      _isLoading = true;
-    });
-    try {
-      await Provider.of<Auth>(context, listen: false).signIn(
-        _authData['email'],
-        _authData['password'],
-      );
-    } on HttpException catch (error) {
-      var errorMessage = error;
+    callloginApi();
+    
+  }
 
-      _showErrorDialog(errorMessage.toString());
-      print(errorMessage.toString());
-    } catch (error) {
-      _showErrorDialog(error.toString());
-    }
-    setState(() {
-      _isLoading = false;
+  void callloginApi() {
+    _progressDialog.show();
+    _apiAuthManager.loginApis(model, (LoginWrapper wrapper) {
+      _progressDialog.hide();
+      saveUsertoken(wrapper.data.token);
+      setState(() {
+        _isLoadingNow = false;
+      });
+    }, (MessageModel messageModel) {
+      _progressDialog.hide();
+      setState(() {
+        showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
+        _isLoadingNow = false;
+      });
     });
+  }
+
+  void saveUsertoken(String token) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('token', token);
+    prefs.setBool('isLogedIn', true);
+    Navigator.of(context).pushReplacementNamed(HomeScreen.ROUTE_NAME);
   }
 }

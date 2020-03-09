@@ -7,7 +7,6 @@ import '../../res/coolor.dart';
 import '../../res/assets_path.dart';
 import '../../utils/lang/app_localization.dart';
 import '../../utils/lang/app_localization_keys.dart';
-import '../../apis/auth.dart';
 import '../../ui/screens/sign_in_screen.dart';
 import '../../utils/lang/http_exception.dart';
 
@@ -60,13 +59,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
     try {
       // Sign user up
-      await Provider.of<Auth>(context, listen: false).signUp(
-        _authData['name'],
-        _authData['email'],
-        _authData['password'],
-        _authData['mobile'],
-        _authData['country'],
-      );
+      // await Provider.of<Auth>(context, listen: false).signUp(
+      //   _authData['name'],
+      //   _authData['email'],
+      //   _authData['password'],
+      //   _authData['mobile'],
+      //   _authData['country'],
+      // );
     } on HttpException catch (error) {
       _showErrorDialog(error.toString());
     } catch (error) {

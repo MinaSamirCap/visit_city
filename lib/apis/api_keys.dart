@@ -8,6 +8,14 @@ class ApiKeys {
     contentType: applicationJson,
     acceptLanguage: getLanguage()
   };
+  static Map<String, String> _authHeaders = {
+    contentType: applicationJson,
+    acceptLanguage: getLanguage()
+  };
+
+  static Map<String, String> getAuthHeaders() {
+    return _authHeaders;
+  }
 
   static Map<String, String> getHeaders() {
     return _headers;
@@ -61,4 +69,5 @@ class ApiKeys {
   static final servicesReviewUrl = baseUrl + "/reviews/service/";
   static final mixedItinerary = baseUrl + "/itineraries-mixed";
   static final sightsReviewUrl = baseUrl + "/reviews/sight/";
+  static final loginUrl = baseUrl + "/login";
 }

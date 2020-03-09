@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:visit_city/general/url_launchers.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:visit_city/ui/screens/profile_screen.dart';
+
 import '../../ui/screens/qr_code_screen.dart';
 import '../../ui/screens/wishlist_screen.dart';
 import '../../ui/widget/explore_widget.dart';
@@ -16,6 +18,7 @@ import '../../ui/screens/useful_contacts_screen.dart';
 import '../../ui/screens/mixed_itineraries_screen.dart';
 import '../../ui/screens/how_to_use_app_screen.dart';
 import '../../ui/screens/fayoum_intro_screen.dart';
+import '../../ui/screens/sign_in_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   static const ROUTE_NAME = '/home-screen';
@@ -51,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (title == _appLocal.translate(LocalKeys.FEEDBACK)) {
       Navigator.of(context).pushNamed(FeedbackScreen.ROUTE_NAME);
     } else if (title == _appLocal.translate(LocalKeys.LOGOUT)) {
-      ///
+      logoutUser();
     } else if (title == _appLocal.translate(LocalKeys.PROFILE)) {
       Navigator.of(context).pushNamed(ProfileScreen.ROUTE_NAME);
     } else if (title == _appLocal.translate(LocalKeys.WISHLIST)) {
@@ -122,5 +125,11 @@ class _HomeScreenState extends State<HomeScreen> {
         return ExploreWidget();
     }
     return HomeWidget(_appLocal, _drawerKey, list);
+  }
+
+  void logoutUser() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.clear();
+    Navigator.of(context).pushReplacementNamed(SignInScreen.ROUTE_NAME);
   }
 }

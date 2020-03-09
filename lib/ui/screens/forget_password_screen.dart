@@ -1,11 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter/material.dart';
 
 import '../../utils/lang/app_localization_keys.dart';
 import '../../utils/lang/app_localization.dart';
-import '../../apis/auth.dart';
 import '../../res/assets_path.dart';
 import '../../res/coolor.dart';
 import '../../res/sizes.dart';
