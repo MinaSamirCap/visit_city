@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
+import 'package:visit_city/models/wishlist/like_dislike_wrapper.dart';
+import 'package:visit_city/models/wishlist/wishlist_model.dart';
+import 'package:visit_city/models/wishlist/wishlist_send_model.dart';
+import 'package:visit_city/ui/widget/explore_cell_widget.dart';
 import '../../res/coolor.dart';
 import '../../ui/widget/carousel_with_indicator_widget.dart';
 import '../../utils/lang/app_localization_keys.dart';
@@ -59,11 +63,7 @@ class _SightDetailsScreenState extends State<SightDetailsScreen> {
                   expandedHeight: Sizes.hightDetails,
                   floating: false,
                   pinned: true,
-                  actions: <Widget>[
-                    Icon(Icons.map),
-                    SizedBox(width: 10),
-                    Icon(Icons.favorite)
-                  ],
+                  actions: <Widget>[favIcon()],
                   flexibleSpace: FlexibleSpaceBar(
                       title: Text(getTitle()),
                       background: sightModel != null
@@ -137,12 +137,46 @@ class _SightDetailsScreenState extends State<SightDetailsScreen> {
         });
   }
 
+  Widget favIcon() {
+    return InkWell(
+      child: Padding(
+        padding: Sizes.EDEGINSETS_15,
+        child: Icon(
+          sightModel != null
+              ? sightModel.like ? Icons.favorite : Icons.favorite_border
+              : Icons.favorite_border,
+          color: Coolor.RED,
+        ),
+      ),
+      onTap: () {
+        callLikeDislikeApi();
+      },
+    );
+  }
+
   void callDetailsApi() async {
     _progressDialog.show();
     _apiManager.getSightDetails(sightId, (SightWrapper wrapper) {
       setState(() {
         _progressDialog.hide();
         sightModel = wrapper.data;
+      });
+    }, (MessageModel messageModel) {
+      setState(() {
+        _progressDialog.hide();
+        showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
+      });
+    });
+  }
+
+  void callLikeDislikeApi() async {
+    _progressDialog.show();
+    _apiManager.likeDislikeApi(WishlistSendModel([sightModel.id]),
+        (LikeDislikeWrapper wrapper) {
+      setState(() {
+        _progressDialog.hide();
+        sightModel.like = !sightModel.like;
+        showSnackBar(createSnackBar(wrapper.message.message), _scaffoldKey);
       });
     }, (MessageModel messageModel) {
       setState(() {

@@ -21,7 +21,7 @@ class SightResponse {
   final String qr;
   final String createdAt;
   final String updatedAt;
-  final bool like;
+  bool like;
   final bool plan;
   List<CategoryModel> categories;
 

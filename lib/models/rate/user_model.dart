@@ -10,7 +10,7 @@ class UserModel {
   final String createdAt;
   final String updatedAt;
 
-  UserModel(this.id, this.name, this.phone, this.email, this.photo, this.active,
+  UserModel(this.id, this.name, this.photo, this.email, this.phone, this.active,
       this.enabled, this.role, this.createdAt, this.updatedAt);
 
   UserModel.fromJson(Map<String, dynamic> json)
@@ -37,4 +37,9 @@ class UserModel {
         'createdAt': createdAt,
         'updatedAt': updatedAt
       };
+
+  static UserModel quickUser(String userName, String photo) {
+    return UserModel(
+        null, userName, photo, null, null, null, null, null, null, null);
+  }
 }

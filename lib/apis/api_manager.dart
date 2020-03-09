@@ -5,6 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http; // to avoid crashing with names ..
 
 import 'api_keys.dart';
+
+import '../models/rate/rate_post_wrapper.dart';
+import '../models/rate/rate_send_model.dart';
+import '../models/plan/plan_wrapper.dart';
 import '../models/rate/rate_wrapper.dart';
 import '../models/explore/service_wrapper.dart';
 import '../models/sight/sight_wrapper.dart';
@@ -17,7 +21,6 @@ import '../models/feedback/feedback_wrapper.dart';
 import '../models/message_model.dart';
 import '../models/feedback/feedback_send_model.dart';
 import '../models/itineraries/itineraries_wrapper.dart';
-import '../models/plan/plan_wrapper.dart';
 import '../models/unplan_sight_model.dart/unplan_sight_wrapper.dart';
 import '../models/add_sight_model.dart/add_sight_wrapper.dart';
 
@@ -272,6 +275,34 @@ class ApiManager with ChangeNotifier {
         return false;
       } else {
         RateWrapper wrapper = RateWrapper.fromJson(extractedData);
+        if (wrapper.info) {
+          success(wrapper);
+          return true;
+        } else {
+          fail(wrapper.message);
+          return false;
+        }
+      }
+    }).catchError((onError) {
+      fail(checkErrorType(onError));
+    });
+  }
+
+  void submitServiceReview(RateSendModel rateModel, int serviceId,
+      Function success, Function fail) async {
+    final finalUrl = ApiKeys.servicesReviewUrl + serviceId.toString();
+    await http
+        .post(finalUrl,
+            headers: ApiKeys.getHeaders(),
+            body: json.encode(rateModel.toJson()))
+        .then((response) {
+      Map extractedData = json.decode(response.body);
+      if (extractedData == null) {
+        // decode error;
+        fail(MessageModel.getDecodeError());
+        return false;
+      } else {
+        RatePostWrapper wrapper = RatePostWrapper.fromJson(extractedData);
         if (wrapper.info) {
           success(wrapper);
           return true;

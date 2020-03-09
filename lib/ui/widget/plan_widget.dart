@@ -27,6 +27,7 @@ class _PlanWidgetState extends State<PlanWidget> {
   AppLocalizations _appLocal;
   List<PlanModel> myPlan = [];
   PlanResponse _pagingInfo;
+  // todo --> if you do not use the progressDialog delete it
   ProgressDialog _progressDialog;
   ApiManager _apiManager;
   bool _isLoadingNow = true;
@@ -56,6 +57,7 @@ class _PlanWidgetState extends State<PlanWidget> {
   @override
   Widget build(BuildContext context) {
     _appLocal = AppLocalizations.of(context);
+    // todo --> remove all print statements;
     print(myPlan.toString() + " here");
     return Scaffold(
       key: _scaffoldKey,
@@ -111,11 +113,12 @@ class _PlanWidgetState extends State<PlanWidget> {
     PlanModel model = myPlan[index];
     return ListTile(
       leading: circleAvatarWidget(model),
-      title: sightCardItem(model,index),
+      title: sightCardItem(model, index),
     );
   }
 
-  Widget sightCardItem(PlanModel model,int index) {
+  // todo --> try to reduce this widget a little bit ...
+  Widget sightCardItem(PlanModel model, int index) {
     return Column(
       children: <Widget>[
         Card(
@@ -123,11 +126,9 @@ class _PlanWidgetState extends State<PlanWidget> {
           child: ClipRRect(
             child: InkWell(
               onTap: () {
-                Map<String, dynamic> sightId = {
-                  "sight_id": model.id,
-                };
+                // todo --> kindly use this value SightDetailsScreen.MODEL_ID_KEY from the class instead of adding it like this "sight_id"
                 Navigator.of(context).pushNamed(SightDetailsScreen.ROUTE_NAME,
-                    arguments: sightId);
+                    arguments: SightDetailsScreen.MODEL_ID_KEY);
               },
               child: Container(
                 height: 215,
@@ -275,6 +276,7 @@ class _PlanWidgetState extends State<PlanWidget> {
     });
   }
 
+  // todo --> if you do not use this function delete it
   bool shouldLoadMore(ScrollNotification scrollInfo) {
     return (!_isLoadingNow &&
         scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent &&
