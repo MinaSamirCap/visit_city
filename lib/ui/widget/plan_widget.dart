@@ -5,9 +5,9 @@ import 'package:visit_city/models/unplan_sight_model.dart/unplan_sight_wrapper.d
 
 import '../../apis/api_manager.dart';
 import '../../models/message_model.dart';
-import '../../models/plan/plan_model.dart';
-import '../../models/plan/plan_response.dart';
-import '../../models/plan/plan_wrapper.dart';
+import '../../models/sights_list/sights_list_wrapper.dart';
+import '../../models/sights_list/sights_list_response.dart';
+import '../../models/sights_list/sights_list_model.dart';
 import '../../utils/lang/app_localization.dart';
 import '../../utils/lang/app_localization_keys.dart';
 import '../../res/coolor.dart';
@@ -25,8 +25,8 @@ class PlanWidget extends StatefulWidget {
 class _PlanWidgetState extends State<PlanWidget> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   AppLocalizations _appLocal;
-  List<PlanModel> myPlan = [];
-  PlanResponse _pagingInfo;
+  List<SightsListModel> myPlan = [];
+  SightsListResponse _pagingInfo;
   ProgressDialog _progressDialog;
   ApiManager _apiManager;
   bool _isLoadingNow = true;
@@ -44,7 +44,7 @@ class _PlanWidgetState extends State<PlanWidget> {
 
   void clearPaging() {
     myPlan.clear();
-    _pagingInfo = PlanResponse.clearPagin();
+    _pagingInfo = SightsListResponse.clearPagin();
   }
 
   @override
@@ -107,14 +107,14 @@ class _PlanWidgetState extends State<PlanWidget> {
   }
 
   Widget sightItemWidget(int index) {
-    PlanModel model = myPlan[index];
+    SightsListModel model = myPlan[index];
     return ListTile(
       leading: circleAvatarWidget(model),
       title: sightCardItem(model, index),
     );
   }
 
-  Widget sightCardItem(PlanModel model, int index) {
+  Widget sightCardItem(SightsListModel model, int index) {
     return Column(
       children: <Widget>[
         Card(
@@ -220,7 +220,7 @@ class _PlanWidgetState extends State<PlanWidget> {
     );
   }
 
-  Widget circleAvatarWidget(PlanModel model) {
+  Widget circleAvatarWidget(SightsListModel model) {
     return CircleAvatar(
       maxRadius: Sizes.SIZE_30,
       backgroundImage: NetworkImage(model.photos[0]),
@@ -237,7 +237,7 @@ class _PlanWidgetState extends State<PlanWidget> {
 
   void callPlanApi() async {
     _progressDialog.show();
-    _apiManager.getMyPlan(_pagingInfo.page + 1, (PlanWrapper wrapper) {
+    _apiManager.getMyPlan(_pagingInfo.page + 1, (SightsListWrapper wrapper) {
       _progressDialog.hide();
       setState(() {
         myPlan.addAll(wrapper.data.docs);

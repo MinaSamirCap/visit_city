@@ -73,6 +73,7 @@ class MyApp extends StatelessWidget {
             }
           }
 
+<<<<<<< HEAD
           /// If the locale of the device is not supported, use the first one
           /// from the list (English, in this case).
           return supportedLocales.first;
@@ -108,6 +109,45 @@ class MyApp extends StatelessWidget {
           HowToUseAppScreen.ROUTE_NAME: (ctx) => HowToUseAppScreen(),
           // ProfileUpdateScreen.ROUTE_NAME: (ctx) => ProfileUpdateScreen(),
         },
+=======
+            /// If the locale of the device is not supported, use the first one
+            /// from the list (English, in this case).
+            return supportedLocales.first;
+          },
+          home: auth.isAuth ? HomeScreen() : SplashScreen(),
+          // auth.isAuth
+          //     ? HomeScreen()
+          //     : FutureBuilder(
+          //         future: auth.tryAutoLogin(),
+          //         builder: (context, authResultSnapshopt) =>
+          //             authResultSnapshopt.connectionState ==
+          //                     ConnectionState.waiting
+          //                 ? SplashScreen()
+          //                 : SignInScreen(),
+          //       ),
+          routes: {
+            SplashScreen.ROUTE_NAME: (ctx) => SplashScreen(),
+            HomeScreen.ROUTE_NAME: (ctx) => HomeScreen(),
+            SignInScreen.ROUTE_NAME: (ctx) => SignInScreen(),
+            SignUpScreen.ROUTE_NAME: (ctx) => SignUpScreen(),
+            ForgetPasswordScreen.ROUTE_NAME: (ctx) => ForgetPasswordScreen(),
+            FeedbackScreen.ROUTE_NAME: (ctx) => FeedbackScreen(),
+            ItineraryDetailsScreen.ROUTE_NAME: (ctx) =>
+                ItineraryDetailsScreen(),
+            ExploreDetailsScreen.ROUTE_NAME: (ctx) => ExploreDetailsScreen(),
+            SightDetailsScreen.ROUTE_NAME: (ctx) => SightDetailsScreen(),
+            MapWidget.ROUTE_NAME: (ctx) => MapWidget(),
+            WishlistScreen.ROUTE_NAME: (ctx) => WishlistScreen(),
+            QrCodeScreen.ROUTE_NAME: (ctx) => QrCodeScreen(),
+            ProfileScreen.ROUTE_NAME: (ctx) => ProfileScreen(),
+            UsefulContactsScreen.ROUTE_NAME: (ctx) => UsefulContactsScreen(),
+            MixedItinerariesScreen.ROUTE_NAME: (ctx) => MixedItinerariesScreen(),
+            FayoumIntroScreen.ROUTE_NAME: (ctx) => FayoumIntroScreen(),
+            HowToUseAppScreen.ROUTE_NAME: (ctx) => HowToUseAppScreen(),
+            // ProfileUpdateScreen.ROUTE_NAME: (ctx) => ProfileUpdateScreen(),
+          },
+        ),
+>>>>>>> c3a2a09f2e48a6e66b83190d4794f49e4729ab01
       ),
     );
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:visit_city/general/url_launchers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:visit_city/ui/screens/profile_screen.dart';
 
 import '../../ui/screens/qr_code_screen.dart';
 import '../../ui/screens/wishlist_screen.dart';
@@ -55,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
     } else if (title == _appLocal.translate(LocalKeys.LOGOUT)) {
       logoutUser();
     } else if (title == _appLocal.translate(LocalKeys.PROFILE)) {
-      // Navigator.of(context).pushNamed(ProfileScreen.ROUTE_NAME);
+      Navigator.of(context).pushNamed(ProfileScreen.ROUTE_NAME);
     } else if (title == _appLocal.translate(LocalKeys.WISHLIST)) {
       Navigator.of(context).pushNamed(WishlistScreen.ROUTE_NAME);
     } else if (title == _appLocal.translate(LocalKeys.GUIDE_BOOK)) {

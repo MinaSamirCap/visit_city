@@ -8,7 +8,7 @@ import 'api_keys.dart';
 
 import '../models/rate/rate_post_wrapper.dart';
 import '../models/rate/rate_send_model.dart';
-import '../models/plan/plan_wrapper.dart';
+import '../models/sights_list/sights_list_wrapper.dart';
 import '../models/rate/rate_wrapper.dart';
 import '../models/explore/service_wrapper.dart';
 import '../models/sight/sight_wrapper.dart';
@@ -23,6 +23,8 @@ import '../models/feedback/feedback_send_model.dart';
 import '../models/itineraries/itineraries_wrapper.dart';
 import '../models/unplan_sight_model.dart/unplan_sight_wrapper.dart';
 import '../models/add_sight_model.dart/add_sight_wrapper.dart';
+import '../models/profile/profile_response.dart';
+import '../models/profile/profile_wrapper.dart';
 
 class ApiManager with ChangeNotifier {
   void feedbackApi(
@@ -410,7 +412,7 @@ class ApiManager with ChangeNotifier {
         fail(MessageModel.getDecodeError());
         return false;
       } else {
-        PlanWrapper wrapper = PlanWrapper.fromJson(extractedData);
+        SightsListWrapper wrapper = SightsListWrapper.fromJson(extractedData);
         if (wrapper.info) {
           success(wrapper);
           return true;
@@ -502,17 +504,42 @@ class ApiManager with ChangeNotifier {
       fail(checkErrorType(onError));
     });
   }
-  void getMixedItinerary( Function success, Function fail) async {
+
+  void getMixedItinerary(Function success, Function fail) async {
     await http
         .get(ApiKeys.mixedItinerary, headers: ApiKeys.getHeaders())
         .then((response) {
       Map extractedData = json.decode(response.body);
-      
+
       if (extractedData == null) {
         fail(MessageModel.getDecodeError());
         return false;
       } else {
-        PlanWrapper wrapper = PlanWrapper.fromJson(extractedData);
+        SightsListWrapper wrapper = SightsListWrapper.fromJson(extractedData);
+        if (wrapper.info) {
+          success(wrapper);
+          return true;
+        } else {
+          fail(wrapper.message);
+          return false;
+        }
+      }
+    }).catchError((onError) {
+      fail(checkErrorType(onError));
+    });
+  }
+
+  void getProfile(Function success, Function fail) async {
+    await http
+        .get(ApiKeys.profileUrl, headers: ApiKeys.getHeaders())
+        .then((response) {
+      Map extractedData = json.decode(response.body);
+
+      if (extractedData == null) {
+        fail(MessageModel.getDecodeError());
+        return false;
+      } else {
+        SightsListWrapper wrapper = SightsListWrapper.fromJson(extractedData);
         if (wrapper.info) {
           success(wrapper);
           return true;
