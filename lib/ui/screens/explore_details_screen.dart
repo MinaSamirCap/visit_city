@@ -33,6 +33,7 @@ class _ExploreDetailsScreenState extends State<ExploreDetailsScreen> {
   AppLocalizations _appLocal;
   ProgressDialog _progressDialog;
   ApiManager _apiManager;
+  
   ExploreModel serviceModel;
   List<RateModel> rateList = [];
   RateResponse _pagingInfo;
