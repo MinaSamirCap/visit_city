@@ -33,7 +33,7 @@ class HomeWidget extends StatelessWidget {
   }
 
   Widget menuIcon() {
-    return Positioned.directional(
+    return PositionedDirectional(
       start: 1.5,
       top: 20,
       child: IconButton(
@@ -46,8 +46,7 @@ class HomeWidget extends StatelessWidget {
           //Scaffold.of(context).openDrawer();
           _drawerKey.currentState.openDrawer();
         },
-      ),
-      textDirection: TextDirection.ltr,
+      )
     );
   }
 

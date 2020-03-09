@@ -50,6 +50,12 @@ class _ExploreWidgetState extends State<ExploreWidget> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    _searchTextController.dispose();
+  }
+
   void resetScreen() {
     clearPaging();
     clearSearch();

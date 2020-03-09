@@ -74,13 +74,14 @@
     "overview": "Overview",
     "services": "Services",
     "no_pic": "No Photos",
+    "mixed_itineraries" : "Mixed Itinerary",
     "can_not_open_dial": "Can not open dial",
+    "mobile" : "Mobile Number",
     "leave_your_review": "Leave your review...",
     "post": "Post",
-    "mixed_itineraries" : "Mixed Itinerary",
     "personal_information" : "Personal Information",
-    "mobile" : "Mobile",
     "country": "Country",
     "from" : "From",
-    "to" : "to"
+    "to" : "to",
+    "rate_error" : "Please select rate"
 }

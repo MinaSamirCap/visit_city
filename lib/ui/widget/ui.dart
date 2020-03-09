@@ -13,11 +13,11 @@ import '../../utils/lang/app_localization_keys.dart';
 import '../../res/coolor.dart';
 import 'explore_cell_widget.dart';
 
-Widget lineDivider() {
+Widget lineDivider({double height}) {
   return Container(
     color: Coolor.GREY,
     width: double.infinity,
-    height: 2,
+    height: height == null ? 2 : height,
   );
 }
 
@@ -61,14 +61,12 @@ ProgressDialog getProgress(BuildContext context, String message) {
   pr.style(
       message: message,
       progressWidget: Padding(
-        padding: const EdgeInsets.all(4.0),
-        child: CircularProgressIndicator(
-          strokeWidth: 6,
-        ),
+        padding: const EdgeInsets.all(3.0),
+        child: CircularProgressIndicator(),
       ),
       insetAnimCurve: Curves.easeInOut,
       messageTextStyle: TextStyle(
-          color: Coolor.BLACK, fontSize: 18.0, fontWeight: FontWeight.w600));
+          color: Coolor.BLACK, fontSize: 16.0, fontWeight: FontWeight.w500));
   return pr;
 }
 
@@ -94,7 +92,7 @@ Widget exploreImgWidget(double width, String url) {
 // I am sure it is working tested on real device ...
   return FadeInImage.assetNetwork(
     placeholder: AssPath.APP_LOGO,
-    image: url != null ? "" : url,
+    image: url == null ? "" : url,
     height: double.infinity,
     width: width,
     fit: BoxFit.cover,
@@ -226,23 +224,20 @@ Widget rowTextWithIcon(IconData iconData, String txt, {Function func}) {
 
 Widget textFormWidget(
     TextEditingController controller, String label, String errorText) {
-  return Padding(
-    padding: const EdgeInsets.only(top: 10, left: 30, right: 30),
-    child: TextFormField(
-      controller: controller,
-      keyboardType: TextInputType.text,
-      maxLines: 4,
-      minLines: 4,
-      decoration: InputDecoration(
-          alignLabelWithHint: true,
-          labelText: label,
-          contentPadding: Sizes.EDEGINSETS_20,
-          border: OutlineInputBorder(
-            gapPadding: 3.3,
-            borderRadius: Sizes.BOR_RAD_25,
-          ),
-          errorText: errorText),
-    ),
+  return TextFormField(
+    controller: controller,
+    keyboardType: TextInputType.text,
+    maxLines: 3,
+    minLines: 3,
+    decoration: InputDecoration(
+        alignLabelWithHint: true,
+        labelText: label,
+        contentPadding: Sizes.EDEGINSETS_20,
+        border: OutlineInputBorder(
+          gapPadding: 3.3,
+          borderRadius: Sizes.BOR_RAD_25,
+        ),
+        errorText: errorText),
   );
 }
 
@@ -253,18 +248,73 @@ Widget postReviewWidget(AppLocalizations appLocale,
 }
 
 Widget postReviewBtnWidget(AppLocalizations appLocale, Function clicked) {
-  return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 35),
-    child: Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
-      RaisedButton(
-        onPressed: clicked,
-        shape: RoundedRectangleBorder(
-          borderRadius: Sizes.BOR_RAD_25,
-        ),
-        color: Coolor.BLUE_APP,
-        textColor: Coolor.WHITE,
-        child: Text(appLocale.translate(LocalKeys.POST)),
+  return RaisedButton(
+    onPressed: clicked,
+    shape: RoundedRectangleBorder(
+      borderRadius: Sizes.BOR_RAD_25,
+    ),
+    color: Coolor.BLUE_APP,
+    textColor: Coolor.WHITE,
+    child: Text(appLocale.translate(LocalKeys.POST)),
+  );
+}
+
+Widget postRatingOrangeWidget(Function onRateUpdated, double initRate) {
+  return RatingBar(
+    initialRating: initRate,
+    itemCount: 5,
+    itemSize: 30,
+    itemPadding: EdgeInsets.all(0),
+    itemBuilder: (ctx, index) {
+      return Icon(
+        Icons.star,
+        color: Coolor.ORANGE,
+      );
+    },
+    onRatingUpdate: onRateUpdated,
+  );
+}
+
+Widget postReviewRowWidget(AppLocalizations appLocale, Function onRateUpdated,
+    double initRate, Function clicked) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    children: <Widget>[
+      postRatingOrangeWidget(onRateUpdated, initRate),
+      postReviewBtnWidget(appLocale, clicked)
+    ],
+  );
+}
+
+Widget getNotPicWidget(AppLocalizations appLocale) {
+  return Text(
+    appLocale.translate(LocalKeys.NO_PIC),
+    style: TextStyle(color: Coolor.WHITE),
+  );
+}
+
+Widget userReview(
+    String picUrl, String userName, double rate, String description) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: <Widget>[
+      Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          CircleAvatar(
+            radius: 33,
+            backgroundColor: Coolor.GREY,
+            backgroundImage: NetworkImage(picUrl),
+          ),
+          Sizes.DIVIDER_WIDTH_10,
+          Text(
+            userName,
+            style: TextStyle(fontSize: 20),
+          )
+        ],
       ),
-    ]),
+      ratingOrangeWidget(rate),
+      Text(description)
+    ],
   );
 }
