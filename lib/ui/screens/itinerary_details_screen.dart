@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:visit_city/models/add_sight_model.dart/add_sight_wrapper.dart';
 import 'package:visit_city/models/itineraries/day_model.dart';
 
 import '../../utils/lang/app_localization.dart';
@@ -34,6 +35,7 @@ class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
   ApiManager _apiManager;
   ProgressDialog _progressDialog;
   int itineraryId = 0;
+  int _itinId=0;
 
   void initState() {
     Future.delayed(Duration.zero).then((_) {
@@ -51,7 +53,6 @@ class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
     final args =
         ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
     itineraryId = args[ItineraryDetailsScreen.MODEL_ID_KEY];
-    print(itinerariesList);
 
     return _isLoadingNow
         ? Scaffold(
@@ -144,7 +145,7 @@ class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
                             icon: Icon(Icons.add),
                             onPressed: () {
                               setState(() {
-                                // _addSight(model.sightsDay[index].id);
+                                callAddSightApi(model.sightsDay[index].id);
                               });
                             },
                           ),
@@ -248,7 +249,7 @@ class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
       child: MaterialButton(
         onPressed: () {
           setState(() {
-            // _setAsMyPlan();
+            callAddItineraryApi();
           });
         },
         shape: RoundedRectangleBorder(
@@ -332,11 +333,38 @@ class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
     _apiManager.itinerariesApi(itineraryId, (ItinerariesWrapper wrapper) {
       _progressDialog.hide();
       setState(() {
+        _itinId = wrapper.data.id;
         itinerariesList.addAll(wrapper.data.daysList);
         _isLoadingNow = false;
       });
     }, (MessageModel messageModel) {
       _progressDialog.hide();
+      setState(() {
+        showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
+        _isLoadingNow = false;
+      });
+    });
+  }
+
+  void callAddSightApi(int sightId) async {
+    _apiManager.addSight(sightId, (AddSightWrapper wrapper) {
+      setState(() {
+        _isLoadingNow = false;
+      });
+    }, (MessageModel messageModel) {
+      setState(() {
+        showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
+        _isLoadingNow = false;
+      });
+    });
+  }
+  void callAddItineraryApi() async {
+    print(itineraryId);
+    _apiManager.addItinerary(_itinId, (AddSightWrapper wrapper) {
+      setState(() {
+        _isLoadingNow = false;
+      });
+    }, (MessageModel messageModel) {
       setState(() {
         showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
         _isLoadingNow = false;

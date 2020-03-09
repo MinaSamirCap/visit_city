@@ -3,7 +3,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http; // to avoid crashing with names ..
-import 'package:visit_city/models/plan/plan_wrapper.dart';
 
 import 'api_keys.dart';
 import '../models/rate/rate_wrapper.dart';
@@ -18,6 +17,9 @@ import '../models/feedback/feedback_wrapper.dart';
 import '../models/message_model.dart';
 import '../models/feedback/feedback_send_model.dart';
 import '../models/itineraries/itineraries_wrapper.dart';
+import '../models/plan/plan_wrapper.dart';
+import '../models/unplan_sight_model.dart/unplan_sight_wrapper.dart';
+import '../models/add_sight_model.dart/add_sight_wrapper.dart';
 
 class ApiManager with ChangeNotifier {
   void feedbackApi(
@@ -296,14 +298,12 @@ class ApiManager with ChangeNotifier {
 
   String generatePlanUrl(int pageNum) {
     /// /my-plan? + page=pageNum"
-
     return ApiKeys.getPlanUrl + ApiKeys.pageKey + "=" + pageNum.toString();
   }
 
   void getMyPlan(int pageNum, Function success, Function fail) async {
     await http
-        .get(generatePlanUrl(pageNum),
-            headers: ApiKeys.getHeaders())
+        .get(generatePlanUrl(pageNum), headers: ApiKeys.getHeaders())
         .then((response) {
       Map extractedData = json.decode(response.body);
       // todo --> do not forget to remove the
@@ -313,6 +313,85 @@ class ApiManager with ChangeNotifier {
         return false;
       } else {
         PlanWrapper wrapper = PlanWrapper.fromJson(extractedData);
+        if (wrapper.info) {
+          success(wrapper);
+          return true;
+        } else {
+          fail(wrapper.message);
+          return false;
+        }
+      }
+    }).catchError((onError) {
+      fail(checkErrorType(onError));
+    });
+  }
+
+  void removeSight(int sightId, Function success, Function fail) async {
+    final msg = jsonEncode({
+      'sights': [sightId]
+    });
+    await http
+        .post(ApiKeys.removeSight, headers: ApiKeys.getHeaders(), body: msg)
+        .then((response) {
+      Map extractedData = json.decode(response.body);
+      if (extractedData == null) {
+        fail(MessageModel.getDecodeError());
+        return false;
+      } else {
+        UnplanSightWrapper wrapper = UnplanSightWrapper.fromJson(extractedData);
+        if (wrapper.info) {
+          success(wrapper);
+          return true;
+        } else {
+          fail(wrapper.message);
+          return false;
+        }
+      }
+    }).catchError((onError) {
+      fail(checkErrorType(onError));
+    });
+  }
+
+  void addSight(int sightId, Function success, Function fail) async {
+    final body = jsonEncode({
+      'sights': [sightId]
+    });
+    await http
+        .post(ApiKeys.addSight, headers: ApiKeys.getHeaders(), body: body)
+        .then((response) {
+      Map extractedData = json.decode(response.body);
+      if (extractedData == null) {
+        fail(MessageModel.getDecodeError());
+        return false;
+      } else {
+        AddSightWrapper wrapper = AddSightWrapper.fromJson(extractedData);
+        if (wrapper.info) {
+          success(wrapper);
+          return true;
+        } else {
+          fail(wrapper.message);
+          return false;
+        }
+      }
+    }).catchError((onError) {
+      fail(checkErrorType(onError));
+    });
+  }
+
+  void addItinerary(int itinId, Function success, Function fail) async {
+    await http
+        .post(
+      ApiKeys.addPlan + '$itinId',
+      headers: ApiKeys.getHeaders(),
+    )
+        .then((response) {
+      Map extractedData = json.decode(response.body);
+      print(extractedData);
+      if (extractedData == null) {
+        fail(MessageModel.getDecodeError());
+        return false;
+      } else {
+        AddSightWrapper wrapper = AddSightWrapper.fromJson(extractedData);
         if (wrapper.info) {
           success(wrapper);
           return true;
