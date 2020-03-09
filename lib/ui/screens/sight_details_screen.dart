@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
+import 'package:visit_city/models/wishlist/like_dislike_wrapper.dart';
+import 'package:visit_city/models/wishlist/wishlist_model.dart';
+import 'package:visit_city/models/wishlist/wishlist_send_model.dart';
 import 'package:visit_city/ui/widget/explore_cell_widget.dart';
 import '../../res/coolor.dart';
 import '../../ui/widget/carousel_with_indicator_widget.dart';
@@ -146,7 +149,7 @@ class _SightDetailsScreenState extends State<SightDetailsScreen> {
         ),
       ),
       onTap: () {
-        //likeDislikeClicked(model);
+        callLikeDislikeApi();
       },
     );
   }
@@ -157,6 +160,23 @@ class _SightDetailsScreenState extends State<SightDetailsScreen> {
       setState(() {
         _progressDialog.hide();
         sightModel = wrapper.data;
+      });
+    }, (MessageModel messageModel) {
+      setState(() {
+        _progressDialog.hide();
+        showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
+      });
+    });
+  }
+
+  void callLikeDislikeApi() async {
+    _progressDialog.show();
+    _apiManager.likeDislikeApi(WishlistSendModel([sightModel.id]),
+        (LikeDislikeWrapper wrapper) {
+      setState(() {
+        _progressDialog.hide();
+        sightModel.like = !sightModel.like;
+        showSnackBar(createSnackBar(wrapper.message.message), _scaffoldKey);
       });
     }, (MessageModel messageModel) {
       setState(() {
