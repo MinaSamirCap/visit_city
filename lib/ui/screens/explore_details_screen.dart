@@ -70,6 +70,7 @@ class _ExploreDetailsScreenState extends State<ExploreDetailsScreen> {
   Widget nestedScrollingWidget() {
     return Expanded(
       child: NestedScrollView(
+        controller: _scrollController,
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[
             SliverAppBar(
@@ -124,6 +125,7 @@ class _ExploreDetailsScreenState extends State<ExploreDetailsScreen> {
 
   Widget reviewWidget() {
     return SingleChildScrollView(
+      controller: _scrollController,
       padding: Sizes.EDEGINSETS_20,
       child: Column(
         children: <Widget>[

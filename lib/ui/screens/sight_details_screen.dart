@@ -51,6 +51,7 @@ class _SightDetailsScreenState extends State<SightDetailsScreen> {
     Future.delayed(Duration.zero).then((_) {
       _progressDialog = getPlzWaitProgress(context, _appLocal);
       _apiManager = Provider.of<ApiManager>(context, listen: false);
+      clearPaging();
       callDetailsApi();
     });
     super.initState();
@@ -72,6 +73,7 @@ class _SightDetailsScreenState extends State<SightDetailsScreen> {
   Widget nestedScrollingWidget() {
     return Expanded(
       child: NestedScrollView(
+        controller: _scrollController,
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[
             SliverAppBar(
@@ -129,6 +131,7 @@ class _SightDetailsScreenState extends State<SightDetailsScreen> {
 
   Widget reviewWidget() {
     return SingleChildScrollView(
+      controller: _scrollController,
       padding: Sizes.EDEGINSETS_20,
       child: Column(
         children: <Widget>[
