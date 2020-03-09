@@ -30,9 +30,8 @@ class ApiKeys {
     return enLang;
   }
 
-  static String getToken(){
-    
-    return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyLCJ1c2VyUm9sZSI6Im5vcm1hbCIsImlhdCI6MTU4MzQwOTQ3MywiZXhwIjoxNTg0NzA1NDczfQ.zZZaVsOhh9mRnzByTSnbQ6Sp2nOushqyCYgsQ89btCw";
+  static String getToken() {
+    return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyLCJ1c2VyUm9sZSI6Im5vcm1hbCIsImlhdCI6MTU4MzcwMTI3NywiZXhwIjoxNTg0OTk3Mjc3fQ.WSWQ3Tpt93aToJS-BXMvXvnCoCDt2m7ZSlk04pFDvr8";
   }
   // static Future<String> getToken() async {
   //   final prefs = await SharedPreferences.getInstance();
@@ -55,5 +54,4 @@ class ApiKeys {
   static final sightDetailsUrl = baseUrl + "/sights/";
   static final exploreDetailsUrl = baseUrl + "/services/";
   static final profileUrl = baseUrl + "/profile";
-
 }

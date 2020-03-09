@@ -4,7 +4,7 @@ class ProfileModel{
   final String photo;
   final String email;
   final String phone;
-  // final String country;
+  final String country;
 
   ProfileModel(
     {
@@ -13,7 +13,7 @@ class ProfileModel{
       this.photo,
       this.email,
       this.phone,
-      // this.country,
+      this.country,
     }
   );
 }

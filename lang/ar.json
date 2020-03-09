@@ -79,5 +79,8 @@
     "mobile" : "رقم المحمول",
     "country": "البلد",
     "leave_your_review": "اترك لنا رايك...",
-    "post": "اضف"
+    "post": "اضف",
+    "personal_information" : "المعلومات الشخصية",
+    "from" : "من",
+    "to" : "الى"
 }

@@ -77,5 +77,10 @@
     "can_not_open_dial": "Can not open dial",
     "leave_your_review": "Leave your review...",
     "post": "Post",
-    "mixed_itineraries" : "Mixed Itinerary"
+    "mixed_itineraries" : "Mixed Itinerary",
+    "personal_information" : "Personal Information",
+    "mobile" : "Mobile",
+    "country": "Country",
+    "from" : "From",
+    "to" : "to"
 }

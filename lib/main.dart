@@ -22,6 +22,7 @@ import 'ui/screens/useful_contacts_screen.dart';
 import 'ui/screens/mixed_itineraries_screen.dart';
 import 'ui/screens/how_to_use_app_screen.dart';
 import 'ui/screens/fayoum_intro_screen.dart';
+import 'ui/screens/profile_update_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -100,11 +101,12 @@ class MyApp extends StatelessWidget {
             MapWidget.ROUTE_NAME: (ctx) => MapWidget(),
             WishlistScreen.ROUTE_NAME: (ctx) => WishlistScreen(),
             QrCodeScreen.ROUTE_NAME: (ctx) => QrCodeScreen(),
-            ProfileScreen.ROUTE_NAME: (ctx) => ProfileScreen(),
+            // ProfileScreen.ROUTE_NAME: (ctx) => ProfileScreen(),
             UsefulContactsScreen.ROUTE_NAME: (ctx) => UsefulContactsScreen(),
             MixedItinerariesScreen.ROUTE_NAME: (ctx) => MixedItinerariesScreen(),
             FayoumIntroScreen.ROUTE_NAME: (ctx) => FayoumIntroScreen(),
             HowToUseAppScreen.ROUTE_NAME: (ctx) => HowToUseAppScreen(),
+            // ProfileUpdateScreen.ROUTE_NAME: (ctx) => ProfileUpdateScreen(),
           },
         ),
       ),

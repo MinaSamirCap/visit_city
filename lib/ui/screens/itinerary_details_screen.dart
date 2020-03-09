@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:progress_dialog/progress_dialog.dart';
+import 'package:visit_city/models/itineraries/day_model.dart';
 
 import '../../utils/lang/app_localization.dart';
 import '../../utils/lang/app_localization_keys.dart';
@@ -11,137 +13,103 @@ import '../../ui/widget/map_widget.dart';
 import '../../apis/api_manager.dart';
 import '../../general/url_launchers.dart';
 import '../../ui/screens/sight_details_screen.dart';
-import 'package:dio/dio.dart';
-import '../../apis/api_keys.dart';
+import '../../models/itineraries/itineraries_wrapper.dart';
+import '../../models/message_model.dart';
+import '../../ui/widget/line_painter.dart';
 
 class ItineraryDetailsScreen extends StatefulWidget {
   static const ROUTE_NAME = '/itinerary-details-screen';
+  static const MODEL_ID_KEY = 'itinerary_id';
   @override
   _ItineraryDetailsScreenState createState() => _ItineraryDetailsScreenState();
 }
 
 class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
-  Map<String, dynamic> _itinerariesData;
-  int _value = 0;
-  AppLocalizations _appLocal;
-  bool _isLoadingNow = false;
-  var _isInit = true;
-  List<DayItem> _daysList;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  final dio = new Dio();
+  AppLocalizations _appLocal;
+  bool _isLoadingNow = true;
+  int _value = 0;
+  List<DayItem> _daysList;
+  List<DayModel> itinerariesList = [];
+  ApiManager _apiManager;
+  ProgressDialog _progressDialog;
+  int itineraryId = 0;
 
-  void _addSight(int sightId) async {
-    final response = await dio.post(
-        'https://visit-fayoum.herokuapp.com/api/v1/plan-sights',
-        options: Options(headers: ApiKeys.getHeaders()),
-        data: {
-          'sights': [sightId]
-        });
-  }
-  void _setAsMyPlan() async {
-      print('https://visit-fayoum.herokuapp.com/api/v1/plan-itinerary/${_itinerariesData['data']['id']}');
-    final response = await dio.post(
-        'https://visit-fayoum.herokuapp.com/api/v1/plan-itinerary/${_itinerariesData['data']['id']}',
-        options: Options(headers: ApiKeys.getHeaders()),);
-  }
-
-  @override
-  void didChangeDependencies() {
-    final argsId = ModalRoute.of(context).settings.arguments as int;
-    Map<String, dynamic> data;
-    if (_isInit) {
-      if (mounted) {
-        setState(() {
-          _isLoadingNow = true;
-        });
-      }
-      Provider.of<ApiManager>(context, listen: false)
-          .itinerariesApi(argsId)
-          .then((_) {
-        if (mounted) {
-          setState(() {
-            data =
-                Provider.of<ApiManager>(context, listen: false).extractedData;
-            _itinerariesData = data;
-          });
-        }
-      }).then((_) {
-        if (mounted) {
-          setState(() {
-            // data = [];
-            _isLoadingNow = false;
-          });
-        }
-      });
-    }
-    // _eventData = [];
-    _isInit = false;
-
-    super.didChangeDependencies();
+  void initState() {
+    Future.delayed(Duration.zero).then((_) {
+      _progressDialog = getPlzWaitProgress(context, _appLocal);
+      _apiManager = Provider.of<ApiManager>(context, listen: false);
+      callItinerariesApi();
+    });
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     _appLocal = AppLocalizations.of(context);
     _daysList = DayItem.getDaysList(_appLocal);
+    final args =
+        ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
+    itineraryId = args[ItineraryDetailsScreen.MODEL_ID_KEY];
+    print(itinerariesList);
 
-    return _isLoadingNow || _itinerariesData ==null
+    return _isLoadingNow
         ? Scaffold(
-            key: _scaffoldKey,
             body: Center(child: CircularProgressIndicator()),
           )
-        : DefaultTabController(
-            length: _itinerariesData['data']['sights'].length,
-            child: Scaffold(
-              key: _scaffoldKey,
-              appBar: PreferredSize(
-                preferredSize: Size.fromHeight(140),
-                child: AppBar(
-                  iconTheme: IconThemeData(color: Coolor.GREY_DARK),
-                  backgroundColor: Coolor.WHITE,
-                  bottom: appBarDaysWidget(),
-                  actions: <Widget>[
-                    setAsMyPlanButton(),
-                    mapIcon(),
-                  ],
-                ),
-              ),
-              body: Stack(
-                children: <Widget>[
-                  Container(
-                    width: double.infinity,
-                    height: double.infinity,
-                    child: backgroundImageWidget(),
-                  ),
-                  listWidget(),
+        : Scaffold(
+            key: _scaffoldKey,
+            appBar: PreferredSize(
+              preferredSize: Size.fromHeight(140),
+              child: AppBar(
+                iconTheme: IconThemeData(color: Coolor.GREY_DARK),
+                backgroundColor: Coolor.WHITE,
+                bottom: appBarDaysWidget(),
+                actions: <Widget>[
+                  setAsMyPlanButton(),
+                  mapIcon(),
                 ],
               ),
+            ),
+            body: Stack(
+              children: <Widget>[
+                Container(
+                  width: double.infinity,
+                  height: double.infinity,
+                  child: backgroundImageWidget(),
+                ),
+                listWidget(),
+              ],
             ),
           );
   }
 
   Widget listWidget() {
+    DayModel model = itinerariesList[_value];
     return ListView.separated(
       padding: Sizes.EDEGINSETS_8,
       separatorBuilder: (_, __) {
         return Sizes.DIVIDER_HEIGHT_10;
       },
       itemBuilder: (ctx, index) {
-        return sightItemWidget(index);
+        return sightItemWidget(index, model);
       },
-      itemCount: _itinerariesData['data']['sights'][_value]['sights'].length,
+      itemCount: model.sightsDay.length,
     );
   }
 
-  Widget sightItemWidget(int index) {
+  Widget sightItemWidget(int index, DayModel model) {
     return ListTile(
-      leading: circleAvatarWidget(index),
-      // verticalDivider(),
-      title: sightCardItem(index),
+      // leading: CustomPaint(
+      //   painter: LinePainter(),
+      //   child: circleAvatarWidget(model, index),
+      // ),
+      leading: circleAvatarWidget(model, index),
+      title: sightCardItem(model, index),
     );
   }
 
-  Widget sightCardItem(int index) {
+  Widget sightCardItem(DayModel model, int index) {
     return Column(
       children: <Widget>[
         Card(
@@ -149,10 +117,8 @@ class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
           child: ClipRRect(
             child: InkWell(
               onTap: () {
-                print("object$index");
                 Map<String, dynamic> sightId = {
-                  "sight_id": _itinerariesData['data']['sights'][_value]
-                      ['sights'][index]['id']
+                  "sight_id": model.sightsDay[index].id
                 };
                 Navigator.of(context).pushNamed(SightDetailsScreen.ROUTE_NAME,
                     arguments: sightId);
@@ -171,17 +137,14 @@ class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Text(
-                            _itinerariesData['data']['sights'][_value]['sights']
-                                [index]['name'],
+                            model.sightsDay[index].name,
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                           IconButton(
                             icon: Icon(Icons.add),
                             onPressed: () {
                               setState(() {
-                                
-                              _addSight(_itinerariesData['data']['sights']
-                                  [_value]['sights'][index]['id']);
+                                // _addSight(model.sightsDay[index].id);
                               });
                             },
                           ),
@@ -189,62 +152,11 @@ class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
                       ),
                       SizedBox(
                         height: 65,
-                        child: Text(
-                          _itinerariesData['data']['sights'][_value]['sights']
-                              [index]['desc'],
-                        ),
+                        child: Text(model.sightsDay[index].desc),
                       ),
                       Sizes.DIVIDER_HEIGHT_10,
                       lineDivider(),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.only(left: 5, right: 5),
-                            child: Text(
-                              'From: ' +
-                                 _itinerariesData['data']['sights']
-                                                    [_value]['sights'][index]['openHours']['from'] +
-                                  ' to ' +
-                                 _itinerariesData['data']['sights']
-                                                    [_value]['sights'][index]['openHours']['to'],
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          Column(
-                            children: <Widget>[
-                              IconButton(
-                                  icon: Icon(Icons.near_me),
-                                  onPressed: () {
-                                    if (_itinerariesData['data']['sights']
-                                                    [_value]['sights'][index]
-                                                ['location']
-                                            .isNotEmpty &&
-                                        _itinerariesData['data']['sights']
-                                                        [_value]['sights']
-                                                    [index]['location']
-                                                .length ==
-                                            2) {
-                                      launchMap(
-                                          _itinerariesData['data']['sights']
-                                                  [_value]['sights'][index]
-                                              ['location'][0],
-                                          _itinerariesData['data']['sights']
-                                                  [_value]['sights'][index]
-                                              ['location'][1]);
-                                    }
-                                  }),
-                              Text(
-                                _appLocal.translate(LocalKeys.GO),
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
+                      halfSightWidget(model, index),
                     ],
                   ),
                 ),
@@ -252,11 +164,56 @@ class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
             ),
           ),
         ),
-        Text(
-          _itinerariesData['data']['sights'][_value]['sights'][index]['how'],
-          style: TextStyle(color: Coolor.WHITE),
+        howToGoWidget(model, index),
+      ],
+    );
+  }
+
+  Widget halfSightWidget(DayModel model, int index) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.only(left: 5, right: 5),
+          child: Text(
+            _appLocal.translate(LocalKeys.FROM) +
+                " " +
+                model.sightsDay[index].openHours.from +
+                " " +
+                _appLocal.translate(LocalKeys.TO) +
+                " " +
+                model.sightsDay[index].openHours.to,
+            style: TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        Column(
+          children: <Widget>[
+            IconButton(
+                icon: Icon(Icons.near_me),
+                onPressed: () {
+                  if (model.sightsDay[index].location.isNotEmpty &&
+                      model.sightsDay[index].location.length == 2) {
+                    launchMap(model.sightsDay[index].location[0],
+                        model.sightsDay[index].location[1]);
+                  }
+                }),
+            Text(
+              _appLocal.translate(LocalKeys.GO),
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ],
         ),
       ],
+    );
+  }
+
+  Widget howToGoWidget(DayModel model, int index) {
+    return Text(
+      model.sightsDay[index].how,
+      style: TextStyle(color: Coolor.WHITE),
     );
   }
 
@@ -270,11 +227,10 @@ class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
     );
   }
 
-  Widget circleAvatarWidget(int index) {
+  Widget circleAvatarWidget(DayModel model, int index) {
     return CircleAvatar(
-      maxRadius: Sizes.SIZE_30,
-      backgroundImage: NetworkImage(_itinerariesData['data']['sights'][_value]
-          ['sights'][index]['photos'][0]),
+      radius: Sizes.SIZE_30,
+      backgroundImage: NetworkImage(model.sightsDay[index].photos[0]),
       backgroundColor: Colors.transparent,
     );
   }
@@ -292,7 +248,7 @@ class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
       child: MaterialButton(
         onPressed: () {
           setState(() {
-            _setAsMyPlan();
+            // _setAsMyPlan();
           });
         },
         shape: RoundedRectangleBorder(
@@ -331,9 +287,8 @@ class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
             child: ListView.separated(
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
-              itemCount: _itinerariesData['data']['sights'].length,
+              itemCount: itinerariesList.length,
               itemBuilder: (ctx, index) {
-                // return;
                 return appBarDaysItemWidget(_daysList[index], index);
               },
               separatorBuilder: (_, __) {
@@ -370,6 +325,23 @@ class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
         ),
       ],
     );
+  }
+
+  void callItinerariesApi() async {
+    _progressDialog.show();
+    _apiManager.itinerariesApi(itineraryId, (ItinerariesWrapper wrapper) {
+      _progressDialog.hide();
+      setState(() {
+        itinerariesList.addAll(wrapper.data.daysList);
+        _isLoadingNow = false;
+      });
+    }, (MessageModel messageModel) {
+      _progressDialog.hide();
+      setState(() {
+        showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
+        _isLoadingNow = false;
+      });
+    });
   }
 }
 

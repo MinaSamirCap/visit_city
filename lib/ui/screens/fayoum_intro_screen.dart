@@ -1,14 +1,75 @@
 import 'package:flutter/material.dart';
+import 'package:dio/dio.dart';
 
-class FayoumIntroScreen extends StatelessWidget {
+import '../../apis/api_keys.dart';
+import '../../res/sizes.dart';
+
+class FayoumIntroScreen extends StatefulWidget {
   static const ROUTE_NAME = '/fayoum-intro';
+
+  @override
+  _FayoumIntroScreenState createState() => _FayoumIntroScreenState();
+}
+
+class _FayoumIntroScreenState extends State<FayoumIntroScreen> {
+  String url = "https://visit-fayoum.herokuapp.com/api/v1/about/intro";
+  ScrollController _scrollController = new ScrollController();
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  bool isLoading = false;
+  String data = '';
+  final dio = new Dio();
+
+  @override
+  void initState() {
+    this._getMoreData();
+    super.initState();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        _getMoreData();
+      }
+    });
+  }
+
+  void _getMoreData() async {
+    if (!isLoading) {
+      setState(() {
+        isLoading = true;
+      });
+      final response =
+          await dio.get(url, options: Options(headers: ApiKeys.getHeaders()));
+
+      setState(() {
+        isLoading = false;
+        data = response.data['data']['intro'];
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Introduction about Fayoum'),
       ),
-      body: Center(child: Text('Introduction about Fayoum')),
+      body: isLoading
+          ? Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
+                      child: Container(
+                width: double.infinity,
+                margin: Sizes.EDEGINSETS_15,
+                child: Text(
+                  data,
+                  style: TextStyle(fontSize:20),
+                ),
+              ),
+          ),
     );
   }
 }

@@ -88,4 +88,7 @@ class LocalKeys {
   static const POST = "post";
   static const MOBILE = 'mobile';
   static const COUNTRY = 'country';
+  static const PERSONAL_INFORMATION = 'personal_information';
+  static const FROM = 'from';
+  static const TO = 'to';
 }

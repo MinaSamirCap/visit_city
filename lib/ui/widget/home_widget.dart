@@ -96,7 +96,7 @@ class HomeWidget extends StatelessWidget {
     return InkWell(
       onTap: () {
         print(model.title);
-        _navigate.pushNamed(ItineraryDetailsScreen.ROUTE_NAME,arguments:model.id,);
+        _navigate.pushNamed(ItineraryDetailsScreen.ROUTE_NAME,arguments:{"itinerary_id":model.id},);
       },
       child: Card(
         elevation: 5,

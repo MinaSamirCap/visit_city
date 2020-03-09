@@ -43,7 +43,7 @@ class _PlanWidgetState extends State<PlanWidget> {
         isLoading = true;
       });
       final response = await dio.post(
-          'https://visit-fayoum.herokuapp.com/api/v1/plan-sights',
+          'https://visit-fayoum.herokuapp.com/api/v1/unplan-sights',
           options: Options(headers: ApiKeys.getHeaders()),
           data: {
             'sights': [sightId]

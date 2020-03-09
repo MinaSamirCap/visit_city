@@ -1,15 +1,15 @@
-import 'itineraries_model.dart';
+import '../../models/itineraries/itineraries_response.dart';
 import '../base_wrapper.dart';
 import '../message_model.dart';
 
 class ItinerariesWrapper extends BaseWrapper {
-  final ItinerariesModel data;
+  final ItinerariesResponse data;
 
   ItinerariesWrapper(this.data, bool info, MessageModel messageModel)
       : super(info, messageModel);
 
   ItinerariesWrapper.fromJson(Map<String, dynamic> json)
-      : data = ItinerariesModel.fromJson(json['data']),
+      : data = ItinerariesResponse.fromJson(json['data']),
         super.fromJson(json);
 
   Map<String, dynamic> toJson() =>

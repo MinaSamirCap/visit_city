@@ -1,5 +1,3 @@
-
-
 class ItinerariesModel {
   final int id;
   final String name;
@@ -12,9 +10,8 @@ class ItinerariesModel {
   final String type;
   final String createdAt;
   final String updatedAt;
-  List<dynamic> sights;
 
-  ItinerariesModel({
+  ItinerariesModel(
     this.id,
     this.name,
     this.nameAr,
@@ -26,27 +23,20 @@ class ItinerariesModel {
     this.type,
     this.createdAt,
     this.updatedAt,
-    this.sights,
-  });
+  );
 
-  
-  ItinerariesModel.fromJson(Map<String, dynamic> json) 
-    : id = json['id'],
-      name = json['name'],
-      nameAr = json['nameAr'],
-      nameEn = json['nameEn'],
-      desc = json['desc'],
-      descAr = json['descAr'],
-      descEn = json['descEn'],
-      days = json['days'],
-      type = json['type'],
-      createdAt = json['createdAt'],
-      updatedAt = json['updatedAt'],
-      sights = (json['sights'] as List).map((item) {
-        return item as List;
-      }).toList();
-    
-  
+  ItinerariesModel.fromJson(Map<String, dynamic> json)
+      : id = json['id'],
+        name = json['name'],
+        nameAr = json['nameAr'],
+        nameEn = json['nameEn'],
+        desc = json['desc'],
+        descAr = json['descAr'],
+        descEn = json['descEn'],
+        days = json['days'],
+        type = json['type'],
+        createdAt = json['createdAt'],
+        updatedAt = json['updatedAt'];
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -60,8 +50,5 @@ class ItinerariesModel {
         'type': type,
         'createdAt': createdAt,
         'updatedAt': updatedAt,
-        'sights': sights.map((item) {
-          return item;
-        }).toList(),
       };
 }

@@ -1,4 +1,6 @@
-class SightDetails {
+import '../../models/itineraries/open_hours_model.dart';
+
+class SightModel {
   final int id;
   final String name;
   List<String> photos;
@@ -9,6 +11,7 @@ class SightDetails {
   final int reviews;
   List<double> location;
   List<String> services;
+  final OpenHourModel openHours;
   final String price;
   final String contact;
   final String website;
@@ -18,7 +21,7 @@ class SightDetails {
   final String way;
   final String how;
 
-  SightDetails({
+  SightModel({
     this.id,
     this.name,
     this.desc,
@@ -35,11 +38,12 @@ class SightDetails {
     this.updatedAt,
     this.photos,
     this.services,
+    this.openHours,
     this.way,
     this.how,
   });
 
-  SightDetails.fromJson(Map<String, dynamic> json)
+  SightModel.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         name = json['name'],
         desc = json['desc'],
@@ -47,7 +51,7 @@ class SightDetails {
         descEn = json['descEn'],
         createdAt = json['createdAt'],
         updatedAt = json['updatedAt'],
-        rate = json['rate'],
+        rate = double.parse(json['rate'].toString()),
         reviews = json['reviews'],
         price = json['price'],
         contact = json['contact'],
@@ -55,6 +59,7 @@ class SightDetails {
         qr = json['QR'],
         way = json['way'],
         how = json['how'],
+        openHours = OpenHourModel.fromJson(json['openHours']),
         photos = (json['photos'] as List).map((item) {
           return item as String;
         }).toList(),
@@ -83,13 +88,14 @@ class SightDetails {
         'way': way,
         'how': how,
         'reviews': reviews,
+        'openHours': openHours.toJson(),
         'photos': photos.map((item) {
           return item;
         }).toList(),
-        'sights': location.map((item) {
+        'location': location.map((item) {
           return item;
         }).toList(),
-        'sights': services.map((item) {
+        'services': services.map((item) {
           return item;
         }).toList(),
       };
