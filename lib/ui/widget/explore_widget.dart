@@ -29,6 +29,7 @@ class _ExploreWidgetState extends State<ExploreWidget> {
   final TextEditingController _searchTextController = TextEditingController();
 
   double columnCellWidth = 0;
+  double cellHight = 0;
 
   List<FilterItem> filterList = [];
   List<ExploreModel> exploreList = [];
@@ -74,8 +75,9 @@ class _ExploreWidgetState extends State<ExploreWidget> {
   @override
   Widget build(BuildContext context) {
     _appLocal = AppLocalizations.of(context);
-    columnCellWidth = MediaQuery.of(context).size.width - imgeWidth - 30 - 10;
-    //columnCellWidth =Sizes.calculateColumnWidth(MediaQuery.of(context).size.width);
+    cellHight = Sizes.calculateExploreCellHight(_appLocal.isRTL());
+    columnCellWidth =
+        Sizes.calculateColumnWidth(MediaQuery.of(context).size.width);
     return Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
@@ -149,7 +151,7 @@ class _ExploreWidgetState extends State<ExploreWidget> {
                   arguments: {ExploreDetailsScreen.MODEL_KEY: model.toJson()});
             },
             child: Container(
-              height: 170,
+              height: cellHight,
               decoration: BoxDecoration(
                   borderRadius: Sizes.BOR_RAD_20,
                   border: Border.all(color: Coolor.GREY, width: 1)),
@@ -163,15 +165,6 @@ class _ExploreWidgetState extends State<ExploreWidget> {
 
   Widget imageWidget(ExploreModel model) {
     // I am sure it is working tested on real device ...
-    // return FadeInImage.assetNetwork(
-    //   placeholder: AssPath.APP_LOGO,
-    //   image: model.photos.isEmpty ? "" : model.photos[0],
-    //   height: double.infinity,
-    //   width: imgeWidth,
-    //   fit: BoxFit.cover,
-    //   fadeInDuration: new Duration(milliseconds: 100),
-    // );
-
     return exploreImgWidget(
         imgeWidth, model.photos.isEmpty ? "" : model.photos[0]);
   }
