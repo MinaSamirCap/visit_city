@@ -33,7 +33,7 @@ class ApiManager with ChangeNotifier {
       FeedbackSendModel feedbackModel, Function success, Function fail) async {
     await http
         .post(ApiKeys.feedbackUrl,
-            headers: await ApiKeys.getNotAuthHeaders(),
+            headers: await ApiKeys.getHeaders(),
             body: json.encode(feedbackModel.toJson()))
         .then((response) {
       Map extractedData = json.decode(response.body);
