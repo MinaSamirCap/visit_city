@@ -54,17 +54,17 @@ class _MixedItinerariesScreenState extends State<MixedItinerariesScreen> {
     super.dispose();
   }
 
-  Widget _buildProgressIndicator() {
-    return new Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: new Center(
-        child: new Opacity(
-          opacity: _isLoadingNow ? 1.0 : 00,
-          child: new CircularProgressIndicator(),
-        ),
-      ),
-    );
-  }
+  // Widget _buildProgressIndicator() {
+  //   return new Padding(
+  //     padding: const EdgeInsets.all(8.0),
+  //     child: new Center(
+  //       child: new Opacity(
+  //         opacity: _isLoadingNow ? 1.0 : 00,
+  //         child: new CircularProgressIndicator(),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +97,7 @@ class _MixedItinerariesScreenState extends State<MixedItinerariesScreen> {
       },
       itemBuilder: (ctx, index) {
         if (index == mixedList.length) {
-          return _buildProgressIndicator();
+          return null;
         } else {
           return sightItemWidget(index);
         }
@@ -124,7 +124,7 @@ class _MixedItinerariesScreenState extends State<MixedItinerariesScreen> {
             child: InkWell(
               onTap: () {
                 Navigator.of(context).pushNamed(SightDetailsScreen.ROUTE_NAME,
-                    arguments: SightDetailsScreen.MODEL_ID_KEY);
+                    arguments: {SightDetailsScreen.MODEL_ID_KEY: model.id});
               },
               child: Container(
                 height: 215,
