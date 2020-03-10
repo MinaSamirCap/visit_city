@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:visit_city/apis/auth_api_manager.dart';
+import 'package:visit_city/models/auth/signup_send_model.dart';
+import 'package:visit_city/models/auth/signup_wrapper.dart';
+import 'package:visit_city/models/message_model.dart';
+import 'package:visit_city/ui/widget/ui.dart';
 
 import '../../res/sizes.dart';
 import '../../res/coolor.dart';
@@ -8,7 +14,6 @@ import '../../res/assets_path.dart';
 import '../../utils/lang/app_localization.dart';
 import '../../utils/lang/app_localization_keys.dart';
 import '../../ui/screens/sign_in_screen.dart';
-import '../../utils/lang/http_exception.dart';
 
 class SignUpScreen extends StatefulWidget {
   static const ROUTE_NAME = '/signup';
@@ -17,67 +22,32 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  Map<String, String> _authData = {
-    'name': '',
-    'email': '',
-    'password': "",
-    'mobile': "",
-    'country': '',
-  };
   final GlobalKey<FormState> _formKey = GlobalKey();
-  var appLocal;
-
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final _passwordController = TextEditingController();
-  void _showErrorDialog(String message) {
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: Text("${appLocal.translate(LocalKeys.DIALOG_ERROR)}"),
-        content: Text(message),
-        actions: <Widget>[
-          FlatButton(
-            child: Text('OK'),
-            onPressed: () {
-              Navigator.of(ctx).pop();
-            },
-          ),
-        ],
-      ),
-    );
+  AppLocalizations _appLocal;
+  bool _isLoadingNow = false;
+  ProgressDialog _progressDialog;
+  AuthApiManager _apiAuthManager;
+  SignupSendModel model = SignupSendModel();
+
+  void initState() {
+    Future.delayed(Duration.zero).then((_) {
+      _progressDialog = getPlzWaitProgress(context, _appLocal);
+      _apiAuthManager = Provider.of<AuthApiManager>(context, listen: false);
+    });
+    super.initState();
   }
 
-  Future<void> _submit() async {
-    if (!_formKey.currentState.validate()) {
-      // Invalid!
-      print('Invalid');
-      print(_authData['name']);
-      print(_authData['email']);
-      print(_authData['password']);
-      return;
-    }
-    _formKey.currentState.save();
-
-    try {
-      // Sign user up
-      // await Provider.of<Auth>(context, listen: false).signUp(
-      //   _authData['name'],
-      //   _authData['email'],
-      //   _authData['password'],
-      //   _authData['mobile'],
-      //   _authData['country'],
-      // );
-    } on HttpException catch (error) {
-      _showErrorDialog(error.toString());
-    } catch (error) {
-      const errorMessage =
-          'Could not authenticate you. Please try again later.';
-      _showErrorDialog(errorMessage);
-    }
+  @override
+  void dispose() {
+    _passwordController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    appLocal = AppLocalizations.of(context);
+    _appLocal = AppLocalizations.of(context);
     return GestureDetector(
       onTap: () {
         FocusScopeNode currentFocus = FocusScope.of(context);
@@ -86,6 +56,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         }
       },
       child: Scaffold(
+        key: _scaffoldKey,
         backgroundColor: Coolor.BG_COLOR,
         body: Container(
           height: double.infinity,
@@ -145,7 +116,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       child: TextFormField(
         keyboardType: TextInputType.number,
         decoration: InputDecoration(
-          labelText: appLocal.translate(LocalKeys.MOBILE),
+          labelText: _appLocal.translate(LocalKeys.MOBILE),
           contentPadding: Sizes.EDEGINSETS_20,
           border: OutlineInputBorder(
             gapPadding: 3.3,
@@ -153,7 +124,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           ),
         ),
         onSaved: (value) {
-          _authData['mobile'] = value;
+          model.phone = value;
         },
       ),
     );
@@ -164,7 +135,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       padding: Sizes.EDEGINSETS_8,
       child: TextFormField(
         decoration: InputDecoration(
-          labelText: appLocal.translate(LocalKeys.COUNTRY),
+          labelText: _appLocal.translate(LocalKeys.COUNTRY),
           contentPadding: Sizes.EDEGINSETS_20,
           border: OutlineInputBorder(
             gapPadding: 3.3,
@@ -172,7 +143,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           ),
         ),
         onSaved: (value) {
-          _authData['country'] = value;
+          model.country = value;
         },
       ),
     );
@@ -183,7 +154,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       padding: Sizes.EDEGINSETS_8,
       child: TextFormField(
         decoration: InputDecoration(
-          labelText: appLocal.translate(LocalKeys.NAME),
+          labelText: _appLocal.translate(LocalKeys.NAME),
           contentPadding: Sizes.EDEGINSETS_20,
           border: OutlineInputBorder(
             gapPadding: 3.3,
@@ -192,12 +163,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ),
         validator: (value) {
           if (value.isEmpty) {
-            return appLocal.translate(LocalKeys.ERROR_NAME);
+            return _appLocal.translate(LocalKeys.ERROR_NAME);
           }
           return null;
         },
         onSaved: (value) {
-          _authData['name'] = value;
+          model.name = value;
         },
       ),
     );
@@ -208,7 +179,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       padding: Sizes.EDEGINSETS_8,
       child: TextFormField(
         decoration: InputDecoration(
-          labelText: appLocal.translate(LocalKeys.EMAIL),
+          labelText: _appLocal.translate(LocalKeys.EMAIL),
           contentPadding: Sizes.EDEGINSETS_20,
           border: OutlineInputBorder(
             gapPadding: 3.3,
@@ -218,12 +189,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
         keyboardType: TextInputType.emailAddress,
         validator: (value) {
           if (value.isEmpty || !EmailValidator.validate(value)) {
-            return appLocal.translate(LocalKeys.ERROR_EMAIL);
+            return _appLocal.translate(LocalKeys.ERROR_EMAIL);
           }
           return null;
         },
         onSaved: (value) {
-          _authData['email'] = value;
+          model.email = value;
         },
       ),
     );
@@ -236,7 +207,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         obscureText: true,
         controller: _passwordController,
         decoration: InputDecoration(
-          labelText: appLocal.translate(LocalKeys.PASSWORD),
+          labelText: _appLocal.translate(LocalKeys.PASSWORD),
           contentPadding: Sizes.EDEGINSETS_20,
           border: OutlineInputBorder(
             gapPadding: 3.3,
@@ -245,12 +216,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ),
         validator: (value) {
           if (value.isEmpty || value.length < 8) {
-            return appLocal.translate(LocalKeys.ERROR_PASSWORD);
+            return _appLocal.translate(LocalKeys.ERROR_PASSWORD);
           }
           return null;
         },
         onSaved: (value) {
-          _authData['password'] = value;
+          model.password = value;
         },
       ),
     );
@@ -261,7 +232,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       padding: Sizes.EDEGINSETS_8,
       child: TextFormField(
           decoration: InputDecoration(
-            labelText: appLocal.translate(LocalKeys.CONFIRM_PASSWORD),
+            labelText: _appLocal.translate(LocalKeys.CONFIRM_PASSWORD),
             contentPadding: Sizes.EDEGINSETS_20,
             border: OutlineInputBorder(
               gapPadding: 3.3,
@@ -271,7 +242,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           obscureText: true,
           validator: (value) {
             if (value != _passwordController.text) {
-              return appLocal.translate(LocalKeys.PASS_DONT_MATCH);
+              return _appLocal.translate(LocalKeys.PASS_DONT_MATCH);
             }
             return null;
           }),
@@ -281,17 +252,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget signupButton() {
     return RaisedButton(
       color: Coolor.PRIMARYSWATCH,
-      // minWidth: MediaQuery.of(context).size.width,
       padding: EdgeInsets.symmetric(vertical: 20, horizontal: 70.0),
       shape: RoundedRectangleBorder(
         borderRadius: Sizes.BOR_RAD_25,
       ),
       onPressed: () {
         _submit();
-        // Navigator.of(context).pushReplacementNamed(SignInScreen.ROUTE_NAME);
       },
       child: Text(
-        appLocal.translate(LocalKeys.SIGN_UP),
+        _appLocal.translate(LocalKeys.SIGN_UP),
         textAlign: TextAlign.center,
         style: TextStyle(
           color: Coolor.WHITE,
@@ -305,7 +274,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget haveAccount() {
     return FlatButton(
       child: Text(
-        appLocal.translate(LocalKeys.HAVE_ACCOUNT),
+        _appLocal.translate(LocalKeys.HAVE_ACCOUNT),
         style: TextStyle(
           color: Coolor.GREY,
           fontSize: 15,
@@ -318,5 +287,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
         Navigator.of(context).pushReplacementNamed(SignInScreen.ROUTE_NAME);
       },
     );
+  }
+
+  void _submit() async {
+    if (!_formKey.currentState.validate()) {
+      // Invalid!
+      return;
+    }
+    _formKey.currentState.save();
+    callSignupApi();
+  }
+
+  void callSignupApi() {
+    _progressDialog.show();
+    _apiAuthManager.signupApi(model, (SignupWrapper wrapper) {
+      _progressDialog.hide();
+      Navigator.of(context).pushReplacementNamed(SignInScreen.ROUTE_NAME);
+    }, (MessageModel messageModel) {
+      _progressDialog.hide();
+      showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
+    });
   }
 }

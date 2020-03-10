@@ -70,4 +70,5 @@ class ApiKeys {
   static final mixedItinerary = baseUrl + "/itineraries-mixed";
   static final sightsReviewUrl = baseUrl + "/reviews/sight/";
   static final loginUrl = baseUrl + "/login";
+  static final signupUrl = baseUrl + "/signup";
 }
