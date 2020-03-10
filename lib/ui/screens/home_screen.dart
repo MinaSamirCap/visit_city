@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:visit_city/apis/api_manager.dart';
-import 'package:visit_city/general/url_launchers.dart';
-import '../../prefs/pref_manager.dart';
+import '../../apis/api_manager.dart';
+import '../../general/url_launchers.dart';
+import '../../ui/base/base_state.dart';
 import '../../ui/screens/profile_screen.dart';
 
 import '../../ui/screens/qr_code_screen.dart';
@@ -20,7 +20,6 @@ import '../../ui/screens/useful_contacts_screen.dart';
 import '../../ui/screens/mixed_itineraries_screen.dart';
 import '../../ui/screens/how_to_use_app_screen.dart';
 import '../../ui/screens/fayoum_intro_screen.dart';
-import '../../ui/screens/sign_in_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   static const ROUTE_NAME = '/home-screen';
@@ -29,7 +28,7 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with BaseState {
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
   List<ItineraryModel> list;
   AppLocalizations _appLocal;
@@ -130,8 +129,11 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void logoutUser() async {
-    Provider.of<ApiManager>(context, listen: false).logoutNow();
-    //await PrefManager.clearAllData();
-    //Navigator.of(context).pushReplacementNamed(SignInScreen.ROUTE_NAME);
+    logoutNow(_appLocal.translate(LocalKeys.USER_LOGOUT));
+  }
+
+  @override
+  BuildContext provideContext() {
+    return context;
   }
 }

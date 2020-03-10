@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
+import '../../ui/base/base_state.dart';
 import '../../general/url_launchers.dart';
 import '../../models/explore/explore_response.dart';
 import '../../ui/screens/explore_details_screen.dart';
@@ -24,7 +25,7 @@ class ExploreWidget extends StatefulWidget {
   _ExploreWidgetState createState() => _ExploreWidgetState();
 }
 
-class _ExploreWidgetState extends State<ExploreWidget> {
+class _ExploreWidgetState extends State<ExploreWidget> with BaseState {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final TextEditingController _searchTextController = TextEditingController();
 
@@ -244,6 +245,7 @@ class _ExploreWidgetState extends State<ExploreWidget> {
         callExploreApi();
       });
     }, (MessageModel messageModel) {
+      checkServerError(messageModel);
       _progressDialog.hide();
       showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
     });
@@ -264,6 +266,7 @@ class _ExploreWidgetState extends State<ExploreWidget> {
         }
       });
     }, (MessageModel messageModel) {
+      checkServerError(messageModel);
       setState(() {
         showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
         _isLoadingNow = false;
@@ -300,5 +303,10 @@ class _ExploreWidgetState extends State<ExploreWidget> {
               (element.name.toLowerCase().contains(changedText.toLowerCase())))
           .toList();
     });
+  }
+
+  @override
+  BuildContext provideContext() {
+    return context;
   }
 }

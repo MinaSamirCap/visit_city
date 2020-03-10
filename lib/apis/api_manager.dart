@@ -112,15 +112,12 @@ class ApiManager with ChangeNotifier {
       Map extractedData = json.decode(response.body);
       if (extractedData == null) {
         fail(MessageModel.getDecodeError());
-        return false;
       } else {
         ExploreWrapper wrapper = ExploreWrapper.fromJson(extractedData);
         if (wrapper.info) {
           success(wrapper);
-          return true;
         } else {
           fail(wrapper.message);
-          return false;
         }
       }
     }).catchError((onError) {
@@ -397,17 +394,6 @@ class ApiManager with ChangeNotifier {
     });
   }
 
-  MessageModel checkErrorType(Error error) {
-    print(error.toString());
-    if (error is HttpException) {
-      return MessageModel.getHttpException(error as HttpException);
-    } else if (error is TypeError) {
-      return MessageModel.getTypeError(error);
-    } else {
-      return MessageModel.getUnknownError();
-    }
-  }
-
   String generatePlanUrl(int pageNum) {
     /// /my-plan? + page=pageNum"
     return ApiKeys.getPlanUrl + ApiKeys.pageKey + "=" + pageNum.toString();
@@ -564,5 +550,16 @@ class ApiManager with ChangeNotifier {
     }).catchError((onError) {
       fail(checkErrorType(onError));
     });
+  }
+
+  MessageModel checkErrorType(Error error) {
+    print(error.toString());
+    if (error is HttpException) {
+      return MessageModel.getHttpException(error as HttpException);
+    } else if (error is TypeError) {
+      return MessageModel.getTypeError(error);
+    } else {
+      return MessageModel.getUnknownError();
+    }
   }
 }
