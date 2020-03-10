@@ -9,7 +9,9 @@ class FeedbackWrapper extends BaseWrapper {
       : super(info, messageModel);
 
   FeedbackWrapper.fromJson(Map<String, dynamic> json)
-      : data = FeedbackResponse.fromJson(json['data']),
+      : data = (json['data'] != null)
+            ? FeedbackResponse.fromJson(json['data'])
+            : null,
         super.fromJson(json);
 
   Map<String, dynamic> toJson() =>

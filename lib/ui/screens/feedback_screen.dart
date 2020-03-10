@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
+import 'package:visit_city/ui/base/base_state.dart';
 import '../../models/feedback/feedback_wrapper.dart';
 import '../../models/message_model.dart';
 import '../../apis/api_manager.dart';
@@ -25,7 +26,7 @@ class FeedbackScreen extends StatefulWidget {
   _FeedbackScreenState createState() => _FeedbackScreenState();
 }
 
-class _FeedbackScreenState extends State<FeedbackScreen> {
+class _FeedbackScreenState extends State<FeedbackScreen> with BaseState {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   AppLocalizations _appLocal;
   int rateId = -1;
@@ -191,7 +192,6 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
       setState(() {
         /// call api .. :)
         callFeedbackApi();
-        //print("submit: ${_controller.text} rate: $rateId");
       });
     }
   }
@@ -204,8 +204,14 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
       showToast(wrapper.message.message);
       Navigator.pop(context);
     }, (MessageModel messageModel) {
+      checkServerError(messageModel);
       progressDialog.hide();
       showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
     });
+  }
+
+  @override
+  BuildContext provideContext() {
+    return context;
   }
 }

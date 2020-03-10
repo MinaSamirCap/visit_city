@@ -27,23 +27,17 @@ import '../models/add_sight_model.dart/add_sight_wrapper.dart';
 import '../models/profile/profile_wrapper.dart';
 
 class ApiManager with ChangeNotifier {
-  bool firstOpenApp = true;
-  bool mustLogout = false;
-
-  void logoutNow() async {
-    mustLogout = true;
-    await PrefManager.clearAllData();
-    notifyListeners();
-  }
-
+  
+  /// authonticated done ...
   void feedbackApi(
       FeedbackSendModel feedbackModel, Function success, Function fail) async {
     await http
         .post(ApiKeys.feedbackUrl,
-            headers: await ApiKeys.getHeaders(),
+            headers: await ApiKeys.getNotAuthHeaders(),
             body: json.encode(feedbackModel.toJson()))
         .then((response) {
       Map extractedData = json.decode(response.body);
+      print(extractedData);
       if (extractedData == null) {
         // decode error;
         fail(MessageModel.getDecodeError());
@@ -63,6 +57,7 @@ class ApiManager with ChangeNotifier {
     });
   }
 
+  /// authonticated done ...
   void categoriesApi(Function success, Function fail) async {
     await http
         .get(ApiKeys.categoriesUrl, headers: await ApiKeys.getHeaders())
@@ -186,6 +181,7 @@ class ApiManager with ChangeNotifier {
     });
   }
 
+  /// authonticated done ...
   void likeDislikeApi(
       WishlistSendModel model, Function success, Function fail) async {
     await http

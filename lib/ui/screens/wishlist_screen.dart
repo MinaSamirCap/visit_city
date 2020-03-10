@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
+import 'package:visit_city/ui/base/base_state.dart';
 import '../../ui/screens/sight_details_screen.dart';
 import '../../models/wishlist/like_dislike_wrapper.dart';
 import '../../general/url_launchers.dart';
@@ -26,7 +27,7 @@ class WishlistScreen extends StatefulWidget {
   _WishlistScreenState createState() => _WishlistScreenState();
 }
 
-class _WishlistScreenState extends State<WishlistScreen> {
+class _WishlistScreenState extends State<WishlistScreen> with BaseState {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   double cellHight = 0;
@@ -235,6 +236,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
         }
       });
     }, (MessageModel messageModel) {
+      checkServerError(messageModel);
       setState(() {
         _progressDialog.hide();
         showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
@@ -253,10 +255,16 @@ class _WishlistScreenState extends State<WishlistScreen> {
         showSnackBar(createSnackBar(wrapper.message.message), _scaffoldKey);
       });
     }, (MessageModel messageModel) {
+      checkServerError(messageModel);
       setState(() {
         _progressDialog.hide();
         showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
       });
     });
+  }
+
+  @override
+  BuildContext provideContext() {
+    return context;
   }
 }
