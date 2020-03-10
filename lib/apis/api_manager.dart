@@ -37,7 +37,6 @@ class ApiManager with ChangeNotifier {
             body: json.encode(feedbackModel.toJson()))
         .then((response) {
       Map extractedData = json.decode(response.body);
-      print(extractedData);
       if (extractedData == null) {
         // decode error;
         fail(MessageModel.getDecodeError());
@@ -69,6 +68,7 @@ class ApiManager with ChangeNotifier {
       } else {
         CategoryWrapper wrapper = CategoryWrapper.fromJson(extractedData);
         if (wrapper.info) {
+          print(extractedData);
           success(wrapper);
           return true;
         } else {

@@ -9,7 +9,9 @@ class ExploreWrapper extends BaseWrapper {
       : super(info, messageModel);
 
   ExploreWrapper.fromJson(Map<String, dynamic> json)
-      : data = ExploreResponse.fromJson(json['data']),
+      : data = (json['data'] != null)
+            ? ExploreResponse.fromJson(json['data'])
+            : null,
         super.fromJson(json);
 
   Map<String, dynamic> toJson() =>

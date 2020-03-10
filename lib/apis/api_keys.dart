@@ -18,7 +18,7 @@ class ApiKeys {
 
   static Future<Map<String, String>> getNotAuthHeaders() async {
     return {
-      authorization: '$keyBearer ${await PrefManager.getToken()}ldasjflasjdfdlskjf',
+      authorization: '$keyBearer ${await PrefManager.getToken()}ldasjflasjdfdldfsljkasdfljdslkfjkladsjfkasldjfskjf',
       contentType: applicationJson,
       acceptLanguage: await PrefManager.getLang()
     };
