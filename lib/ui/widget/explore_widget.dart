@@ -28,8 +28,8 @@ class _ExploreWidgetState extends State<ExploreWidget> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final TextEditingController _searchTextController = TextEditingController();
 
-  double columnCellWidth = 0;
   double cellHight = 0;
+  double columnCellWidth = 0;
 
   List<FilterItem> filterList = [];
   List<ExploreModel> exploreList = [];

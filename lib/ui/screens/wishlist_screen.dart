@@ -29,13 +29,15 @@ class WishlistScreen extends StatefulWidget {
 class _WishlistScreenState extends State<WishlistScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
+  double cellHight = 0;
+  double columnCellWidth = 0;
+
   List<WishlistModel> wishlistList = [];
   WishlistResponse _pagingInfo;
   AppLocalizations _appLocal;
   ProgressDialog _progressDialog;
   ApiManager _apiManager;
   bool _isLoadingNow = true;
-  double columnCellWidth = 0;
 
   void initState() {
     Future.delayed(Duration.zero).then((_) {
@@ -56,8 +58,9 @@ class _WishlistScreenState extends State<WishlistScreen> {
   @override
   Widget build(BuildContext context) {
     _appLocal = AppLocalizations.of(context);
-    columnCellWidth = MediaQuery.of(context).size.width - imgeWidth - 30 - 10;
-    //columnCellWidth = Sizes.calculateColumnWidth(MediaQuery.of(context).size.width);
+    cellHight = Sizes.calculateExploreCellHight(_appLocal.isRTL());
+    columnCellWidth =
+        Sizes.calculateColumnWidth(MediaQuery.of(context).size.width);
     return Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
@@ -112,7 +115,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
               openDetialsSightScreen(index);
             },
             child: Container(
-              height: 170,
+              height: cellHight,
               decoration: BoxDecoration(
                   borderRadius: Sizes.BOR_RAD_20,
                   border: Border.all(color: Coolor.GREY, width: 1)),
