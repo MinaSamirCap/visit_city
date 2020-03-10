@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:visit_city/prefs/pref_manager.dart';
 
 const CODE_EN = 'en';
 const CODE_AR = 'ar';
@@ -78,6 +79,7 @@ class _AppLocalizationsDelegate
     /// AppLocalizations class is where the JSON loading actually runs
     AppLocalizations localizations = new AppLocalizations(locale);
     await localizations.load();
+    await PrefManager.setLang(locale.languageCode);
     return localizations;
   }
 

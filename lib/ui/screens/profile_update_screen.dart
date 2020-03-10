@@ -240,8 +240,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen>
                                         new Flexible(
                                           child: new TextField(
                                             decoration: InputDecoration(
-                                                labelText:
-                                                    "Email"),
+                                                labelText: "Email"),
                                             enabled: !_status,
                                             onSubmitted: (value) {
                                               _updatedData
@@ -282,8 +281,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen>
                                         new Flexible(
                                           child: new TextField(
                                             decoration: InputDecoration(
-                                                labelText:
-                                                    "Phone"),
+                                                labelText: "Phone"),
                                             enabled: !_status,
                                             onSubmitted: (value) {
                                               _updatedData
@@ -324,8 +322,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen>
                                         new Flexible(
                                           child: new TextField(
                                             decoration: InputDecoration(
-                                                labelText:
-                                                    "Country"),
+                                                labelText: "Country"),
                                             enabled: !_status,
                                             onSubmitted: (value) {
                                               _updatedData
@@ -416,14 +413,10 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen>
       setState(() {
         _isLoadingNow = true;
       });
-      await dio.patch(
-        'https://visit-fayoum.herokuapp.com/api/v1/profile',
-        options: Options(headers: ApiKeys.getHeaders()),
-        // queryParameters: _updatedData,
-        data: {
-          _updatedData
-        }
-      );
+      await dio.patch('https://visit-fayoum.herokuapp.com/api/v1/profile',
+          options: Options(headers: await ApiKeys.getHeaders()),
+          // queryParameters: _updatedData,
+          data: {_updatedData});
       if (mounted) {
         setState(() {
           _isLoadingNow = false;

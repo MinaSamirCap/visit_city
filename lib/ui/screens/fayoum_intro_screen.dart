@@ -37,7 +37,7 @@ class _FayoumIntroScreenState extends State<FayoumIntroScreen> {
         isLoading = true;
       });
       final response =
-          await dio.get(url, options: Options(headers: ApiKeys.getHeaders()));
+          await dio.get(url, options: Options(headers: await ApiKeys.getHeaders()));
 
       setState(() {
         isLoading = false;
