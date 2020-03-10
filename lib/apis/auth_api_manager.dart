@@ -14,7 +14,7 @@ class AuthApiManager extends ApiManager {
   void loginApis(LoginSendModel model, Function success, Function fail) async {
     await http
         .post(ApiKeys.loginUrl,
-            headers: ApiKeys.getAuthHeaders(),
+            headers: await ApiKeys.getAuthHeaders(),
             body: json.encode(model.toJson()))
         .then((response) {
       Map extractedData = json.decode(response.body);
@@ -35,10 +35,11 @@ class AuthApiManager extends ApiManager {
       fail(checkErrorType(onError));
     });
   }
+
   void signupApi(SignupSendModel model, Function success, Function fail) async {
     await http
         .post(ApiKeys.signupUrl,
-            headers: ApiKeys.getAuthHeaders(),
+            headers: await ApiKeys.getAuthHeaders(),
             body: json.encode(model.toJson()))
         .then((response) {
       Map extractedData = json.decode(response.body);
@@ -60,8 +61,6 @@ class AuthApiManager extends ApiManager {
       fail(checkErrorType(onError));
     });
   }
-
-
 
   // Future<bool> tryAutoLogin() async {
   //   final prefs = await SharedPreferences.getInstance();

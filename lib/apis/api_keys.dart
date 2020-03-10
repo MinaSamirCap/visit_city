@@ -1,24 +1,19 @@
-import 'dart:convert';
-
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:visit_city/prefs/pref_manager.dart';
 
 class ApiKeys {
-  static Map<String, String> _headers = {
-    authorization: '$keyBearer ${getToken()}',
-    contentType: applicationJson,
-    acceptLanguage: getLanguage()
-  };
-  static Map<String, String> _authHeaders = {
-    contentType: applicationJson,
-    acceptLanguage: getLanguage()
-  };
-
-  static Map<String, String> getAuthHeaders() {
-    return _authHeaders;
+  static Future<Map<String, String>> getAuthHeaders() async {
+    return {
+      contentType: applicationJson,
+      acceptLanguage: await PrefManager.getLang()
+    };
   }
 
-  static Map<String, String> getHeaders() {
-    return _headers;
+  static Future<Map<String, String>> getHeaders() async {
+    return {
+      authorization: '$keyBearer ${await PrefManager.getToken()}',
+      contentType: applicationJson,
+      acceptLanguage: await PrefManager.getLang()
+    };
   }
 
   static final authorization = "Authorization";
@@ -33,24 +28,6 @@ class ApiKeys {
   static final limitValue = "15";
   static final pageKey = "page";
   static final categoryKey = "category";
-
-  static String getLanguage() {
-    return enLang;
-  }
-
-  static String getToken() {
-    return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyLCJ1c2VyUm9sZSI6Im5vcm1hbCIsImlhdCI6MTU4MzcwMTI3NywiZXhwIjoxNTg0OTk3Mjc3fQ.WSWQ3Tpt93aToJS-BXMvXvnCoCDt2m7ZSlk04pFDvr8";
-  }
-  // static Future<String> getToken() async {
-  //   final prefs = await SharedPreferences.getInstance();
-  //   if (!prefs.containsKey('userData')) {
-  //     return "";
-  //   }
-  //   final extractedUserData =
-  //       json.decode(prefs.getString('userData')) as Map<String, dynamic>;
-  //       final String token = extractedUserData['token'];
-  //   return token;
-  // }
 
   static final baseUrl = 'https://visit-fayoum.herokuapp.com/api/v1';
   static final feedbackUrl = baseUrl + "/feedbacks";

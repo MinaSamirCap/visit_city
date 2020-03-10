@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 
 class Sizes {
-  static const paddingColumn = -30 - 10;
+  static const explorePaddingColumn = -30 - 10;
   static const imgeWidth =
       110.0; // image width of explore item and wishlist item
   static const hightDetails = 250.0; // image hight of details screen
   static double calculateColumnWidth(double screenWidth) {
-    return screenWidth - imgeWidth - paddingColumn;
+    return screenWidth - imgeWidth + explorePaddingColumn;
+  }
+
+  static double calculateExploreCellHight(bool isArabic) {
+    return isArabic ? 181 : 170;
   }
 
   static const RADIUS_500 = Radius.circular(500);
@@ -14,10 +18,7 @@ class Sizes {
   static const RADIUS_50 = Radius.circular(50);
   static const RADIUS_12 = Radius.circular(12);
 
-  static const DIVIDER_HEIGHT_3 = SizedBox(
-    height: 3,
-  );
-
+  static const DIVIDER_HEIGHT_3 = SizedBox(height: 3);
   static const DIVIDER_HEIGHT_10 = SizedBox(height: 10);
   static const DIVIDER_HEIGHT_15 = SizedBox(height: 15);
   static const DIVIDER_HEIGHT_20 = SizedBox(height: 20);

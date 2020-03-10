@@ -40,7 +40,7 @@ class ApiManager with ChangeNotifier {
       FeedbackSendModel feedbackModel, Function success, Function fail) async {
     await http
         .post(ApiKeys.feedbackUrl,
-            headers: ApiKeys.getHeaders(),
+            headers: await ApiKeys.getHeaders(),
             body: json.encode(feedbackModel.toJson()))
         .then((response) {
       Map extractedData = json.decode(response.body);
@@ -65,7 +65,7 @@ class ApiManager with ChangeNotifier {
 
   void categoriesApi(Function success, Function fail) async {
     await http
-        .get(ApiKeys.categoriesUrl, headers: ApiKeys.getHeaders())
+        .get(ApiKeys.categoriesUrl, headers: await ApiKeys.getHeaders())
         .then((response) {
       Map extractedData = json.decode(response.body);
       if (extractedData == null) {
@@ -106,7 +106,8 @@ class ApiManager with ChangeNotifier {
   void exploreApi(
       int pageNum, String query, Function success, Function fail) async {
     await http
-        .get(generateExploreUrl(pageNum, query), headers: ApiKeys.getHeaders())
+        .get(generateExploreUrl(pageNum, query),
+            headers: await ApiKeys.getHeaders())
         .then((response) {
       Map extractedData = json.decode(response.body);
       if (extractedData == null) {
@@ -129,7 +130,8 @@ class ApiManager with ChangeNotifier {
 
   void itinerariesApi(int id, Function success, Function fail) async {
     await http
-        .get(ApiKeys.itinerariesUrl + '/$id', headers: ApiKeys.getHeaders())
+        .get(ApiKeys.itinerariesUrl + '/$id',
+            headers: await ApiKeys.getHeaders())
         .then((response) {
       Map extractedData = json.decode(response.body);
       // print(extractedData);
@@ -165,7 +167,7 @@ class ApiManager with ChangeNotifier {
 
   void wishlistApi(int pageNum, Function success, Function fail) async {
     await http
-        .get(generateWishlistUrl(pageNum), headers: ApiKeys.getHeaders())
+        .get(generateWishlistUrl(pageNum), headers: await ApiKeys.getHeaders())
         .then((response) {
       Map extractedData = json.decode(response.body);
       print(extractedData);
@@ -191,7 +193,8 @@ class ApiManager with ChangeNotifier {
       WishlistSendModel model, Function success, Function fail) async {
     await http
         .post(ApiKeys.likeDislikeUrl,
-            headers: ApiKeys.getHeaders(), body: json.encode(model.toJson()))
+            headers: await ApiKeys.getHeaders(),
+            body: json.encode(model.toJson()))
         .then((response) {
       Map extractedData = json.decode(response.body);
       if (extractedData == null) {
@@ -215,7 +218,7 @@ class ApiManager with ChangeNotifier {
   void getSightDetails(int sightId, Function success, Function fail) async {
     await http
         .get(ApiKeys.sightDetailsUrl + sightId.toString(),
-            headers: ApiKeys.getHeaders())
+            headers: await ApiKeys.getHeaders())
         .then((response) {
       Map extractedData = json.decode(response.body);
       if (extractedData == null) {
@@ -239,7 +242,7 @@ class ApiManager with ChangeNotifier {
   void getExploreDetails(int serviceId, Function success, Function fail) async {
     await http
         .get(ApiKeys.exploreDetailsUrl + serviceId.toString(),
-            headers: ApiKeys.getHeaders())
+            headers: await ApiKeys.getHeaders())
         .then((response) {
       Map extractedData = json.decode(response.body);
       if (extractedData == null) {
@@ -278,7 +281,7 @@ class ApiManager with ChangeNotifier {
       int pageNum, int serviceId, Function success, Function fail) async {
     await http
         .get(generateServicesReviewUrl(pageNum, serviceId),
-            headers: ApiKeys.getHeaders())
+            headers: await ApiKeys.getHeaders())
         .then((response) {
       Map extractedData = json.decode(response.body);
       if (extractedData == null) {
@@ -304,7 +307,7 @@ class ApiManager with ChangeNotifier {
     final finalUrl = ApiKeys.servicesReviewUrl + serviceId.toString();
     await http
         .post(finalUrl,
-            headers: ApiKeys.getHeaders(),
+            headers: await ApiKeys.getHeaders(),
             body: json.encode(rateModel.toJson()))
         .then((response) {
       Map extractedData = json.decode(response.body);
@@ -345,7 +348,7 @@ class ApiManager with ChangeNotifier {
       int pageNum, int sightId, Function success, Function fail) async {
     await http
         .get(generateSightsReviewUrl(pageNum, sightId),
-            headers: ApiKeys.getHeaders())
+            headers: await ApiKeys.getHeaders())
         .then((response) {
       Map extractedData = json.decode(response.body);
       if (extractedData == null) {
@@ -371,7 +374,7 @@ class ApiManager with ChangeNotifier {
     final finalUrl = ApiKeys.sightsReviewUrl + sightId.toString();
     await http
         .post(finalUrl,
-            headers: ApiKeys.getHeaders(),
+            headers: await ApiKeys.getHeaders(),
             body: json.encode(rateModel.toJson()))
         .then((response) {
       Map extractedData = json.decode(response.body);
@@ -412,7 +415,7 @@ class ApiManager with ChangeNotifier {
 
   void getMyPlan(int pageNum, Function success, Function fail) async {
     await http
-        .get(generatePlanUrl(pageNum), headers: ApiKeys.getHeaders())
+        .get(generatePlanUrl(pageNum), headers: await ApiKeys.getHeaders())
         .then((response) {
       Map extractedData = json.decode(response.body);
       // todo --> do not forget to remove the
@@ -440,7 +443,8 @@ class ApiManager with ChangeNotifier {
       'sights': [sightId]
     });
     await http
-        .post(ApiKeys.removeSight, headers: ApiKeys.getHeaders(), body: msg)
+        .post(ApiKeys.removeSight,
+            headers: await ApiKeys.getHeaders(), body: msg)
         .then((response) {
       Map extractedData = json.decode(response.body);
       if (extractedData == null) {
@@ -466,7 +470,7 @@ class ApiManager with ChangeNotifier {
       'sights': [sightId]
     });
     await http
-        .post(ApiKeys.addSight, headers: ApiKeys.getHeaders(), body: body)
+        .post(ApiKeys.addSight, headers: await ApiKeys.getHeaders(), body: body)
         .then((response) {
       Map extractedData = json.decode(response.body);
       if (extractedData == null) {
@@ -491,7 +495,7 @@ class ApiManager with ChangeNotifier {
     await http
         .post(
       ApiKeys.addPlan + '$itinId',
-      headers: ApiKeys.getHeaders(),
+      headers: await ApiKeys.getHeaders(),
     )
         .then((response) {
       Map extractedData = json.decode(response.body);
@@ -516,7 +520,7 @@ class ApiManager with ChangeNotifier {
 
   void getMixedItinerary(Function success, Function fail) async {
     await http
-        .get(ApiKeys.mixedItinerary, headers: ApiKeys.getHeaders())
+        .get(ApiKeys.mixedItinerary, headers: await ApiKeys.getHeaders())
         .then((response) {
       Map extractedData = json.decode(response.body);
 
@@ -540,7 +544,7 @@ class ApiManager with ChangeNotifier {
 
   void getProfile(Function success, Function fail) async {
     await http
-        .get(ApiKeys.profileUrl, headers: ApiKeys.getHeaders())
+        .get(ApiKeys.profileUrl, headers: await ApiKeys.getHeaders())
         .then((response) {
       Map extractedData = json.decode(response.body);
       print(extractedData);

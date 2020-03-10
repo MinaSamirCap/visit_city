@@ -6,7 +6,7 @@ class PrefManager {
     await PrefUtils.setString(PrefKeys.TOKEN, token);
   }
 
-  static Future<String> getToken(String token) async {
+  static Future<String> getToken() async {
     return await PrefUtils.getString(PrefKeys.TOKEN);
   }
 
@@ -18,8 +18,15 @@ class PrefManager {
     return await PrefUtils.getBool(PrefKeys.IS_LOGED_IN);
   }
 
-static Future<void> clearAllData() async {
-    await PrefUtils.clearData();
+  static Future<void> setLang(String locale) async {
+    return await PrefUtils.setString(PrefKeys.LANG, locale);
   }
 
+  static Future<String> getLang() async {
+    return await PrefUtils.getString(PrefKeys.LANG);
+  }
+
+  static Future<void> clearAllData() async {
+    await PrefUtils.clearData();
+  }
 }
