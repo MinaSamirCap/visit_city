@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:visit_city/general/url_launchers.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:visit_city/ui/screens/profile_screen.dart';
+import '../../prefs/pref_manager.dart';
+import '../../ui/screens/profile_screen.dart';
 
 import '../../ui/screens/qr_code_screen.dart';
 import '../../ui/screens/wishlist_screen.dart';
@@ -128,8 +128,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void logoutUser() async {
-    final prefs = await SharedPreferences.getInstance();
-    prefs.clear();
+    await PrefManager.clearAllData();
     Navigator.of(context).pushReplacementNamed(SignInScreen.ROUTE_NAME);
   }
 }

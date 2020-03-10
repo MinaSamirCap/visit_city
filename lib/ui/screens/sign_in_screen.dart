@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import '../../prefs/pref_manager.dart';
 
 import '../../models/auth/login_send_model.dart';
 import '../../models/auth/login_wrapper.dart';
@@ -335,14 +335,13 @@ class _SignInScreenState extends State<SignInScreen> {
     }
     _formKey.currentState.save();
     callloginApi();
-    
   }
 
   void callloginApi() {
     _progressDialog.show();
     _apiAuthManager.loginApis(model, (LoginWrapper wrapper) {
       _progressDialog.hide();
-      saveUsertoken(wrapper.data.token);
+      saveUserToken(wrapper.data.token);
       setState(() {
         _isLoadingNow = false;
       });
@@ -355,10 +354,9 @@ class _SignInScreenState extends State<SignInScreen> {
     });
   }
 
-  void saveUsertoken(String token) async {
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setString('token', token);
-    prefs.setBool('isLogedIn', true);
+  void saveUserToken(String token) async {
+    await PrefManager.setToken(token);
+    await PrefManager.setLogedIn();
     Navigator.of(context).pushReplacementNamed(HomeScreen.ROUTE_NAME);
   }
 }

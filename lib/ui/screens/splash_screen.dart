@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import '../../prefs/pref_manager.dart';
 import '../../res/coolor.dart';
 import '../../res/assets_path.dart';
 import '../../ui/screens/sign_in_screen.dart';
@@ -46,8 +46,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   /// navigate with dummy screen
   Future navigationPage() async {
-    final prefs = await SharedPreferences.getInstance();
-    final isLogedIn = prefs.getBool('isLogedIn');
+    final isLogedIn = await PrefManager.isLogedIn();
     if (isLogedIn != null) {
       isLogedIn
           ? Navigator.of(context).pushReplacementNamed(HomeScreen.ROUTE_NAME)
