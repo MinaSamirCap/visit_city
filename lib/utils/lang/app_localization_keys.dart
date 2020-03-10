@@ -92,4 +92,5 @@ class LocalKeys {
   static const PERSONAL_INFORMATION = 'personal_information';
   static const FROM = 'from';
   static const TO = 'to';
+  static const DEVELOPED_BY = "developed_by";
 }

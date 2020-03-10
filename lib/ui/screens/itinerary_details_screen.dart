@@ -101,11 +101,7 @@ class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
 
   Widget sightItemWidget(int index, DayModel model) {
     return ListTile(
-      leading: CustomPaint(
-        painter: LinePainter(),
-        child: circleAvatarWidget(model, index),
-      ),
-      // leading: circleAvatarWidget(model, index),
+      leading: circleAvatarWidget(model, index),
       title: sightCardItem(model, index),
     );
   }

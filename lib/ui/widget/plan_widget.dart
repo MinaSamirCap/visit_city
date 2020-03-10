@@ -76,17 +76,17 @@ class _PlanWidgetState extends State<PlanWidget> {
     );
   }
 
-  Widget _buildProgressIndicator() {
-    return new Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: new Center(
-        child: new Opacity(
-          opacity: _isLoadingNow ? 1.0 : 00,
-          child: new CircularProgressIndicator(),
-        ),
-      ),
-    );
-  }
+  // Widget _buildProgressIndicator() {
+  //   return new Padding(
+  //     padding: const EdgeInsets.all(8.0),
+  //     child: new Center(
+  //       child: new Opacity(
+  //         opacity: _isLoadingNow ? 1.0 : 00,
+  //         child: new CircularProgressIndicator(),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Widget listWidget() {
     return ListView.separated(
@@ -97,7 +97,7 @@ class _PlanWidgetState extends State<PlanWidget> {
       },
       itemBuilder: (ctx, index) {
         if (index == myPlan.length) {
-          return _buildProgressIndicator();
+          return null;
         } else {
           return sightItemWidget(index);
         }
