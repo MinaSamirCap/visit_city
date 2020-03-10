@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:visit_city/apis/api_manager.dart';
 import 'package:visit_city/general/url_launchers.dart';
 import '../../prefs/pref_manager.dart';
 import '../../ui/screens/profile_screen.dart';
@@ -128,7 +130,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void logoutUser() async {
-    await PrefManager.clearAllData();
-    Navigator.of(context).pushReplacementNamed(SignInScreen.ROUTE_NAME);
+    Provider.of<ApiManager>(context, listen: false).logoutNow();
+    //await PrefManager.clearAllData();
+    //Navigator.of(context).pushReplacementNamed(SignInScreen.ROUTE_NAME);
   }
 }

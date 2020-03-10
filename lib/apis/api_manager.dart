@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http; // to avoid crashing with names ..
+import 'package:visit_city/prefs/pref_manager.dart';
 
 import 'api_keys.dart';
 
@@ -23,10 +24,18 @@ import '../models/feedback/feedback_send_model.dart';
 import '../models/itineraries/itineraries_wrapper.dart';
 import '../models/unplan_sight_model.dart/unplan_sight_wrapper.dart';
 import '../models/add_sight_model.dart/add_sight_wrapper.dart';
-import '../models/profile/profile_response.dart';
 import '../models/profile/profile_wrapper.dart';
 
 class ApiManager with ChangeNotifier {
+  bool firstOpenApp = true;
+  bool mustLogout = false;
+
+  void logoutNow() async {
+    mustLogout = true;
+    await PrefManager.clearAllData();
+    notifyListeners();
+  }
+
   void feedbackApi(
       FeedbackSendModel feedbackModel, Function success, Function fail) async {
     await http
