@@ -27,7 +27,6 @@ import '../models/add_sight_model.dart/add_sight_wrapper.dart';
 import '../models/profile/profile_wrapper.dart';
 
 class ApiManager with ChangeNotifier {
-  
   /// authonticated done ...
   void feedbackApi(
       FeedbackSendModel feedbackModel, Function success, Function fail) async {
@@ -68,7 +67,6 @@ class ApiManager with ChangeNotifier {
       } else {
         CategoryWrapper wrapper = CategoryWrapper.fromJson(extractedData);
         if (wrapper.info) {
-          print(extractedData);
           success(wrapper);
           return true;
         } else {
@@ -98,6 +96,7 @@ class ApiManager with ChangeNotifier {
         query;
   }
 
+  /// authonticated done ...
   void exploreApi(
       int pageNum, String query, Function success, Function fail) async {
     await http
@@ -232,6 +231,7 @@ class ApiManager with ChangeNotifier {
     });
   }
 
+  /// authonticated done ...
   void getExploreDetails(int serviceId, Function success, Function fail) async {
     await http
         .get(ApiKeys.exploreDetailsUrl + serviceId.toString(),
@@ -270,6 +270,7 @@ class ApiManager with ChangeNotifier {
         pageNum.toString();
   }
 
+  /// authonticated done ...
   void servicesReviewApi(
       int pageNum, int serviceId, Function success, Function fail) async {
     await http
@@ -295,6 +296,7 @@ class ApiManager with ChangeNotifier {
     });
   }
 
+  /// authonticated done ...
   void submitServiceReview(RateSendModel rateModel, int serviceId,
       Function success, Function fail) async {
     final finalUrl = ApiKeys.servicesReviewUrl + serviceId.toString();

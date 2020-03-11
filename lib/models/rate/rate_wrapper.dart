@@ -9,7 +9,8 @@ class RateWrapper extends BaseWrapper {
       : super(info, messageModel);
 
   RateWrapper.fromJson(Map<String, dynamic> json)
-      : data = RateResponse.fromJson(json['data']),
+      : data =
+            (json['data'] != null) ? RateResponse.fromJson(json['data']) : null,
         super.fromJson(json);
 
   Map<String, dynamic> toJson() =>

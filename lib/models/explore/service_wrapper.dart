@@ -9,7 +9,8 @@ class ServiceWrapper extends BaseWrapper {
       : super(info, messageModel);
 
   ServiceWrapper.fromJson(Map<String, dynamic> json)
-      : data = ExploreModel.fromJson(json['data']),
+      : data =
+            (json['data'] != null) ? ExploreModel.fromJson(json['data']) : null,
         super.fromJson(json);
 
   Map<String, dynamic> toJson() =>
