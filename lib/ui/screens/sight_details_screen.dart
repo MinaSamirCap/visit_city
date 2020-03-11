@@ -6,6 +6,7 @@ import 'package:visit_city/models/rate/rate_post_wrapper.dart';
 import 'package:visit_city/models/rate/rate_response.dart';
 import 'package:visit_city/models/rate/rate_send_model.dart';
 import 'package:visit_city/models/rate/rate_wrapper.dart';
+import 'package:visit_city/ui/base/base_state.dart';
 import '../../models/wishlist/like_dislike_wrapper.dart';
 import '../../models/wishlist/wishlist_send_model.dart';
 import '../../res/coolor.dart';
@@ -28,7 +29,8 @@ class SightDetailsScreen extends StatefulWidget {
   _SightDetailsScreenState createState() => _SightDetailsScreenState();
 }
 
-class _SightDetailsScreenState extends State<SightDetailsScreen> {
+class _SightDetailsScreenState extends State<SightDetailsScreen>
+    with BaseState {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   TextEditingController _textController = TextEditingController();
@@ -258,6 +260,7 @@ class _SightDetailsScreenState extends State<SightDetailsScreen> {
       });
       callReviewApi();
     }, (MessageModel messageModel) {
+      checkServerError(messageModel);
       setState(() {
         _progressDialog.hide();
         showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
@@ -275,6 +278,7 @@ class _SightDetailsScreenState extends State<SightDetailsScreen> {
         showSnackBar(createSnackBar(wrapper.message.message), _scaffoldKey);
       });
     }, (MessageModel messageModel) {
+      checkServerError(messageModel);
       setState(() {
         _progressDialog.hide();
         showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
@@ -297,6 +301,7 @@ class _SightDetailsScreenState extends State<SightDetailsScreen> {
         }
       });
     }, (MessageModel messageModel) {
+      checkServerError(messageModel);
       setState(() {
         showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
         firstTimeToLoad = false;
@@ -325,6 +330,7 @@ class _SightDetailsScreenState extends State<SightDetailsScreen> {
         showSnackBar(createSnackBar(wrapper.message.message), _scaffoldKey);
       });
     }, (MessageModel messageModel) {
+      checkServerError(messageModel);
       setState(() {
         showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
         _progressDialog.hide();
@@ -355,5 +361,10 @@ class _SightDetailsScreenState extends State<SightDetailsScreen> {
   void resetRate() {
     initRate = 0.0;
     _textController.text = "";
+  }
+
+  @override
+  BuildContext provideContext() {
+    return context;
   }
 }

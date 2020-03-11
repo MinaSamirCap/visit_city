@@ -9,7 +9,9 @@ class SightWrapper extends BaseWrapper {
       : super(info, messageModel);
 
   SightWrapper.fromJson(Map<String, dynamic> json)
-      : data = SightResponse.fromJson(json['data']),
+      : data = (json['data'] != null)
+            ? SightResponse.fromJson(json['data'])
+            : null,
         super.fromJson(json);
 
   Map<String, dynamic> toJson() =>
