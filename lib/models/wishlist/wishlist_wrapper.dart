@@ -9,7 +9,9 @@ class WishlistWrapper extends BaseWrapper {
       : super(info, messageModel);
 
   WishlistWrapper.fromJson(Map<String, dynamic> json)
-      : data = WishlistResponse.fromJson(json['data']),
+      : data = (json['data'] != null)
+            ? WishlistResponse.fromJson(json['data'])
+            : null,
         super.fromJson(json);
 
   Map<String, dynamic> toJson() =>
