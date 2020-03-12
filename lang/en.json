@@ -82,7 +82,7 @@
     "personal_information" : "Personal Information",
     "country": "Country",
     "from" : "From",
-    "to" : "to",
+    "to" : "To",
     "rate_error" : "Please select rate",
     "developed_by" : "Developed by ECH 2020",
     "user_logout" : "User logged out."

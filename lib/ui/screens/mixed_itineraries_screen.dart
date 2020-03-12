@@ -127,12 +127,13 @@ class _MixedItinerariesScreenState extends State<MixedItinerariesScreen> {
                     arguments: {SightDetailsScreen.MODEL_ID_KEY: model.id.toString()});
               },
               child: Container(
-                height: 215,
+                height: 217,
+                // width: ,
                 decoration: BoxDecoration(
                     borderRadius: Sizes.BOR_RAD_20,
                     border: Border.all(color: Coolor.GREY, width: 1)),
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: Sizes.EDEGINSETS_8,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
@@ -160,22 +161,32 @@ class _MixedItinerariesScreenState extends State<MixedItinerariesScreen> {
                       Sizes.DIVIDER_HEIGHT_10,
                       lineDivider(),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
                           Padding(
                             padding: const EdgeInsets.only(left: 5, right: 5),
-                            child: Text(
-                              _appLocal.translate(LocalKeys.FROM) +
-                                  " " +
-                                  model.openHours.from +
-                                  " " +
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  _appLocal.translate(LocalKeys.FROM) +
+                                      " " +
+                                      model.openHours.from,
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Text(
                                   _appLocal.translate(LocalKeys.TO) +
-                                  " " +
-                                  model.openHours.to,
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              ),
+                                      " " +
+                                      model.openHours.to,
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                           Column(
