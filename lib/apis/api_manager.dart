@@ -27,15 +27,7 @@ import '../models/add_sight_model.dart/add_sight_wrapper.dart';
 import '../models/profile/profile_wrapper.dart';
 
 class ApiManager with ChangeNotifier {
-  bool firstOpenApp = true;
-  bool mustLogout = false;
-
-  void logoutNow() async {
-    mustLogout = true;
-    await PrefManager.clearAllData();
-    notifyListeners();
-  }
-
+  /// authonticated done ...
   void feedbackApi(
       FeedbackSendModel feedbackModel, Function success, Function fail) async {
     await http
@@ -63,6 +55,7 @@ class ApiManager with ChangeNotifier {
     });
   }
 
+  /// authonticated done ...
   void categoriesApi(Function success, Function fail) async {
     await http
         .get(ApiKeys.categoriesUrl, headers: await ApiKeys.getHeaders())
@@ -103,6 +96,7 @@ class ApiManager with ChangeNotifier {
         query;
   }
 
+  /// authonticated done ...
   void exploreApi(
       int pageNum, String query, Function success, Function fail) async {
     await http
@@ -112,15 +106,12 @@ class ApiManager with ChangeNotifier {
       Map extractedData = json.decode(response.body);
       if (extractedData == null) {
         fail(MessageModel.getDecodeError());
-        return false;
       } else {
         ExploreWrapper wrapper = ExploreWrapper.fromJson(extractedData);
         if (wrapper.info) {
           success(wrapper);
-          return true;
         } else {
           fail(wrapper.message);
-          return false;
         }
       }
     }).catchError((onError) {
@@ -189,6 +180,7 @@ class ApiManager with ChangeNotifier {
     });
   }
 
+  /// authonticated done ...
   void likeDislikeApi(
       WishlistSendModel model, Function success, Function fail) async {
     await http
@@ -239,6 +231,7 @@ class ApiManager with ChangeNotifier {
     });
   }
 
+  /// authonticated done ...
   void getExploreDetails(int serviceId, Function success, Function fail) async {
     await http
         .get(ApiKeys.exploreDetailsUrl + serviceId.toString(),
@@ -277,6 +270,7 @@ class ApiManager with ChangeNotifier {
         pageNum.toString();
   }
 
+  /// authonticated done ...
   void servicesReviewApi(
       int pageNum, int serviceId, Function success, Function fail) async {
     await http
@@ -302,6 +296,7 @@ class ApiManager with ChangeNotifier {
     });
   }
 
+  /// authonticated done ...
   void submitServiceReview(RateSendModel rateModel, int serviceId,
       Function success, Function fail) async {
     final finalUrl = ApiKeys.servicesReviewUrl + serviceId.toString();
@@ -395,17 +390,6 @@ class ApiManager with ChangeNotifier {
     }).catchError((onError) {
       fail(checkErrorType(onError));
     });
-  }
-
-  MessageModel checkErrorType(Error error) {
-    print(error.toString());
-    if (error is HttpException) {
-      return MessageModel.getHttpException(error as HttpException);
-    } else if (error is TypeError) {
-      return MessageModel.getTypeError(error);
-    } else {
-      return MessageModel.getUnknownError();
-    }
   }
 
   String generatePlanUrl(int pageNum) {
@@ -564,5 +548,16 @@ class ApiManager with ChangeNotifier {
     }).catchError((onError) {
       fail(checkErrorType(onError));
     });
+  }
+
+  MessageModel checkErrorType(Error error) {
+    print(error.toString());
+    if (error is HttpException) {
+      return MessageModel.getHttpException(error as HttpException);
+    } else if (error is TypeError) {
+      return MessageModel.getTypeError(error);
+    } else {
+      return MessageModel.getUnknownError();
+    }
   }
 }

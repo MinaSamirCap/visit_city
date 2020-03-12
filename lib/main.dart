@@ -31,25 +31,17 @@ class MyApp extends StatelessWidget {
   /// This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-        providers: [
-          // ChangeNotifierProvider.value(
-          //   value: Auth(),
-          // ),
-          ChangeNotifierProvider.value(
-            value: ApiManager(),
-          ),
-          ChangeNotifierProvider.value(
-            value: AuthApiManager(),
-          ),
-        ],
-        child: Consumer<ApiManager>(builder: (ctx, appManager, _) {
-          return visitFayoumApp(appManager);
-        }));
+    return MultiProvider(providers: [
+      ChangeNotifierProvider.value(
+        value: ApiManager(),
+      ),
+      ChangeNotifierProvider.value(
+        value: AuthApiManager(),
+      ),
+    ], child: visitFayoumApp());
   }
 
-  MaterialApp visitFayoumApp(ApiManager apiManager) {
-    print("mustLogout: ${apiManager.mustLogout}");
+  MaterialApp visitFayoumApp() {
     return MaterialApp(
       theme: ThemeData(primarySwatch: Coolor.PRIMARYSWATCH),
 
@@ -86,8 +78,8 @@ class MyApp extends StatelessWidget {
         /// from the list (English, in this case).
         return supportedLocales.first;
       },
+      home: SplashScreen(),
       routes: {
-         '/': (ctx) => apiManager.mustLogout ? SignInScreen() : SplashScreen(),
         SplashScreen.ROUTE_NAME: (ctx) => SplashScreen(),
         HomeScreen.ROUTE_NAME: (ctx) => HomeScreen(),
         SignInScreen.ROUTE_NAME: (ctx) => SignInScreen(),
@@ -109,4 +101,5 @@ class MyApp extends StatelessWidget {
       },
     );
   }
+
 }

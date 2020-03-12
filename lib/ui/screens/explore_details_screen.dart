@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
+import 'package:visit_city/ui/base/base_state.dart';
 import '../../models/rate/rate_post_wrapper.dart';
 import '../../models/rate/rate_send_model.dart';
 import '../../models/rate/rate_wrapper.dart';
@@ -26,7 +27,8 @@ class ExploreDetailsScreen extends StatefulWidget {
   _ExploreDetailsScreenState createState() => _ExploreDetailsScreenState();
 }
 
-class _ExploreDetailsScreenState extends State<ExploreDetailsScreen> {
+class _ExploreDetailsScreenState extends State<ExploreDetailsScreen>
+    with BaseState {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   TextEditingController _textController = TextEditingController();
@@ -214,6 +216,7 @@ class _ExploreDetailsScreenState extends State<ExploreDetailsScreen> {
       });
       callReviewApi();
     }, (MessageModel messageModel) {
+      checkServerError(messageModel);
       setState(() {
         _progressDialog.hide();
         showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
@@ -236,6 +239,7 @@ class _ExploreDetailsScreenState extends State<ExploreDetailsScreen> {
         }
       });
     }, (MessageModel messageModel) {
+      checkServerError(messageModel);
       setState(() {
         showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
         firstTimeToLoad = false;
@@ -264,6 +268,7 @@ class _ExploreDetailsScreenState extends State<ExploreDetailsScreen> {
         showSnackBar(createSnackBar(wrapper.message.message), _scaffoldKey);
       });
     }, (MessageModel messageModel) {
+      checkServerError(messageModel);
       setState(() {
         showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
         _progressDialog.hide();
@@ -296,5 +301,10 @@ class _ExploreDetailsScreenState extends State<ExploreDetailsScreen> {
   void resetRate() {
     initRate = 0.0;
     _textController.text = "";
+  }
+
+  @override
+  BuildContext provideContext() {
+    return context;
   }
 }

@@ -8,7 +8,7 @@ class LoginResponse {
 
   LoginResponse.fromJson(Map<String, dynamic> json)
       : token = json['token'],
-        user = UserModel.fromJson(json['user']);
+        user = (json['user'] != null) ? UserModel.fromJson(json['user']) : null;
 
   Map<String, dynamic> toJson() => {
         'token': token,

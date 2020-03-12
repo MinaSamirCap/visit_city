@@ -9,7 +9,9 @@ class LoginWrapper extends BaseWrapper {
       : super(info, messageModel);
 
   LoginWrapper.fromJson(Map<String, dynamic> json)
-      : data = LoginResponse.fromJson(json['data']),
+      : data = (json['data'] != null)
+            ? LoginResponse.fromJson(json['data'])
+            : null,
         super.fromJson(json);
 
   Map<String, dynamic> toJson() =>

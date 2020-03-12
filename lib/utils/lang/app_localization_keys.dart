@@ -93,4 +93,5 @@ class LocalKeys {
   static const FROM = 'from';
   static const TO = 'to';
   static const DEVELOPED_BY = "developed_by";
+  static const USER_LOGOUT = "user_logout";
 }
