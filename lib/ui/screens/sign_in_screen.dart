@@ -45,6 +45,7 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     _appLocal = AppLocalizations.of(context);
+    final _mediaQuery = MediaQuery.of(context);
 
     return GestureDetector(
       onTap: () {
@@ -110,13 +111,13 @@ class _SignInScreenState extends State<SignInScreen> {
                         ),
                         signInLaterButton(),
                         Container(
-                          width: double.infinity,
+                          width: _mediaQuery.size.width,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: <Widget>[
                               Container(
                                 height: 50,
-                                width: 50,
+                                width: 40,
                                 child: Image.asset(
                                   AssPath.SPONS_LOGO1,
                                   fit: BoxFit.fitWidth,
@@ -124,7 +125,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               ),
                               Container(
                                 height: 50,
-                                width: 50,
+                                width: 40,
                                 child: Image.asset(
                                   AssPath.SPONS_LOGO2,
                                   fit: BoxFit.fitWidth,
@@ -132,7 +133,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               ),
                               Container(
                                 height: 50,
-                                width: 50,
+                                width: 40,
                                 child: Image.asset(
                                   AssPath.SPONS_LOGO3,
                                   fit: BoxFit.fitWidth,
@@ -140,7 +141,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               ),
                               Container(
                                 height: 50,
-                                width: 50,
+                                width: 40,
                                 child: Image.asset(
                                   AssPath.SPONS_LOGO4,
                                   fit: BoxFit.fitWidth,
@@ -148,7 +149,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               ),
                               Container(
                                 height: 50,
-                                width: 50,
+                                width: 40,
                                 child: Image.asset(
                                   AssPath.SPONS_LOGO5,
                                   fit: BoxFit.fitWidth,
@@ -156,7 +157,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               ),
                               Container(
                                 height: 50,
-                                width: 50,
+                                width: 40,
                                 child: Image.asset(
                                   AssPath.SPONS_LOGO6,
                                   fit: BoxFit.fitWidth,
@@ -164,7 +165,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               ),
                               Container(
                                 height: 50,
-                                width: 50,
+                                width: 40,
                                 child: Image.asset(
                                   AssPath.SPONS_LOGO7,
                                   fit: BoxFit.fitWidth,

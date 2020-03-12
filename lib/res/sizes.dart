@@ -46,6 +46,7 @@ class Sizes {
   static final BOR_RAD_7 = BorderRadius.circular(7);
 
   static const EDEGINSETS_0 = EdgeInsets.all(0.0);
+  static const EDEGINSETS_2 = EdgeInsets.all(2.0);
   static const EDEGINSETS_4 = EdgeInsets.all(4.0);
   static const EDEGINSETS_5 = EdgeInsets.all(5.0);
   static const EDEGINSETS_8 = EdgeInsets.all(8.0);

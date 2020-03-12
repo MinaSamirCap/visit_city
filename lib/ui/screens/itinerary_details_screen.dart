@@ -75,7 +75,7 @@ class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
             body: Stack(
               children: <Widget>[
                 Container(
-                  width: double.infinity,
+                  width: MediaQuery.of(context).size.width,
                   height: double.infinity,
                   child: backgroundImageWidget(),
                 ),
@@ -121,12 +121,13 @@ class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
                     arguments: sightId);
               },
               child: Container(
-                height: 215,
+                height: 217,
+                width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                     borderRadius: Sizes.BOR_RAD_20,
                     border: Border.all(color: Coolor.GREY, width: 1)),
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: Sizes.EDEGINSETS_8,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
@@ -166,22 +167,32 @@ class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
 
   Widget halfSightWidget(DayModel model, int index) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.only(left: 5, right: 5),
-          child: Text(
-            _appLocal.translate(LocalKeys.FROM) +
-                " " +
-                model.sightsDay[index].openHours.from +
-                " " +
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                _appLocal.translate(LocalKeys.FROM) +
+                    " " +
+                    model.sightsDay[index].openHours.from,
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
                 _appLocal.translate(LocalKeys.TO) +
-                " " +
-                model.sightsDay[index].openHours.to,
-            style: TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.bold,
-            ),
+                    " " +
+                    model.sightsDay[index].openHours.to,
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
           ),
         ),
         Column(
@@ -224,7 +235,7 @@ class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
 
   Widget circleAvatarWidget(DayModel model, int index) {
     return CircleAvatar(
-      radius: Sizes.SIZE_30,
+      radius: Sizes.SIZE_25,
       backgroundImage: NetworkImage(model.sightsDay[index].photos[0]),
       backgroundColor: Colors.transparent,
     );
