@@ -118,7 +118,7 @@ class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
                   "sight_id": model.sightsDay[index].id
                 };
                 Navigator.of(context).pushNamed(SightDetailsScreen.ROUTE_NAME,
-                    arguments: sightId);
+                    arguments: sightId.toString());
               },
               child: Container(
                 height: 215,

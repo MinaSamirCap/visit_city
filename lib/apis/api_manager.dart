@@ -207,9 +207,9 @@ class ApiManager with ChangeNotifier {
     });
   }
 
-  void getSightDetails(int sightId, Function success, Function fail) async {
+  void getSightDetails(String sightId, Function success, Function fail) async {
     await http
-        .get(ApiKeys.sightDetailsUrl + sightId.toString(),
+        .get(ApiKeys.sightDetailsUrl + sightId,
             headers: await ApiKeys.getHeaders())
         .then((response) {
       Map extractedData = json.decode(response.body);

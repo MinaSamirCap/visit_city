@@ -40,7 +40,7 @@ class _SightDetailsScreenState extends State<SightDetailsScreen>
   ProgressDialog _progressDialog;
   ApiManager _apiManager;
 
-  int sightId = 0;
+  String sightId = "";
   SightResponse sightModel;
   List<RateModel> rateList = [];
   RateResponse _pagingInfo;

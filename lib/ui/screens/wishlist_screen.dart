@@ -215,7 +215,7 @@ class _WishlistScreenState extends State<WishlistScreen> with BaseState {
 
   void openDetialsSightScreen(int index) {
     Navigator.of(context).pushNamed(SightDetailsScreen.ROUTE_NAME,
-        arguments: {SightDetailsScreen.MODEL_ID_KEY: wishlistList[index].id});
+        arguments: {SightDetailsScreen.MODEL_ID_KEY: wishlistList[index].id.toString()});
   }
 
   void likeDislikeClicked(WishlistModel model) {

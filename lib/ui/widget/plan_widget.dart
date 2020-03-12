@@ -122,6 +122,7 @@ class _PlanWidgetState extends State<PlanWidget> {
           child: ClipRRect(
             child: InkWell(
               onTap: () {
+                // to do if --> if you want to open sightDetails you have to pass the id;
                 Navigator.of(context).pushNamed(SightDetailsScreen.ROUTE_NAME,
                     arguments: SightDetailsScreen.MODEL_ID_KEY);
               },

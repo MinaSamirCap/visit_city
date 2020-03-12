@@ -76,7 +76,7 @@ class _QrCodeScreenState extends State<QrCodeScreen> {
 
   Future onScan(String data) async {
     await Navigator.of(context).pushNamed(SightDetailsScreen.ROUTE_NAME,
-        arguments: {SightDetailsScreen.MODEL_ID_KEY: int.parse(data)});
+        arguments: {SightDetailsScreen.MODEL_ID_KEY: data});
     _key.currentState.startScan();
   }
 

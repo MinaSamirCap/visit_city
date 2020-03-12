@@ -124,7 +124,7 @@ class _MixedItinerariesScreenState extends State<MixedItinerariesScreen> {
             child: InkWell(
               onTap: () {
                 Navigator.of(context).pushNamed(SightDetailsScreen.ROUTE_NAME,
-                    arguments: {SightDetailsScreen.MODEL_ID_KEY: model.id});
+                    arguments: {SightDetailsScreen.MODEL_ID_KEY: model.id.toString()});
               },
               child: Container(
                 height: 215,
