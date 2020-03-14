@@ -89,5 +89,6 @@
     "verification_code" : "Verification Code",
     "reset_password" : "Reset Password",
     "code_error" : "Please enter the received code",
-    "new_password" : "New password"
+    "new_password" : "New password",
+    "guest_rate" : "You are logged in as a guest ... you need to sign in to be able to add review"
 }

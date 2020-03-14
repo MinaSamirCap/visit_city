@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
-import 'package:visit_city/models/rate/rate_model.dart';
-import 'package:visit_city/models/rate/rate_post_wrapper.dart';
-import 'package:visit_city/models/rate/rate_response.dart';
-import 'package:visit_city/models/rate/rate_send_model.dart';
-import 'package:visit_city/models/rate/rate_wrapper.dart';
-import 'package:visit_city/ui/base/base_state.dart';
+import '../../models/rate/rate_model.dart';
+import '../../models/rate/rate_post_wrapper.dart';
+import '../../models/rate/rate_response.dart';
+import '../../models/rate/rate_send_model.dart';
+import '../../models/rate/rate_wrapper.dart';
+import '../../prefs/pref_manager.dart';
+import '../../ui/base/base_state.dart';
 import '../../models/wishlist/like_dislike_wrapper.dart';
 import '../../models/wishlist/wishlist_send_model.dart';
 import '../../res/coolor.dart';
@@ -241,13 +242,19 @@ class _SightDetailsScreenState extends State<SightDetailsScreen>
     }
   }
 
-  void postClicked() {
-    if (initRate == 0.0) {
-      showSnackBar(createSnackBar(_appLocal.translate(LocalKeys.RATE_ERROR)),
+  void postClicked() async {
+    final isGuest = await PrefManager.isGuest();
+    if (isGuest) {
+      showSnackBar(createSnackBar(_appLocal.translate(LocalKeys.GUEST_RATE)),
           _scaffoldKey);
     } else {
-      /// call api .. :)
-      callRateSightApi();
+      if (initRate == 0.0) {
+        showSnackBar(createSnackBar(_appLocal.translate(LocalKeys.RATE_ERROR)),
+            _scaffoldKey);
+      } else {
+        /// call api .. :)
+        callRateSightApi();
+      }
     }
   }
 
@@ -312,18 +319,14 @@ class _SightDetailsScreenState extends State<SightDetailsScreen>
 
   void callRateSightApi() async {
     _progressDialog.show();
+    final userModel = await PrefManager.getUser();
     _apiManager.submitSightsReview(
         RateSendModel(initRate.toInt(), _textController.text), sightModel.id,
         (RatePostWrapper wrapper) {
       setState(() {
         rateList.insert(
             0,
-
-            /// we need to replace this model with the real data of user ..
-            RateModel.quickRate(
-                "Mina Samir",
-                "https://wuzzuf.s3.eu-west-1.amazonaws.com/files/upload_pic/thumb_444dd8d21eeed67339226f2919ec3246.jpg",
-                initRate,
+            RateModel.quickRate(userModel.name, userModel.photo, initRate,
                 _textController.text));
         _progressDialog.hide();
         resetRate();

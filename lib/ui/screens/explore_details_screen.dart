@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
+import 'package:visit_city/prefs/pref_manager.dart';
 import 'package:visit_city/ui/base/base_state.dart';
 import '../../models/rate/rate_post_wrapper.dart';
 import '../../models/rate/rate_send_model.dart';
@@ -197,13 +198,19 @@ class _ExploreDetailsScreenState extends State<ExploreDetailsScreen>
     }
   }
 
-  void postClicked() {
-    if (initRate == 0.0) {
-      showSnackBar(createSnackBar(_appLocal.translate(LocalKeys.RATE_ERROR)),
+  void postClicked() async {
+    final isGuest = await PrefManager.isGuest();
+    if (isGuest) {
+      showSnackBar(createSnackBar(_appLocal.translate(LocalKeys.GUEST_RATE)),
           _scaffoldKey);
     } else {
-      /// call api .. :)
-      callRateServiceApi();
+      if (initRate == 0.0) {
+        showSnackBar(createSnackBar(_appLocal.translate(LocalKeys.RATE_ERROR)),
+            _scaffoldKey);
+      } else {
+        /// call api .. :)
+        callRateServiceApi();
+      }
     }
   }
 
@@ -250,18 +257,14 @@ class _ExploreDetailsScreenState extends State<ExploreDetailsScreen>
 
   void callRateServiceApi() async {
     _progressDialog.show();
+    final userModel = await PrefManager.getUser();
     _apiManager.submitServiceReview(
         RateSendModel(initRate.toInt(), _textController.text), serviceModel.id,
         (RatePostWrapper wrapper) {
       setState(() {
         rateList.insert(
             0,
-
-            /// we need to replace this model with the real data of user ..
-            RateModel.quickRate(
-                "Mina Samir",
-                "https://wuzzuf.s3.eu-west-1.amazonaws.com/files/upload_pic/thumb_444dd8d21eeed67339226f2919ec3246.jpg",
-                initRate,
+            RateModel.quickRate(userModel.name, userModel.photo, initRate,
                 _textController.text));
         _progressDialog.hide();
         resetRate();
