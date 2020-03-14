@@ -94,4 +94,8 @@ class LocalKeys {
   static const TO = 'to';
   static const DEVELOPED_BY = "developed_by";
   static const USER_LOGOUT = "user_logout";
+  static const VERIFICATION_CODE = "verification_code";
+  static const RESET_PASSWORD = "reset_password";
+  static const CODE_ERROR = "code_error";
+  static const NEW_PASSWORD = "new_password";
 }

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:provider/provider.dart';
-import '../../prefs/pref_manager.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 
+import '../../prefs/pref_manager.dart';
 import '../../models/auth/login_send_model.dart';
 import '../../models/auth/login_wrapper.dart';
 import '../../models/message_model.dart';
@@ -14,7 +15,6 @@ import '../../res/sizes.dart';
 import '../../ui/screens/home_screen.dart';
 import '../../ui/screens/sign_up_screen.dart';
 import '../../ui/screens/forget_password_screen.dart';
-import 'package:progress_dialog/progress_dialog.dart';
 import '../../apis/auth_api_manager.dart';
 import '../../ui/widget/ui.dart';
 import '../../ui/base/base_state.dart';

@@ -85,5 +85,9 @@
     "to" : "الى",
     "rate_error" : "من فضلك اخر التقييم",
     "developed_by" : "Developed by ECH 2020",
-    "user_logout" : "تم تسجيل الخروج"
+    "user_logout" : "تم تسجيل الخروج",
+    "verification_code" : "كود التأكيد",
+    "reset_password" : "اعادة تعيين",
+    "code_error" : "برجاء ادخال الكود",
+    "new_password" : "كلمة السر الجديدة"
 }

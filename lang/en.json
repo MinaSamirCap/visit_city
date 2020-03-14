@@ -85,5 +85,9 @@
     "to" : "To",
     "rate_error" : "Please select rate",
     "developed_by" : "Developed by ECH 2020",
-    "user_logout" : "User logged out."
+    "user_logout" : "User logged out.",
+    "verification_code" : "Verification Code",
+    "reset_password" : "Reset Password",
+    "code_error" : "Please enter the received code",
+    "new_password" : "New password"
 }
