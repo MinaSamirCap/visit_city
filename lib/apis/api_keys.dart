@@ -57,4 +57,5 @@ class ApiKeys {
   static final loginUrl = baseUrl + "/login";
   static final signupUrl = baseUrl + "/signup";
   static final aboutIntroUrl = baseUrl + "/about/intro";
+  static final loginLaterUrl = baseUrl + "/skip";
 }
