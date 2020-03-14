@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:progress_dialog/progress_dialog.dart';
-import 'package:visit_city/models/add_sight_model.dart/add_sight_wrapper.dart';
-import 'package:visit_city/models/itineraries/day_model.dart';
 
+import '../../models/add_sight_model.dart/add_sight_wrapper.dart';
+import '../../models/itineraries/day_model.dart';
+import '../../ui/base/base_state.dart';
 import '../../utils/lang/app_localization.dart';
 import '../../utils/lang/app_localization_keys.dart';
 import '../../res/assets_path.dart';
@@ -25,7 +26,7 @@ class ItineraryDetailsScreen extends StatefulWidget {
   _ItineraryDetailsScreenState createState() => _ItineraryDetailsScreenState();
 }
 
-class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
+class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> with BaseState {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   AppLocalizations _appLocal;
   bool _isLoadingNow = true;
@@ -341,6 +342,7 @@ class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
         _isLoadingNow = false;
       });
     }, (MessageModel messageModel) {
+      checkServerError(messageModel);
       _progressDialog.hide();
       setState(() {
         showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
@@ -355,6 +357,7 @@ class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
         _isLoadingNow = false;
       });
     }, (MessageModel messageModel) {
+      checkServerError(messageModel);
       setState(() {
         showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
         _isLoadingNow = false;
@@ -369,11 +372,16 @@ class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> {
         _isLoadingNow = false;
       });
     }, (MessageModel messageModel) {
+      checkServerError(messageModel);
       setState(() {
         showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
         _isLoadingNow = false;
       });
     });
+  }
+  @override
+  BuildContext provideContext() {
+    return context;
   }
 }
 

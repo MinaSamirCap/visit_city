@@ -6,6 +6,7 @@ import 'package:visit_city/apis/auth_api_manager.dart';
 import 'package:visit_city/models/auth/signup_send_model.dart';
 import 'package:visit_city/models/auth/signup_wrapper.dart';
 import 'package:visit_city/models/message_model.dart';
+import 'package:visit_city/ui/base/base_state.dart';
 import 'package:visit_city/ui/widget/ui.dart';
 
 import '../../res/sizes.dart';
@@ -21,7 +22,7 @@ class SignUpScreen extends StatefulWidget {
   _SignUpScreenState createState() => _SignUpScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
+class _SignUpScreenState extends State<SignUpScreen> with BaseState{
   final GlobalKey<FormState> _formKey = GlobalKey();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final _passwordController = TextEditingController();
@@ -304,8 +305,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
       _progressDialog.hide();
       Navigator.of(context).pushReplacementNamed(SignInScreen.ROUTE_NAME);
     }, (MessageModel messageModel) {
+      checkServerError(messageModel);
       _progressDialog.hide();
       showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
     });
+  }
+  @override
+  BuildContext provideContext() {
+    return context;
   }
 }

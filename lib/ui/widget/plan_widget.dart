@@ -16,13 +16,14 @@ import '../../ui/widget/ui.dart';
 import '../../res/assets_path.dart';
 import '../../general/url_launchers.dart';
 import '../../ui/screens/sight_details_screen.dart';
+import '../../ui/base/base_state.dart';
 
 class PlanWidget extends StatefulWidget {
   @override
   _PlanWidgetState createState() => _PlanWidgetState();
 }
 
-class _PlanWidgetState extends State<PlanWidget> {
+class _PlanWidgetState extends State<PlanWidget> with BaseState{
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   AppLocalizations _appLocal;
   List<SightsListModel> myPlan = [];
@@ -261,6 +262,7 @@ class _PlanWidgetState extends State<PlanWidget> {
         }
       });
     }, (MessageModel messageModel) {
+      checkServerError(messageModel);
       _progressDialog.hide();
       setState(() {
         showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
@@ -275,10 +277,15 @@ class _PlanWidgetState extends State<PlanWidget> {
         _isLoadingNow = false;
       });
     }, (MessageModel messageModel) {
+      checkServerError(messageModel);
       setState(() {
         showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
         _isLoadingNow = false;
       });
     });
+  }
+  @override
+  BuildContext provideContext() {
+    return context;
   }
 }

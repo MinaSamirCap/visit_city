@@ -15,6 +15,7 @@ import '../../ui/widget/ui.dart';
 import '../../res/assets_path.dart';
 import '../../general/url_launchers.dart';
 import '../../ui/screens/sight_details_screen.dart';
+import '../../ui/base/base_state.dart';
 
 class MixedItinerariesScreen extends StatefulWidget {
   static const ROUTE_NAME = '/mixed-itineraries-screen';
@@ -23,7 +24,7 @@ class MixedItinerariesScreen extends StatefulWidget {
   _MixedItinerariesScreenState createState() => _MixedItinerariesScreenState();
 }
 
-class _MixedItinerariesScreenState extends State<MixedItinerariesScreen> {
+class _MixedItinerariesScreenState extends State<MixedItinerariesScreen> with BaseState{
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   AppLocalizations _appLocal;
   List<SightsListModel> mixedList = [];
@@ -54,17 +55,6 @@ class _MixedItinerariesScreenState extends State<MixedItinerariesScreen> {
     super.dispose();
   }
 
-  // Widget _buildProgressIndicator() {
-  //   return new Padding(
-  //     padding: const EdgeInsets.all(8.0),
-  //     child: new Center(
-  //       child: new Opacity(
-  //         opacity: _isLoadingNow ? 1.0 : 00,
-  //         child: new CircularProgressIndicator(),
-  //       ),
-  //     ),
-  //   );
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -110,7 +100,6 @@ class _MixedItinerariesScreenState extends State<MixedItinerariesScreen> {
     SightsListModel model = mixedList[index];
     return ListTile(
       leading: circleAvatarWidget(model),
-      // verticalDivider(),
       title: sightCardItem(model),
     );
   }
@@ -128,7 +117,6 @@ class _MixedItinerariesScreenState extends State<MixedItinerariesScreen> {
               },
               child: Container(
                 height: 217,
-                // width: ,
                 decoration: BoxDecoration(
                     borderRadius: Sizes.BOR_RAD_20,
                     border: Border.all(color: Coolor.GREY, width: 1)),
@@ -259,6 +247,7 @@ class _MixedItinerariesScreenState extends State<MixedItinerariesScreen> {
         }
       });
     }, (MessageModel messageModel) {
+      checkServerError(messageModel);
       _progressDialog.hide();
       setState(() {
         showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
@@ -273,10 +262,15 @@ class _MixedItinerariesScreenState extends State<MixedItinerariesScreen> {
         _isLoadingNow = false;
       });
     }, (MessageModel messageModel) {
+      checkServerError(messageModel);
       setState(() {
         showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
         _isLoadingNow = false;
       });
     });
+  }
+  @override
+  BuildContext provideContext() {
+    return context;
   }
 }

@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:visit_city/models/rate/user_model.dart';
 import 'package:visit_city/res/assets_path.dart';
+import 'package:visit_city/ui/base/base_state.dart';
 
 import '../../res/coolor.dart';
 import '../../utils/lang/app_localization.dart';
@@ -25,7 +26,7 @@ class ProfileScreen extends StatefulWidget {
   _ProfileScreenState createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _ProfileScreenState extends State<ProfileScreen> with BaseState{
   AppLocalizations _appLocal;
   UserModel profileInfo;
   ProgressDialog _progressDialog;
@@ -149,10 +150,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
         _isLoadingNow = false;
       });
     }, (MessageModel messageModel) {
+      checkServerError(messageModel);
       // _progressDialog.hide();
       setState(() {
         _isLoadingNow = false;
       });
     });
   }
+  @override
+  BuildContext provideContext() {
+    return context;
+  }
+
 }

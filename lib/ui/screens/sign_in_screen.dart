@@ -17,6 +17,7 @@ import '../../ui/screens/forget_password_screen.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import '../../apis/auth_api_manager.dart';
 import '../../ui/widget/ui.dart';
+import '../../ui/base/base_state.dart';
 
 class SignInScreen extends StatefulWidget {
   static const ROUTE_NAME = '/signin';
@@ -25,7 +26,7 @@ class SignInScreen extends StatefulWidget {
   _SignInScreenState createState() => _SignInScreenState();
 }
 
-class _SignInScreenState extends State<SignInScreen> {
+class _SignInScreenState extends State<SignInScreen> with BaseState {
   final _formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   AppLocalizations _appLocal;
@@ -347,6 +348,7 @@ class _SignInScreenState extends State<SignInScreen> {
         _isLoadingNow = false;
       });
     }, (MessageModel messageModel) {
+      checkServerError(messageModel);
       _progressDialog.hide();
       setState(() {
         showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
@@ -359,5 +361,10 @@ class _SignInScreenState extends State<SignInScreen> {
     await PrefManager.setToken(token);
     await PrefManager.setLogedIn();
     Navigator.of(context).pushReplacementNamed(HomeScreen.ROUTE_NAME);
+  }
+
+  @override
+  BuildContext provideContext() {
+    return context;
   }
 }

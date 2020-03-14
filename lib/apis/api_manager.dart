@@ -125,7 +125,6 @@ class ApiManager with ChangeNotifier {
             headers: await ApiKeys.getHeaders())
         .then((response) {
       Map extractedData = json.decode(response.body);
-      // print(extractedData);
       if (extractedData == null) {
         fail(MessageModel.getDecodeError());
         return false;

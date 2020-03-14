@@ -12,7 +12,6 @@ class FayoumIntroScreen extends StatefulWidget {
 }
 
 class _FayoumIntroScreenState extends State<FayoumIntroScreen> {
-  String url = "https://visit-fayoum.herokuapp.com/api/v1/about/intro";
   ScrollController _scrollController = new ScrollController();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   bool isLoading = false;
@@ -31,20 +30,7 @@ class _FayoumIntroScreenState extends State<FayoumIntroScreen> {
     });
   }
 
-  void _getMoreData() async {
-    if (!isLoading) {
-      setState(() {
-        isLoading = true;
-      });
-      final response =
-          await dio.get(url, options: Options(headers: await ApiKeys.getHeaders()));
-
-      setState(() {
-        isLoading = false;
-        data = response.data['data']['intro'];
-      });
-    }
-  }
+  
 
   @override
   void dispose() {
@@ -71,5 +57,19 @@ class _FayoumIntroScreenState extends State<FayoumIntroScreen> {
               ),
           ),
     );
+  }
+  void _getMoreData() async {
+    if (!isLoading) {
+      setState(() {
+        isLoading = true;
+      });
+      final response =
+          await dio.get(ApiKeys.aboutIntroUrl, options: Options(headers: await ApiKeys.getHeaders()));
+
+      setState(() {
+        isLoading = false;
+        data = response.data['data']['intro'];
+      });
+    }
   }
 }
