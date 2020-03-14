@@ -18,7 +18,8 @@ class ApiKeys {
 
   static Future<Map<String, String>> getNotAuthHeaders() async {
     return {
-      authorization: '$keyBearer ${await PrefManager.getToken()}ldasjflasjdfdldfsljkasdfljdslkfjkladsjfkasldjfskjf',
+      authorization:
+          '$keyBearer ${await PrefManager.getToken()}ldasjflasjdfdldfsljkasdfljdslkfjkladsjfkasldjfskjf',
       contentType: applicationJson,
       acceptLanguage: await PrefManager.getLang()
     };
@@ -58,4 +59,6 @@ class ApiKeys {
   static final signupUrl = baseUrl + "/signup";
   static final aboutIntroUrl = baseUrl + "/about/intro";
   static final loginLaterUrl = baseUrl + "/skip";
+  static final forgetPasswordUrl = baseUrl + "/forget-password";
+  static final resetPasswordUrl = baseUrl + "/reset-password";
 }

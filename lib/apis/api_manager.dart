@@ -24,6 +24,9 @@ import '../models/itineraries/itineraries_wrapper.dart';
 import '../models/unplan_sight_model.dart/unplan_sight_wrapper.dart';
 import '../models/add_sight_model.dart/add_sight_wrapper.dart';
 import '../models/profile/profile_wrapper.dart';
+import '../models/forget_password/forget_password_send_model.dart';
+import '../models/forget_password/forget_password_wrapper.dart';
+import '../models/forget_password/reset_password_send_model.dart';
 
 class ApiManager with ChangeNotifier {
   /// authonticated done ...
@@ -535,6 +538,55 @@ class ApiManager with ChangeNotifier {
         return false;
       } else {
         ProfileWrapper wrapper = ProfileWrapper.fromJson(extractedData);
+        if (wrapper.info) {
+          success(wrapper);
+          return true;
+        } else {
+          fail(wrapper.message);
+          return false;
+        }
+      }
+    }).catchError((onError) {
+      fail(checkErrorType(onError));
+    });
+  }
+
+  void forgetPasswordApis(ForgetPasswordSendModel model, Function success, Function fail) async {
+    await http
+        .post(ApiKeys.forgetPasswordUrl,
+            headers: await ApiKeys.getAuthHeaders(),
+            body: json.encode(model.toJson()))
+        .then((response) {
+      Map extractedData = json.decode(response.body);
+      if (extractedData == null) {
+        fail(MessageModel.getDecodeError());
+        return false;
+      } else {
+        ForgetPasswordWrapper wrapper = ForgetPasswordWrapper.fromJson(extractedData);
+        if (wrapper.info) {
+          success(wrapper);
+          return true;
+        } else {
+          fail(wrapper.message);
+          return false;
+        }
+      }
+    }).catchError((onError) {
+      fail(checkErrorType(onError));
+    });
+  }
+  void resetPasswordApis(ResetPasswordSendModel model, Function success, Function fail) async {
+    await http
+        .post(ApiKeys.resetPasswordUrl,
+            headers: await ApiKeys.getAuthHeaders(),
+            body: json.encode(model.toJson()))
+        .then((response) {
+      Map extractedData = json.decode(response.body);
+      if (extractedData == null) {
+        fail(MessageModel.getDecodeError());
+        return false;
+      } else {
+        ForgetPasswordWrapper wrapper = ForgetPasswordWrapper.fromJson(extractedData);
         if (wrapper.info) {
           success(wrapper);
           return true;

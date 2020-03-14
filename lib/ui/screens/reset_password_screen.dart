@@ -1,4 +1,3 @@
-import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
@@ -8,34 +7,42 @@ import '../../utils/lang/app_localization.dart';
 import '../../res/assets_path.dart';
 import '../../res/coolor.dart';
 import '../../res/sizes.dart';
-import '../../models/forget_password/forget_password_send_model.dart';
+import '../../models/forget_password/reset_password_send_model.dart';
 import '../../apis/api_manager.dart';
 import '../../models/forget_password/forget_password_wrapper.dart';
 import '../../ui/base/base_state.dart';
 import '../../ui/widget/ui.dart';
 import '../../models/message_model.dart';
-import '../../ui/screens/reset_password_screen.dart';
+import '../../ui/screens/sign_in_screen.dart';
 
-class ForgetPasswordScreen extends StatefulWidget {
-  static const ROUTE_NAME = '/forget-password';
+class ResetPasswordScreen extends StatefulWidget {
+  static const ROUTE_NAME = '/reset-password';
   @override
-  _ForgetPasswordScreenState createState() => _ForgetPasswordScreenState();
+  _ResetPasswordScreenState createState() => _ResetPasswordScreenState();
 }
 
-class _ForgetPasswordScreenState extends State<ForgetPasswordScreen>
+class _ResetPasswordScreenState extends State<ResetPasswordScreen>
     with BaseState {
   var appLocal;
-  ForgetPasswordSendModel model = ForgetPasswordSendModel();
+  ResetPasswordSendModel model = ResetPasswordSendModel();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final TextEditingController _passwordController = TextEditingController();
+
   bool _isLoadingNow = false;
   ProgressDialog _progressDialog;
-  ApiManager _apiManager;
+  ApiManager _apiAuthManager;
+
+  @override
+  void dispose() {
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   void initState() {
     Future.delayed(Duration.zero).then((_) {
       _progressDialog = getPlzWaitProgress(context, appLocal);
-      _apiManager = Provider.of<ApiManager>(context, listen: false);
+      _apiAuthManager = Provider.of<ApiManager>(context, listen: false);
     });
     super.initState();
   }
@@ -82,49 +89,73 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen>
                 SizedBox(
                   height: Sizes.SIZE_50,
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      appLocal.translate(LocalKeys.REGESTERED_EMAIL),
-                      style: TextStyle(fontSize: Sizes.SIZE_20),
-                    ),
-                    SizedBox(
-                      height: Sizes.SIZE_25,
-                    ),
-                    Text(
-                      appLocal.translate(LocalKeys.SEND_VERIFICATION),
-                      style: TextStyle(color: Coolor.GREY),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: Sizes.SIZE_25,
-                ),
                 Padding(
                   padding: Sizes.EDEGINSETS_8,
                   child: Form(
                     key: _formKey,
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                        labelText: appLocal.translate(LocalKeys.EMAIL),
-                        contentPadding: Sizes.EDEGINSETS_20,
-                        border: OutlineInputBorder(
-                          gapPadding: Sizes.SIZE_3_3,
-                          borderRadius: Sizes.BOR_RAD_25,
+                    child: Column(children: <Widget>[
+                      TextFormField(
+                        decoration: InputDecoration(
+                          labelText:
+                              appLocal.translate(LocalKeys.VERIFICATION_CODE),
+                          contentPadding: Sizes.EDEGINSETS_20,
+                          border: OutlineInputBorder(
+                            gapPadding: Sizes.SIZE_3_3,
+                            borderRadius: Sizes.BOR_RAD_25,
+                          ),
                         ),
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return appLocal.translate(LocalKeys.CODE_ERROR);
+                          }
+                          return null;
+                        },
+                        onSaved: (value) {
+                          model.code = value;
+                        },
                       ),
-                      keyboardType: TextInputType.emailAddress,
-                      validator: (value) {
-                        if (value.isEmpty || !EmailValidator.validate(value)) {
-                          return appLocal.translate(LocalKeys.ERROR_EMAIL);
-                        }
-                        return null;
-                      },
-                      onSaved: (value) {
-                        model.email = value;
-                      },
-                    ),
+                      Sizes.DIVIDER_HEIGHT_10,
+                      TextFormField(
+                        obscureText: true,
+                        controller: _passwordController,
+                        decoration: InputDecoration(
+                          labelText: appLocal.translate(LocalKeys.NEW_PASSWORD),
+                          contentPadding: Sizes.EDEGINSETS_20,
+                          border: OutlineInputBorder(
+                            gapPadding: 3.3,
+                            borderRadius: Sizes.BOR_RAD_25,
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value.isEmpty || value.length < 8) {
+                            return appLocal.translate(LocalKeys.ERROR_PASSWORD);
+                          }
+                          return null;
+                        },
+                        onSaved: (value) {
+                          model.password = value;
+                        },
+                      ),
+                      Sizes.DIVIDER_HEIGHT_10,
+                      TextFormField(
+                          decoration: InputDecoration(
+                            labelText:
+                                appLocal.translate(LocalKeys.CONFIRM_PASSWORD),
+                            contentPadding: Sizes.EDEGINSETS_20,
+                            border: OutlineInputBorder(
+                              gapPadding: 3.3,
+                              borderRadius: Sizes.BOR_RAD_25,
+                            ),
+                          ),
+                          obscureText: true,
+                          validator: (value) {
+                            if (value != _passwordController.text) {
+                              return appLocal
+                                  .translate(LocalKeys.PASS_DONT_MATCH);
+                            }
+                            return null;
+                          }),
+                    ]),
                   ),
                 ),
                 SizedBox(
@@ -162,15 +193,14 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen>
       return;
     }
     _formKey.currentState.save();
-    callForgetPasswordApi();
+    callResetPasswordApi();
   }
 
-  void callForgetPasswordApi() {
+  void callResetPasswordApi() {
     _progressDialog.show();
-    _apiManager.forgetPasswordApis(model, (ForgetPasswordWrapper wrapper) {
+    _apiAuthManager.resetPasswordApis(model, (ForgetPasswordWrapper wrapper) {
       _progressDialog.hide();
-      Navigator.of(context)
-          .pushReplacementNamed(ResetPasswordScreen.ROUTE_NAME);
+      Navigator.of(context).pushReplacementNamed(SignInScreen.ROUTE_NAME);
       setState(() {
         _isLoadingNow = false;
       });

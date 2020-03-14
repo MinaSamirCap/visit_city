@@ -3,8 +3,11 @@ import 'package:email_validator/email_validator.dart';
 import 'package:provider/provider.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
+<<<<<<< HEAD
 import '../../models/rate/user_model.dart';
 import '../../models/login_later/login_later_wrapper.dart';
+=======
+>>>>>>> 7dc80a160ba8eeb9a11921f3ebe2ffab278db6a6
 import '../../prefs/pref_manager.dart';
 import '../../models/auth/login_send_model.dart';
 import '../../models/auth/login_wrapper.dart';

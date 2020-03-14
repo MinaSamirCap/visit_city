@@ -24,6 +24,7 @@ import 'ui/screens/how_to_use_app_screen.dart';
 import 'ui/screens/fayoum_intro_screen.dart';
 import 'ui/screens/profile_screen.dart';
 import 'ui/screens/profile_update_screen.dart';
+import 'ui/screens/reset_password_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -98,6 +99,7 @@ class MyApp extends StatelessWidget {
         FayoumIntroScreen.ROUTE_NAME: (ctx) => FayoumIntroScreen(),
         HowToUseAppScreen.ROUTE_NAME: (ctx) => HowToUseAppScreen(),
         ProfileUpdateScreen.ROUTE_NAME: (ctx) => ProfileUpdateScreen(),
+        ResetPasswordScreen.ROUTE_NAME: (ctx) => ResetPasswordScreen(),
       },
     );
   }
