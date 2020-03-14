@@ -3,7 +3,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http; // to avoid crashing with names ..
-import 'package:visit_city/prefs/pref_manager.dart';
 
 import 'api_keys.dart';
 

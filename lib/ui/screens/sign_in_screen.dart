@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:provider/provider.dart';
-import '../../prefs/pref_manager.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 
+import '../../models/rate/user_model.dart';
+import '../../models/login_later/login_later_wrapper.dart';
+import '../../prefs/pref_manager.dart';
 import '../../models/auth/login_send_model.dart';
 import '../../models/auth/login_wrapper.dart';
 import '../../models/message_model.dart';
@@ -14,7 +17,6 @@ import '../../res/sizes.dart';
 import '../../ui/screens/home_screen.dart';
 import '../../ui/screens/sign_up_screen.dart';
 import '../../ui/screens/forget_password_screen.dart';
-import 'package:progress_dialog/progress_dialog.dart';
 import '../../apis/auth_api_manager.dart';
 import '../../ui/widget/ui.dart';
 import '../../ui/base/base_state.dart';
@@ -325,7 +327,7 @@ class _SignInScreenState extends State<SignInScreen> with BaseState {
       child: FlatButton(
         child: Text(_appLocal.translate(LocalKeys.SIGN_IN_LATER)),
         onPressed: () {
-          Navigator.of(context).pushReplacementNamed(HomeScreen.ROUTE_NAME);
+          callSkipLoginApi();
         },
       ),
     );
@@ -343,7 +345,7 @@ class _SignInScreenState extends State<SignInScreen> with BaseState {
     _progressDialog.show();
     _apiAuthManager.loginApis(model, (LoginWrapper wrapper) {
       _progressDialog.hide();
-      saveUserToken(wrapper.data.token);
+      saveUserToken(wrapper.data.token, wrapper.data.user, false);
       setState(() {
         _isLoadingNow = false;
       });
@@ -357,9 +359,29 @@ class _SignInScreenState extends State<SignInScreen> with BaseState {
     });
   }
 
-  void saveUserToken(String token) async {
+  void callSkipLoginApi() {
+    _progressDialog.show();
+    _apiAuthManager.loginLaterApis((LoginLaterWrapper wrapper) {
+      _progressDialog.hide();
+      saveUserToken(wrapper.data.token, wrapper.data.user, true);
+      setState(() {
+        _isLoadingNow = false;
+      });
+    }, (MessageModel messageModel) {
+      checkServerError(messageModel);
+      _progressDialog.hide();
+      setState(() {
+        showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
+        _isLoadingNow = false;
+      });
+    });
+  }
+
+  void saveUserToken(String token, UserModel userModel, bool isGuest) async {
     await PrefManager.setToken(token);
+    await PrefManager.setIsGuest(isGuest);
     await PrefManager.setLogedIn();
+    await PrefManager.setUser(userModel);
     Navigator.of(context).pushReplacementNamed(HomeScreen.ROUTE_NAME);
   }
 

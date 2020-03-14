@@ -65,10 +65,7 @@ class AuthApiManager extends ApiManager {
 
   void loginLaterApis(Function success, Function fail) async {
     await http
-        .post(
-      ApiKeys.loginLaterUrl,
-      headers: await ApiKeys.getAuthHeaders(),
-    )
+        .post(ApiKeys.loginLaterUrl, headers: await ApiKeys.getAuthHeaders())
         .then((response) {
       Map extractedData = json.decode(response.body);
       if (extractedData == null) {
