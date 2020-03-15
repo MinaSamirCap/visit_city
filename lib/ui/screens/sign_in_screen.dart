@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
@@ -392,11 +394,10 @@ class _SignInScreenState extends State<SignInScreen> with BaseState {
     Navigator.of(context).pushReplacementNamed(HomeScreen.ROUTE_NAME);
   }
 
-  Future<FacebookLoginResult> _loginWithFacebook() async {
+  Future<Void> _loginWithFacebook() async {
     var facebookLogin = FacebookLogin();
     var result = await facebookLogin.logIn(['email']);
-    print(result.status.toString() + " fb status");
-    print(result.accessToken.token);
+
     switch (result.status) {
       case FacebookLoginStatus.loggedIn:
         fbModel.accessToken = result.accessToken.token;
@@ -405,17 +406,16 @@ class _SignInScreenState extends State<SignInScreen> with BaseState {
       case FacebookLoginStatus.cancelledByUser:
         break;
       case FacebookLoginStatus.error:
-      showSnackBar(createSnackBar(result.status.toString()), _scaffoldKey);
+        showSnackBar(createSnackBar(result.status.toString()), _scaffoldKey);
         break;
     }
-    return result;
   }
 
   void callFbLoginApi() {
     _progressDialog.show();
     _apiAuthManager.fbLoginApi(fbModel, (FbLoginWrapper wrapper) {
       _progressDialog.hide();
-      saveUserToken(wrapper.data.token, wrapper.data.user, true);
+      saveUserToken(wrapper.data.token, wrapper.data.user, false);
       setState(() {
         _isLoadingNow = false;
       });

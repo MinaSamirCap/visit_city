@@ -91,5 +91,6 @@
     "code_error" : "Please enter the received code",
     "new_password" : "New password",
     "guest_rate" : "You are logged in as a guest ... you need to sign in to be able to add review",
-    "guest_check": "You are logged in as a guest ... you need to sign in to be able to display your plan"
+    "guest_check": "You are logged in as a guest ... you need to sign in to be able to display your plan",
+    "no_sights" : "No sights added to my plan"
 }

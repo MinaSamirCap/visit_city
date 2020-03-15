@@ -100,4 +100,5 @@ class LocalKeys {
   static const NEW_PASSWORD = "new_password";
   static const GUEST_RATE = "guest_rate";
   static const GUEST_CKECK = "guest_check";
+  static const NO_SIGHTS = "no_sights";
 }

@@ -253,9 +253,16 @@ class _PlanWidgetState extends State<PlanWidget> with BaseState {
     _apiManager.getMyPlan(_pagingInfo.page + 1, (SightsListWrapper wrapper) {
       _progressDialog.hide();
       setState(() {
-        myPlan.addAll(wrapper.data.docs);
-        _pagingInfo = wrapper.data;
-        _isLoadingNow = false;
+        if (wrapper.data == null || wrapper.data.totalDocs == 0) {
+          showSnackBar(
+              createSnackBar(_appLocal.translate(LocalKeys.NO_SIGHTS)),
+              _scaffoldKey);
+        } else {
+          print(wrapper.data.toString());
+          myPlan.addAll(wrapper.data.docs);
+          _pagingInfo = wrapper.data;
+          _isLoadingNow = false;
+        }
         if (!_pagingInfo.hasNextPage) {
           showSnackBar(
               createSnackBar(_appLocal.translate(LocalKeys.NO_MORE_DATA)),
