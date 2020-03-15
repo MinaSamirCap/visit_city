@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "640188276603",
+    "firebase_url": "https://flutterfacebook-8163a.firebaseio.com",
+    "project_id": "flutterfacebook-8163a",
+    "storage_bucket": "flutterfacebook-8163a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:640188276603:android:d5e42ae3514c9126e327de",
+        "android_client_info": {
+          "package_name": "com.example.visitCity"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "640188276603-np3o0tm7a45mt5h1ksau2vrimlo93q9k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkoEekRtLkbbig6Wls0L1uEXwKGga7yAk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "640188276603-np3o0tm7a45mt5h1ksau2vrimlo93q9k.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "640188276603-9gsmjd6h7fnp8i0n3umrsh7f2mlfiqko.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.visitCity"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

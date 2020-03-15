@@ -61,4 +61,5 @@ class ApiKeys {
   static final loginLaterUrl = baseUrl + "/skip";
   static final forgetPasswordUrl = baseUrl + "/forget-password";
   static final resetPasswordUrl = baseUrl + "/reset-password";
+  static final fbLoginUrl = baseUrl + "/login-facebook";
 }

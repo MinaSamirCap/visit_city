@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:provider/provider.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
@@ -20,6 +21,8 @@ import '../../ui/screens/forget_password_screen.dart';
 import '../../apis/auth_api_manager.dart';
 import '../../ui/widget/ui.dart';
 import '../../ui/base/base_state.dart';
+import '../../models/fb_login/fb_login_wrapper.dart';
+import '../../models/fb_login/fb_login_send_model.dart';
 
 class SignInScreen extends StatefulWidget {
   static const ROUTE_NAME = '/signin';
@@ -31,11 +34,13 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> with BaseState {
   final _formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
   AppLocalizations _appLocal;
   bool _isLoadingNow = false;
   ProgressDialog _progressDialog;
   AuthApiManager _apiAuthManager;
   LoginSendModel model = LoginSendModel();
+  FbLoginSendModel fbModel = FbLoginSendModel();
 
   void initState() {
     Future.delayed(Duration.zero).then((_) {
@@ -286,7 +291,9 @@ class _SignInScreenState extends State<SignInScreen> with BaseState {
     return FloatingActionButton(
       elevation: 5,
       heroTag: null,
-      onPressed: () {},
+      onPressed: () {
+        final user = _loginWithFacebook();
+      },
       backgroundColor: Coolor.WHITE,
       child: Image.asset(
         AssPath.LOGO_FB,
@@ -383,6 +390,43 @@ class _SignInScreenState extends State<SignInScreen> with BaseState {
     await PrefManager.setLogedIn();
     await PrefManager.setUser(userModel);
     Navigator.of(context).pushReplacementNamed(HomeScreen.ROUTE_NAME);
+  }
+
+  Future<FacebookLoginResult> _loginWithFacebook() async {
+    var facebookLogin = FacebookLogin();
+    var result = await facebookLogin.logIn(['email']);
+    print(result.status.toString() + " fb status");
+    print(result.accessToken.token);
+    switch (result.status) {
+      case FacebookLoginStatus.loggedIn:
+        fbModel.accessToken = result.accessToken.token;
+        callFbLoginApi();
+        break;
+      case FacebookLoginStatus.cancelledByUser:
+        break;
+      case FacebookLoginStatus.error:
+      showSnackBar(createSnackBar(result.status.toString()), _scaffoldKey);
+        break;
+    }
+    return result;
+  }
+
+  void callFbLoginApi() {
+    _progressDialog.show();
+    _apiAuthManager.fbLoginApi(fbModel, (FbLoginWrapper wrapper) {
+      _progressDialog.hide();
+      saveUserToken(wrapper.data.token, wrapper.data.user, true);
+      setState(() {
+        _isLoadingNow = false;
+      });
+    }, (MessageModel messageModel) {
+      checkServerError(messageModel);
+      _progressDialog.hide();
+      setState(() {
+        showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
+        _isLoadingNow = false;
+      });
+    });
   }
 
   @override

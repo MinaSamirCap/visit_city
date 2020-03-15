@@ -26,7 +26,7 @@ class ProfileScreen extends StatefulWidget {
   _ProfileScreenState createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> with BaseState{
+class _ProfileScreenState extends State<ProfileScreen> with BaseState {
   AppLocalizations _appLocal;
   UserModel profileInfo;
   ProgressDialog _progressDialog;
@@ -78,7 +78,7 @@ class _ProfileScreenState extends State<ProfileScreen> with BaseState{
                   ),
                   Container(
                     width: double.infinity,
-                    margin: const EdgeInsets.only(left: 10,right:10),
+                    margin: const EdgeInsets.only(left: 10, right: 10),
                     child: Card(
                       elevation: 5,
                       shape: RoundedRectangleBorder(
@@ -90,8 +90,9 @@ class _ProfileScreenState extends State<ProfileScreen> with BaseState{
                               height: 20,
                             ),
                             CircleAvatar(
-                              backgroundImage:
-                                  profileInfo.photo == null ? AssetImage(AssPath.APP_LOGO) :NetworkImage(profileInfo.photo),
+                              backgroundImage: profileInfo.photo == null
+                                  ? AssetImage(AssPath.APP_LOGO)
+                                  : NetworkImage(profileInfo.photo),
                               // minRadius: 50,
                               radius: 130,
                             ),
@@ -113,19 +114,23 @@ class _ProfileScreenState extends State<ProfileScreen> with BaseState{
                             ),
                             Padding(
                               padding: const EdgeInsets.only(top: 20),
-                              child: Text(
-                               profileInfo.phone,
-                                style:
-                                    TextStyle(fontSize: 18, color: Coolor.GREY),
-                              ),
+                              child: profileInfo.phone == null
+                                  ? Text('none')
+                                  : Text(
+                                      profileInfo.phone,
+                                      style: TextStyle(
+                                          fontSize: 18, color: Coolor.GREY),
+                                    ),
                             ),
                             Padding(
                               padding: const EdgeInsets.only(top: 20),
-                              child: Text(
-                                profileInfo.country,
-                                style:
-                                    TextStyle(fontSize: 18, color: Coolor.GREY),
-                              ),
+                              child: profileInfo.country == null
+                                  ? Text('')
+                                  : Text(
+                                      profileInfo.country,
+                                      style: TextStyle(
+                                          fontSize: 18, color: Coolor.GREY),
+                                    ),
                             ),
                             SizedBox(
                               height: 30,
@@ -157,9 +162,9 @@ class _ProfileScreenState extends State<ProfileScreen> with BaseState{
       });
     });
   }
+
   @override
   BuildContext provideContext() {
     return context;
   }
-
 }
