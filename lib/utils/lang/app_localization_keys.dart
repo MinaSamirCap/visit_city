@@ -99,4 +99,5 @@ class LocalKeys {
   static const CODE_ERROR = "code_error";
   static const NEW_PASSWORD = "new_password";
   static const GUEST_RATE = "guest_rate";
+  static const GUEST_CKECK = "guest_check";
 }

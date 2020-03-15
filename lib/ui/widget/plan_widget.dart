@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:visit_city/models/unplan_sight_model.dart/unplan_sight_wrapper.dart';
+import 'package:visit_city/prefs/pref_manager.dart';
 
 import '../../apis/api_manager.dart';
 import '../../models/message_model.dart';
@@ -23,7 +24,7 @@ class PlanWidget extends StatefulWidget {
   _PlanWidgetState createState() => _PlanWidgetState();
 }
 
-class _PlanWidgetState extends State<PlanWidget> with BaseState{
+class _PlanWidgetState extends State<PlanWidget> with BaseState {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   AppLocalizations _appLocal;
   List<SightsListModel> myPlan = [];
@@ -38,9 +39,19 @@ class _PlanWidgetState extends State<PlanWidget> with BaseState{
       _progressDialog = getPlzWaitProgress(context, _appLocal);
       _apiManager = Provider.of<ApiManager>(context, listen: false);
       clearPaging();
-      callPlanApi();
+      isGuest();
     });
     super.initState();
+  }
+
+  void isGuest() async {
+    final isGuest = await PrefManager.isGuest();
+    if (isGuest) {
+      showSnackBar(createSnackBar(_appLocal.translate(LocalKeys.GUEST_CKECK)),
+          _scaffoldKey);
+    } else {
+      callPlanApi();
+    }
   }
 
   void clearPaging() {
@@ -57,7 +68,6 @@ class _PlanWidgetState extends State<PlanWidget> with BaseState{
   @override
   Widget build(BuildContext context) {
     _appLocal = AppLocalizations.of(context);
-    print(myPlan.toString() + " here");
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
@@ -76,18 +86,6 @@ class _PlanWidgetState extends State<PlanWidget> with BaseState{
       resizeToAvoidBottomPadding: false,
     );
   }
-
-  // Widget _buildProgressIndicator() {
-  //   return new Padding(
-  //     padding: const EdgeInsets.all(8.0),
-  //     child: new Center(
-  //       child: new Opacity(
-  //         opacity: _isLoadingNow ? 1.0 : 00,
-  //         child: new CircularProgressIndicator(),
-  //       ),
-  //     ),
-  //   );
-  // }
 
   Widget listWidget() {
     return ListView.separated(
@@ -125,7 +123,9 @@ class _PlanWidgetState extends State<PlanWidget> with BaseState{
               onTap: () {
                 // to do if --> if you want to open sightDetails you have to pass the id;
                 Navigator.of(context).pushNamed(SightDetailsScreen.ROUTE_NAME,
-                    arguments: SightDetailsScreen.MODEL_ID_KEY);
+                    arguments: {
+                      SightDetailsScreen.MODEL_ID_KEY: model.id.toString()
+                    });
               },
               child: Container(
                 height: 217,
@@ -285,6 +285,7 @@ class _PlanWidgetState extends State<PlanWidget> with BaseState{
       });
     });
   }
+
   @override
   BuildContext provideContext() {
     return context;

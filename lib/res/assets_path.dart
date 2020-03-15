@@ -27,4 +27,5 @@ class AssPath {
   static const SPONS_LOGO6 = 'assets/images/FinalETALogo.jpg';
   static const SPONS_LOGO7 = 'assets/images/Fayoum.png';
   static const CAMERA_LOGO = 'assets/images/camera_logo.png';
+  static const PROFILE_LOGO = 'assets/images/profile-logo.png';
 }

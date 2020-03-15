@@ -91,7 +91,7 @@ class _ProfileScreenState extends State<ProfileScreen> with BaseState {
                             ),
                             CircleAvatar(
                               backgroundImage: profileInfo.photo == null
-                                  ? AssetImage(AssPath.APP_LOGO)
+                                  ? AssetImage(AssPath.PROFILE_LOGO)
                                   : NetworkImage(profileInfo.photo),
                               // minRadius: 50,
                               radius: 130,

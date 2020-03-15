@@ -404,7 +404,7 @@ class ApiManager with ChangeNotifier {
         .then((response) {
       Map extractedData = json.decode(response.body);
       // todo --> do not forget to remove the
-      // print(extractedData);
+      print(extractedData);
       if (extractedData == null) {
         fail(MessageModel.getDecodeError());
         return false;

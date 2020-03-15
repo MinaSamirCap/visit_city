@@ -9,7 +9,9 @@ class SightsListWrapper extends BaseWrapper {
       : super(info, messageModel);
 
   SightsListWrapper.fromJson(Map<String, dynamic> json)
-      : data = SightsListResponse.fromJson(json['data']),
+      : data = (json['data'] != null)
+            ? SightsListResponse.fromJson(json['data'])
+            : null,
         super.fromJson(json);
 
   Map<String, dynamic> toJson() =>

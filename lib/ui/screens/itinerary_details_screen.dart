@@ -115,11 +115,9 @@ class _ItineraryDetailsScreenState extends State<ItineraryDetailsScreen> with Ba
           child: ClipRRect(
             child: InkWell(
               onTap: () {
-                Map<String, dynamic> sightId = {
-                  "sight_id": model.sightsDay[index].id
-                };
+               
                 Navigator.of(context).pushNamed(SightDetailsScreen.ROUTE_NAME,
-                    arguments: sightId.toString());
+                    arguments: {SightDetailsScreen.MODEL_ID_KEY: model.sightsDay[index].id.toString()});
               },
               child: Container(
                 height: 217,
