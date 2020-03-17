@@ -4,8 +4,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http; // to avoid crashing with names ..
 
-import 'api_keys.dart';
 
+import 'api_keys.dart';
+import '../models/profile_update/profile_send_model.dart';
+import '../models/profile_update/profile_update_wrapper.dart';
 import '../models/rate/rate_post_wrapper.dart';
 import '../models/rate/rate_send_model.dart';
 import '../models/sights_list/sights_list_wrapper.dart';
@@ -551,7 +553,8 @@ class ApiManager with ChangeNotifier {
     });
   }
 
-  void forgetPasswordApis(ForgetPasswordSendModel model, Function success, Function fail) async {
+  void forgetPasswordApis(
+      ForgetPasswordSendModel model, Function success, Function fail) async {
     await http
         .post(ApiKeys.forgetPasswordUrl,
             headers: await ApiKeys.getAuthHeaders(),
@@ -562,7 +565,8 @@ class ApiManager with ChangeNotifier {
         fail(MessageModel.getDecodeError());
         return false;
       } else {
-        ForgetPasswordWrapper wrapper = ForgetPasswordWrapper.fromJson(extractedData);
+        ForgetPasswordWrapper wrapper =
+            ForgetPasswordWrapper.fromJson(extractedData);
         if (wrapper.info) {
           success(wrapper);
           return true;
@@ -575,7 +579,9 @@ class ApiManager with ChangeNotifier {
       fail(checkErrorType(onError));
     });
   }
-  void resetPasswordApis(ResetPasswordSendModel model, Function success, Function fail) async {
+
+  void resetPasswordApis(
+      ResetPasswordSendModel model, Function success, Function fail) async {
     await http
         .post(ApiKeys.resetPasswordUrl,
             headers: await ApiKeys.getAuthHeaders(),
@@ -586,7 +592,35 @@ class ApiManager with ChangeNotifier {
         fail(MessageModel.getDecodeError());
         return false;
       } else {
-        ForgetPasswordWrapper wrapper = ForgetPasswordWrapper.fromJson(extractedData);
+        ForgetPasswordWrapper wrapper =
+            ForgetPasswordWrapper.fromJson(extractedData);
+        if (wrapper.info) {
+          success(wrapper);
+          return true;
+        } else {
+          fail(wrapper.message);
+          return false;
+        }
+      }
+    }).catchError((onError) {
+      fail(checkErrorType(onError));
+    });
+  }
+
+  void updateProfileApis(
+      ProfileSendModel model, Function success, Function fail) async {
+    await http
+        .patch(ApiKeys.profileUrl,
+            headers: await ApiKeys.getHeaders(),
+            body: json.encode(model.toJson()))
+        .then((response) {
+      Map extractedData = json.decode(response.body);
+      if (extractedData == null) {
+        fail(MessageModel.getDecodeError());
+        return false;
+      } else {
+        ProfileUpdateWrapper wrapper =
+            ProfileUpdateWrapper.fromJson(extractedData);
         if (wrapper.info) {
           success(wrapper);
           return true;

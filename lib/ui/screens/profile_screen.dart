@@ -14,10 +14,8 @@ import '../../utils/lang/app_localization_keys.dart';
 import '../../apis/api_manager.dart';
 import '../../ui/screens/profile_update_screen.dart';
 import '../../models/profile/profile_wrapper.dart';
-import '../../models/profile/profile_response.dart';
 import '../../models/message_model.dart';
 import '../../ui/widget/ui.dart';
-import '../../res/sizes.dart';
 
 class ProfileScreen extends StatefulWidget {
   static const ROUTE_NAME = '/profile-screen';
@@ -59,13 +57,13 @@ class _ProfileScreenState extends State<ProfileScreen> with BaseState {
       appBar: AppBar(
         title: Text(_appLocal.translate(LocalKeys.PROFILE)),
         centerTitle: true,
-        // actions: <Widget>[
-        //   IconButton(
-        //       icon: Icon(Icons.edit),
-        //       onPressed: () {
-        //         Navigator.of(context).pushNamed(ProfileUpdateScreen.ROUTE_NAME);
-        //       })
-        // ],
+        actions: <Widget>[
+          IconButton(
+              icon: Icon(Icons.edit),
+              onPressed: () {
+                Navigator.of(context).popAndPushNamed(ProfileUpdateScreen.ROUTE_NAME,arguments:profileInfo);
+              })
+        ],
       ),
       body: _isLoadingNow
           ? Center(child: CircularProgressIndicator())
@@ -93,12 +91,13 @@ class _ProfileScreenState extends State<ProfileScreen> with BaseState {
                               backgroundImage: profileInfo.photo == null
                                   ? AssetImage(AssPath.PROFILE_LOGO)
                                   : NetworkImage(profileInfo.photo),
-                              // minRadius: 50,
                               radius: 130,
                             ),
                             Padding(
                               padding: const EdgeInsets.only(top: 20),
-                              child: Text(
+                              child: profileInfo.name == null
+                                  ? Text(_appLocal.translate(LocalKeys.NONE))
+                                  : Text(
                                 profileInfo.name,
                                 style: TextStyle(
                                     fontSize: 25, fontWeight: FontWeight.bold),
@@ -106,7 +105,9 @@ class _ProfileScreenState extends State<ProfileScreen> with BaseState {
                             ),
                             Padding(
                               padding: const EdgeInsets.only(top: 20),
-                              child: Text(
+                              child: profileInfo.email == null
+                                  ? Text(_appLocal.translate(LocalKeys.NONE))
+                                  : Text(
                                 profileInfo.email,
                                 style:
                                     TextStyle(fontSize: 18, color: Coolor.GREY),
@@ -115,7 +116,7 @@ class _ProfileScreenState extends State<ProfileScreen> with BaseState {
                             Padding(
                               padding: const EdgeInsets.only(top: 20),
                               child: profileInfo.phone == null
-                                  ? Text('none')
+                                  ? Text(_appLocal.translate(LocalKeys.NONE))
                                   : Text(
                                       profileInfo.phone,
                                       style: TextStyle(
@@ -125,7 +126,7 @@ class _ProfileScreenState extends State<ProfileScreen> with BaseState {
                             Padding(
                               padding: const EdgeInsets.only(top: 20),
                               child: profileInfo.country == null
-                                  ? Text('')
+                                  ? Text(_appLocal.translate(LocalKeys.NONE))
                                   : Text(
                                       profileInfo.country,
                                       style: TextStyle(
@@ -147,16 +148,16 @@ class _ProfileScreenState extends State<ProfileScreen> with BaseState {
   }
 
   void callGetProfileApi() async {
-    // _progressDialog.show();
+    _progressDialog.show();
     _apiManager.getProfile((ProfileWrapper wrapper) {
-      // _progressDialog.hide();
+      _progressDialog.hide();
       setState(() {
         profileInfo = wrapper.data;
         _isLoadingNow = false;
       });
     }, (MessageModel messageModel) {
       checkServerError(messageModel);
-      // _progressDialog.hide();
+      _progressDialog.hide();
       setState(() {
         _isLoadingNow = false;
       });

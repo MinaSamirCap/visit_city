@@ -102,4 +102,8 @@ class LocalKeys {
   static const GUEST_CKECK = "guest_check";
   static const NO_SIGHTS = "no_sights";
   static const GOOGLE_ERROR = "google_error";
+  static const NONE = "none";
+  static const EDIT_PROFILE = "edit_profile";
+  static const SAVE = "save";
+  static const CANCEL = "cancel";
 }
