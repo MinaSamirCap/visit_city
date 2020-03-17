@@ -5,6 +5,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:provider/provider.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../models/rate/user_model.dart';
 import '../../models/login_later/login_later_wrapper.dart';
@@ -25,6 +26,8 @@ import '../../ui/widget/ui.dart';
 import '../../ui/base/base_state.dart';
 import '../../models/fb_login/fb_login_wrapper.dart';
 import '../../models/fb_login/fb_login_send_model.dart';
+import '../../models/google_login/google_login_send_model.dart';
+import '../../models/google_login/google_login_wrapper.dart';
 
 class SignInScreen extends StatefulWidget {
   static const ROUTE_NAME = '/signin';
@@ -36,14 +39,15 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> with BaseState {
   final _formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-
   AppLocalizations _appLocal;
   bool _isLoadingNow = false;
   ProgressDialog _progressDialog;
   AuthApiManager _apiAuthManager;
   LoginSendModel model = LoginSendModel();
   FbLoginSendModel fbModel = FbLoginSendModel();
-
+  GoogleLoginSendModel googleModel = GoogleLoginSendModel();
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  
   void initState() {
     Future.delayed(Duration.zero).then((_) {
       _progressDialog = getPlzWaitProgress(context, _appLocal);
@@ -308,7 +312,7 @@ class _SignInScreenState extends State<SignInScreen> with BaseState {
     return FloatingActionButton(
       elevation: 5,
       heroTag: null,
-      onPressed: () {},
+      onPressed: _loginWithGoogle,
       backgroundColor: Coolor.WHITE,
       child: Image.asset(
         AssPath.LOGO_GOOGLE,
@@ -409,6 +413,39 @@ class _SignInScreenState extends State<SignInScreen> with BaseState {
         showSnackBar(createSnackBar(result.status.toString()), _scaffoldKey);
         break;
     }
+    return null;
+  }
+
+  Future<void> _loginWithGoogle() async {
+    final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser.authentication;
+
+    if (googleAuth.idToken != null) {
+      googleModel.idToken = googleAuth.idToken;
+      callGoogleLoginApi();
+    } else {
+      showSnackBar(createSnackBar(_appLocal.translate(LocalKeys.GOOGLE_ERROR)),
+          _scaffoldKey);
+    }
+  }
+
+  void callGoogleLoginApi() {
+    _progressDialog.show();
+    _apiAuthManager.googleLoginApi(googleModel, (GoogleLoginWrapper wrapper) {
+      _progressDialog.hide();
+      saveUserToken(wrapper.data.token, wrapper.data.user, false);
+      setState(() {
+        _isLoadingNow = false;
+      });
+    }, (MessageModel messageModel) {
+      checkServerError(messageModel);
+      _progressDialog.hide();
+      setState(() {
+        showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
+        _isLoadingNow = false;
+      });
+    });
   }
 
   void callFbLoginApi() {

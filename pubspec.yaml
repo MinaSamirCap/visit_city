@@ -44,7 +44,7 @@ dependencies:
   path_provider: ^1.6.5
   dio: ^3.0.9
   flutter_facebook_login: ^3.0.0
-
+  google_sign_in: ^4.1.4
 
   
 
