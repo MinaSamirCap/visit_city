@@ -310,10 +310,8 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen>
       setState(() {
         _isLoadingNow = false;
         Navigator.of(context).popAndPushNamed(ProfileScreen.ROUTE_NAME);
-        // Navigator.of(context).pop();
       });
     }, (MessageModel messageModel) {
-      // checkServerError(messageModel);
       _progressDialog.hide();
       setState(() {
         _isLoadingNow = false;
@@ -392,6 +390,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen>
                 children: <Widget>[
                   new Flexible(
                     child: new TextFormField(
+                      keyboardType: TextInputType.emailAddress,
                       decoration:
                           InputDecoration(labelText: _profileInfo.email),
                       enabled: !_status,
@@ -431,6 +430,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen>
                 children: <Widget>[
                   new Flexible(
                     child: new TextFormField(
+                      keyboardType: TextInputType.number,
                       decoration:
                           InputDecoration(labelText: _profileInfo.phone),
                       enabled: !_status,
