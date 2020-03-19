@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -35,6 +36,9 @@ class MyApp extends StatelessWidget {
     return MultiProvider(providers: [
       ChangeNotifierProvider.value(
         value: ApiManager(),
+
+
+        
       ),
       ChangeNotifierProvider.value(
         value: AuthApiManager(),
@@ -44,6 +48,8 @@ class MyApp extends StatelessWidget {
 
   MaterialApp visitFayoumApp() {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
+
       theme: ThemeData(primarySwatch: Coolor.PRIMARYSWATCH),
 
       /// the list of our supported locals for our app
@@ -61,13 +67,19 @@ class MyApp extends StatelessWidget {
 
         /// Built-in localization for text direction LTR/RTL
         GlobalWidgetsLocalizations.delegate,
+
+        GlobalCupertinoLocalizations.delegate,
+        DefaultCupertinoLocalizations.delegate,
       ],
 
       /// Returns a locale which will be used by the app
       localeResolutionCallback: (locale, supportedLocales) {
         /// Check if the current device locale is in our supported locales list
         /// That we added previously --> supportedLocales: [Locale('en', 'US'), Locale('ar', 'EG')],
+        if(locale==null){
+          return supportedLocales.first;
 
+        }
         for (var localItem in supportedLocales) {
           if (localItem.languageCode == locale.languageCode &&
               localItem.countryCode == locale.countryCode) {
@@ -77,7 +89,9 @@ class MyApp extends StatelessWidget {
 
         /// If the locale of the device is not supported, use the first one
         /// from the list (English, in this case).
+
         return supportedLocales.first;
+
       },
       home: SplashScreen(),
       routes: {
