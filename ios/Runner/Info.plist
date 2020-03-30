@@ -42,9 +42,60 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>CFBundleLocalizations</key>
-  	<array>
-    	<string>English</string>
-    	<string>ar</string>
-  	</array>
+	<array>
+		<string>English</string>
+		<string>ar</string>
+	</array>
+	<key>io.flutter.embedded_views_preview</key>
+	<string>YES</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We need to access the files to upload profile picture</string>
+	<key>NSCameraUsageDescription</key>
+	<string>We need to access the camera to take a picture for QR Code</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.65138411480-3c1roc5v5f4pra2l8306dp7ns8nnnuqp</string>
+				<string>fb815310732323306</string>
+			</array>
+		</dict>
+	</array>
+
+
+
+	<key>CFBundleURLTypes</key>
+    <array>
+        <!--
+        <dict>
+        ... Some other CFBundleURLTypes definition.
+        </dict>
+        -->
+        <dict>
+            <key>CFBundleURLSchemes</key>
+            <array>
+
+                <string>fb815310732323306</string>
+            </array>
+        </dict>
+    </array>
+
+    <key>FacebookAppID</key>
+
+     <string>815310732323306</string>
+    <key>FacebookDisplayName</key>
+
+    <string>Visit Fayoum</string>
+
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+        <string>fbapi</string>
+        <string>fb-messenger-share-api</string>
+        <string>fbauth2</string>
+        <string>fbshareextension</string>
+    </array>
 </dict>
 </plist>

@@ -1,10 +1,25 @@
 import 'package:flutter/material.dart';
-import '../../res/assets_path.dart';
-import '../../res/sizes.dart';
+import 'package:provider/provider.dart';
+import '../../apis/api_manager.dart';
+import '../../general/url_launchers.dart';
+import '../../ui/base/base_state.dart';
+import '../../ui/screens/profile_screen.dart';
+
+import '../../ui/screens/qr_code_screen.dart';
+import '../../ui/screens/wishlist_screen.dart';
+import '../../ui/widget/explore_widget.dart';
+import '../../ui/widget/home_widget.dart';
+import '../../ui/widget/map_widget.dart';
+import '../../ui/widget/plan_widget.dart';
 import '../../ui/widget/mian_drawer_widget.dart';
-import '../../res/coolor.dart';
+import '../../ui/screens/feedback_screen.dart';
 import '../../utils/lang/app_localization_keys.dart';
 import '../../utils/lang/app_localization.dart';
+import '../../res/coolor.dart';
+import '../../ui/screens/useful_contacts_screen.dart';
+import '../../ui/screens/mixed_itineraries_screen.dart';
+import '../../ui/screens/how_to_use_app_screen.dart';
+import '../../ui/screens/fayoum_intro_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   static const ROUTE_NAME = '/home-screen';
@@ -13,7 +28,7 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with BaseState {
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
   List<ItineraryModel> list;
   AppLocalizations _appLocal;
@@ -37,7 +52,27 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void onMenuItemSelected(String title) {
-    print(title);
+    if (title == _appLocal.translate(LocalKeys.FEEDBACK)) {
+      Navigator.of(context).pushNamed(FeedbackScreen.ROUTE_NAME);
+    } else if (title == _appLocal.translate(LocalKeys.LOGOUT)) {
+      logoutUser();
+    } else if (title == _appLocal.translate(LocalKeys.PROFILE)) {
+      Navigator.of(context).pushNamed(ProfileScreen.ROUTE_NAME);
+    } else if (title == _appLocal.translate(LocalKeys.WISHLIST)) {
+      Navigator.of(context).pushNamed(WishlistScreen.ROUTE_NAME);
+    } else if (title == _appLocal.translate(LocalKeys.GUIDE_BOOK)) {
+      launchUrl("https://www.google.com");
+    } else if (title == _appLocal.translate(LocalKeys.MIXED_ITE)) {
+      Navigator.of(context).pushNamed(MixedItinerariesScreen.ROUTE_NAME);
+    } else if (title == _appLocal.translate(LocalKeys.HOW_TO_USE_APP)) {
+      Navigator.of(context).pushNamed(HowToUseAppScreen.ROUTE_NAME);
+    } else if (title == _appLocal.translate(LocalKeys.INTRO_ABOUT_FAYOUM)) {
+      Navigator.of(context).pushNamed(FayoumIntroScreen.ROUTE_NAME);
+    } else if (title == _appLocal.translate(LocalKeys.USEFUL_CONTACTS)) {
+      Navigator.of(context).pushNamed(UsefulContactsScreen.ROUTE_NAME);
+    } else if (title == _appLocal.translate(LocalKeys.QR_CODE)) {
+      Navigator.of(context).pushNamed(QrCodeScreen.ROUTE_NAME);
+    }
   }
 
   void onBottomItemSelected(int index) {
@@ -73,149 +108,32 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: Icon(Icons.mail),
             title: Text(_appLocal.translate(LocalKeys.MY_PLAN))),
         BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
+            icon: Icon(Icons.explore),
             title: Text(_appLocal.translate(LocalKeys.EXPLORE)))
       ],
     );
   }
 
   Widget getBody() {
-    return Stack(
-      children: <Widget>[
-        headerImage(),
-        menuIcon(),
-        blueLogo(),
-        itinerariesText(),
-        listBuilder()
-      ],
-    );
+    switch (_currentIndex) {
+      case 0:
+        return HomeWidget(_appLocal, _drawerKey, list);
+      case 1:
+        return MapWidget();
+      case 2:
+        return PlanWidget();
+      case 3:
+        return ExploreWidget();
+    }
+    return HomeWidget(_appLocal, _drawerKey, list);
   }
 
-  Widget headerImage() {
-    return Image.asset(AssPath.HEADER_IMAGE);
+  void logoutUser() async {
+    logoutNow(_appLocal.translate(LocalKeys.USER_LOGOUT));
   }
 
-  Widget menuIcon() {
-    return Positioned.directional(
-      start: 1.5,
-      top: 20,
-      child: IconButton(
-        icon: Icon(Icons.menu, size: Sizes.MENU_SIZE,),
-        onPressed: () {
-          /// to open the drawer programatically.
-          //Scaffold.of(context).openDrawer();
-          _drawerKey.currentState.openDrawer();
-        },
-      ),
-      textDirection: TextDirection.ltr,
-    );
-  }
-
-  Widget blueLogo() {
-    return Positioned(
-      left: 70,
-      right: 70,
-      top: 70,
-      child: Image.asset(AssPath.LOGO_BLUE),
-    );
-  }
-
-  Widget itinerariesText() {
-    return Positioned(
-      top: 170,
-      left: 0,
-      right: 0,
-      child: Center(
-          child: Text(
-        _appLocal.translate(LocalKeys.IN_3_ITINERARIES),
-        style: TextStyle(
-            fontWeight: FontWeight.bold, fontSize: 22, color: Coolor.GREY_DARK),
-      )),
-    );
-  }
-
-  Widget listBuilder() {
-    return Container(
-      alignment: Alignment.bottomCenter,
-      padding: const EdgeInsets.only(left: 60, right: 60),
-      child: ListView.separated(
-        padding: EdgeInsets.only(top: 200),
-        shrinkWrap: true,
-        itemCount: list.length,
-        itemBuilder: (context, index) {
-          return itineraryView(list[index]);
-        },
-        separatorBuilder: (context, index) {
-          return Sizes.DIVIDER_HEIGHT_15;
-        },
-      ),
-    );
-  }
-
-  Widget itineraryView(ItineraryModel model) {
-    return InkWell(
-      onTap: () {
-        print(model.title);
-      },
-      child: Card(
-        elevation: 5,
-        shape: RoundedRectangleBorder(borderRadius: Sizes.BOR_RAD_12),
-        child: Column(
-          children: <Widget>[
-            Container(
-              height: 150,
-              decoration: BoxDecoration(
-                color: model.bgColor,
-                borderRadius: BorderRadiusDirectional.only(
-                  topStart: Sizes.RADIUS_12,
-                  topEnd: Sizes.RADIUS_12,
-                ),
-              ),
-              child: Center(
-                child: Image.asset(model.imgUrl),
-              ),
-            ),
-            Text(
-              model.title,
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-            ),
-            Text(
-              model.duration,
-              style: TextStyle(fontSize: 14),
-            ),
-            Sizes.DIVIDER_HEIGHT_10
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class ItineraryModel {
-  final String title;
-  final String duration;
-  final String imgUrl;
-  final Color bgColor;
-
-  ItineraryModel(this.title, this.duration, this.imgUrl, this.bgColor);
-
-  static List<ItineraryModel> getItinerariesList(AppLocalizations appLocale) {
-    return [
-      ItineraryModel(
-          appLocale.translate(LocalKeys.NATURAL_ITINERARIES),
-          appLocale.translate(LocalKeys.ABOUT_3_DAYS),
-          AssPath.NATURE_LOGO,
-          Coolor.NAT_ITI_COL),
-      ItineraryModel(
-          appLocale.translate(LocalKeys.ARCHEOLOGY_ITINERARIES),
-          appLocale.translate(LocalKeys.ABOUT_4_DAYS),
-          AssPath.ARCHEOLOGY_LOGO,
-          Coolor.ARC_ITI_COL),
-      ItineraryModel(
-          appLocale.translate(LocalKeys.CLUTURE_ITINERARIES),
-          appLocale.translate(LocalKeys.ABOUT_2_DAYS),
-          AssPath.CULTURE_LOGO,
-          Coolor.CUL_ITI_COL)
-    ];
+  @override
+  BuildContext provideContext() {
+    return context;
   }
 }

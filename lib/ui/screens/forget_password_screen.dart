@@ -1,14 +1,20 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter/material.dart';
+import 'package:progress_dialog/progress_dialog.dart';
+import 'package:provider/provider.dart';
 
 import '../../utils/lang/app_localization_keys.dart';
 import '../../utils/lang/app_localization.dart';
-import '../../apis/auth.dart';
 import '../../res/assets_path.dart';
 import '../../res/coolor.dart';
 import '../../res/sizes.dart';
+import '../../models/forget_password/forget_password_send_model.dart';
+import '../../apis/api_manager.dart';
+import '../../models/forget_password/forget_password_wrapper.dart';
+import '../../ui/base/base_state.dart';
+import '../../ui/widget/ui.dart';
+import '../../models/message_model.dart';
+import '../../ui/screens/reset_password_screen.dart';
 
 class ForgetPasswordScreen extends StatefulWidget {
   static const ROUTE_NAME = '/forget-password';
@@ -16,9 +22,24 @@ class ForgetPasswordScreen extends StatefulWidget {
   _ForgetPasswordScreenState createState() => _ForgetPasswordScreenState();
 }
 
-class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
+class _ForgetPasswordScreenState extends State<ForgetPasswordScreen>
+    with BaseState {
   var appLocal;
-  Map<String, String> _authData = {'email': ""};
+  ForgetPasswordSendModel model = ForgetPasswordSendModel();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  bool _isLoadingNow = false;
+  ProgressDialog _progressDialog;
+  ApiManager _apiManager;
+
+  void initState() {
+    Future.delayed(Duration.zero).then((_) {
+      _progressDialog = getPlzWaitProgress(context, appLocal);
+      _apiManager = Provider.of<ApiManager>(context, listen: false);
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
@@ -31,14 +52,10 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
         }
       },
       child: Scaffold(
+        key: _scaffoldKey,
         backgroundColor: Coolor.BG_COLOR,
         appBar: AppBar(
           iconTheme: IconThemeData(color: Coolor.BLACK),
-          // automaticallyImplyLeading: true,
-          // leading: IconButton(
-          //   icon: Icon(Icons.arrow_back),
-          //   onPressed: () => Navigator.pop(context),
-          // ),
           title: Text(
             appLocal.translate(LocalKeys.FORGET_PASSWORD),
             style: TextStyle(
@@ -52,14 +69,16 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
           width: deviceSize.width * 0.85,
           margin: Sizes.EDEGINSETS_25,
           child: SingleChildScrollView(
-                      child: Column(
-              // mainAxisAlignment: MainAxisAlignment.center,
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 SizedBox(
                   height: Sizes.SIZE_20,
                 ),
-                Image.asset(AssPath.FORGET_PASS_LOGO,scale:2,),
+                Image.asset(
+                  AssPath.FORGET_PASS_LOGO,
+                  scale: 2,
+                ),
                 SizedBox(
                   height: Sizes.SIZE_50,
                 ),
@@ -68,7 +87,6 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                   children: <Widget>[
                     Text(
                       appLocal.translate(LocalKeys.REGESTERED_EMAIL),
-                      // textAlign: TextAlign.start,
                       style: TextStyle(fontSize: Sizes.SIZE_20),
                     ),
                     SizedBox(
@@ -85,24 +103,28 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                 ),
                 Padding(
                   padding: Sizes.EDEGINSETS_8,
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                      labelText: appLocal.translate(LocalKeys.EMAIL),
-                      contentPadding: Sizes.EDEGINSETS_20,
-                      border: OutlineInputBorder(
-                        gapPadding: Sizes.SIZE_3_3,
-                        borderRadius: Sizes.BOR_RAD_25,
+                  child: Form(
+                    key: _formKey,
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        labelText: appLocal.translate(LocalKeys.EMAIL),
+                        contentPadding: Sizes.EDEGINSETS_20,
+                        border: OutlineInputBorder(
+                          gapPadding: Sizes.SIZE_3_3,
+                          borderRadius: Sizes.BOR_RAD_25,
+                        ),
                       ),
+                      keyboardType: TextInputType.emailAddress,
+                      validator: (value) {
+                        if (value.isEmpty || !EmailValidator.validate(value)) {
+                          return appLocal.translate(LocalKeys.ERROR_EMAIL);
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        model.email = value;
+                      },
                     ),
-                    keyboardType: TextInputType.emailAddress,
-                    validator: (value) {
-                      if (value.isEmpty || !EmailValidator.validate(value)) {
-                        return appLocal.translate(LocalKeys.ERROR_EMAIL);
-                      }
-                    },
-                    onSaved: (value) {
-                      _authData['email'] = value;
-                    },
                   ),
                 ),
                 SizedBox(
@@ -110,16 +132,13 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                 ),
                 RaisedButton(
                   color: Coolor.BLUE_APP,
-                  // minWidth: MediaQuery.of(context).size.width,
-                  padding:
-                    EdgeInsets.symmetric(horizontal: Sizes.SIZE_120,vertical: Sizes.SIZE_10),
-                      // EdgeInsets.symmetric(vertical: Sizes.SIZE_18, horizontal: Sizes.SIZE_150),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: Sizes.SIZE_120, vertical: Sizes.SIZE_10),
                   shape: RoundedRectangleBorder(
                     borderRadius: Sizes.BOR_RAD_25,
                   ),
                   onPressed: () {
-                    // _submit();
-                    // Navigator.of(context).pushReplacementNamed(HomeScreen.ROUTE_NAME);
+                    _submit();
                   },
                   child: Text(
                     appLocal.translate(LocalKeys.NEXT),
@@ -127,7 +146,6 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                     style: TextStyle(
                       color: Coolor.WHITE,
                       fontSize: Sizes.SIZE_25,
-                      // fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
@@ -137,5 +155,37 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
         ),
       ),
     );
+  }
+
+  void _submit() async {
+    if (!_formKey.currentState.validate()) {
+      return;
+    }
+    _formKey.currentState.save();
+    callForgetPasswordApi();
+  }
+
+  void callForgetPasswordApi() {
+    _progressDialog.show();
+    _apiManager.forgetPasswordApis(model, (ForgetPasswordWrapper wrapper) {
+      _progressDialog.hide();
+      Navigator.of(context)
+          .pushReplacementNamed(ResetPasswordScreen.ROUTE_NAME);
+      setState(() {
+        _isLoadingNow = false;
+      });
+    }, (MessageModel messageModel) {
+      checkServerError(messageModel);
+      _progressDialog.hide();
+      setState(() {
+        showSnackBar(createSnackBar(messageModel.message), _scaffoldKey);
+        _isLoadingNow = false;
+      });
+    });
+  }
+
+  @override
+  BuildContext provideContext() {
+    return context;
   }
 }

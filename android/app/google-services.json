@@ -1,0 +1,99 @@
+{
+  "project_info": {
+    "project_number": "65138411480",
+    "firebase_url": "https://visit-fayoum-24f18.firebaseio.com",
+    "project_id": "visit-fayoum-24f18",
+    "storage_bucket": "visit-fayoum-24f18.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:65138411480:android:b1abc4edcb1c25d487d4ad",
+        "android_client_info": {
+          "package_name": "com.example.visitCity"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "65138411480-vu6u99keeu17ff121pqiiljuuobmggk9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.visitCity",
+            "certificate_hash": "1df0c507babdba19dae87964ea00af726db0acff"
+          }
+        },
+        {
+          "client_id": "65138411480-o7rvggdjhqvdkpn1f239i9vu6m0qaqaj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlAG2MHHNfQYrZkZn0EHmqiwg8ZXX-6eU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "65138411480-6kbdsjshn059f759sr5d6vvcr3kj4u9o.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "65138411480-3c1roc5v5f4pra2l8306dp7ns8nnnuqp.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.visitCity"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:65138411480:android:b1abc4edcb1c25d487d4ad",
+        "android_client_info": {
+          "package_name": "com.ech.visitfayoum"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "65138411480-vu6u99keeu17ff121pqiiljuuobmggk9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ech.visitfayoum",
+            "certificate_hash": "1df0c507babdba19dae87964ea00af726db0acff"
+          }
+        },
+        {
+          "client_id": "65138411480-o7rvggdjhqvdkpn1f239i9vu6m0qaqaj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlAG2MHHNfQYrZkZn0EHmqiwg8ZXX-6eU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "65138411480-6kbdsjshn059f759sr5d6vvcr3kj4u9o.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "65138411480-3c1roc5v5f4pra2l8306dp7ns8nnnuqp.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ech.visitfayoum"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

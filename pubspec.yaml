@@ -14,7 +14,7 @@ description: A new Flutter project.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.2.2 <3.0.0"
 
 dependencies:
   flutter:
@@ -29,9 +29,23 @@ dependencies:
   cupertino_icons: ^0.1.2
   email_validator: ^1.0.3
   http: ^0.12.0+2
-  provider: ^4.0.0
+  provider: ^4.0.4
   shared_preferences: ^0.5.6
   flutter_launcher_icons: ^0.7.4
+  flutter_rating_bar: ^3.0.0+1
+  photo_view: ^0.9.1
+  progress_dialog: ^1.2.0
+  fluttertoast: ^3.1.3
+  url_launcher: ^5.4.2
+  flutter_qr_reader: ^1.0.3
+  permission_handler: '^4.3.0'
+  carousel_slider: ^1.4.1
+  image_picker: ^0.6.3+4
+  path_provider: ^1.6.5
+  dio: ^3.0.9
+  flutter_facebook_login: ^3.0.0
+  google_sign_in: ^4.1.4
+
   
 
 flutter_icons:
@@ -69,6 +83,25 @@ flutter:
    - assets/images/cultureLogo.png
    - assets/images/forgetPassword.png
    - assets/images/headerImage.png
+   - assets/images/natureBackground.png
+   - assets/images/map.png
+   - assets/images/imoji1.png
+   - assets/images/imoji2.png
+   - assets/images/imoji3.png
+   - assets/images/imoji4.png
+   - assets/images/imoji5.png
+   - assets/images/archeology_map.png
+   - assets/images/nature_map.png
+   - assets/images/culture_map.png
+   - 'assets/images/EU2.png'
+   - 'assets/images/JRDP.png'
+   - 'assets/images/ItalianAgencyforCooperationandDevelopment.png'
+   - 'assets/images/ItalianCooperation.png'
+   - 'assets/images/ech.png'
+   - 'assets/images/FinalETALogo.jpg'
+   - 'assets/images/Fayoum.png'
+   - 'assets/images/camera_logo.png'
+   - 'assets/images/profile-logo.png'
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

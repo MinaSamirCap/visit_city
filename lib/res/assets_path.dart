@@ -9,4 +9,23 @@ class AssPath {
   static const CULTURE_LOGO = 'assets/images/cultureLogo.png';
   static const FORGET_PASS_LOGO = 'assets/images/forgetPassword.png';
   static const HEADER_IMAGE = 'assets/images/headerImage.png';
+  static const NATURE_BACKGROUND = 'assets/images/natureBackground.png';
+  static const MAP_FULL = 'assets/images/map.png';
+  static const NATURE_MAP = 'assets/images/nature_map.png';
+  static const CULTURE_MAP = 'assets/images/culture_map.png';
+  static const ARCH_MAP = 'assets/images/archeology_map.png';
+  static const IMOJI1 = 'assets/images/imoji1.png';
+  static const IMOJI2 = 'assets/images/imoji2.png';
+  static const IMOJI3 = 'assets/images/imoji3.png';
+  static const IMOJI4 = 'assets/images/imoji4.png';
+  static const IMOJI5 = 'assets/images/imoji5.png';
+  static const SPONS_LOGO1 = 'assets/images/EU2.png';
+  static const SPONS_LOGO2 = 'assets/images/JRDP.png';
+  static const SPONS_LOGO3 = 'assets/images/ItalianAgencyforCooperationandDevelopment.png';
+  static const SPONS_LOGO4 = 'assets/images/ItalianCooperation.png';
+  static const SPONS_LOGO5 = 'assets/images/ech.png';
+  static const SPONS_LOGO6 = 'assets/images/FinalETALogo.jpg';
+  static const SPONS_LOGO7 = 'assets/images/Fayoum.png';
+  static const CAMERA_LOGO = 'assets/images/camera_logo.png';
+  static const PROFILE_LOGO = 'assets/images/profile-logo.png';
 }
